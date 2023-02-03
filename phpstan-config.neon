@@ -1,0 +1,10 @@
+includes:
+  - ./vendor/nunomaduro/larastan/extension.neon
+  - ./vendor/jangregor/phpstan-prophecy/extension.neon
+parameters:
+  paths:
+    - app
+    - tests
+    - Thomas
+  level: 8
+  checkMissingIterableValueType: false
