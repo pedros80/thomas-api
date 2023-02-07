@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Providers;
+namespace Thomas\Boards\Framework;
 
-use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\NREphp\Factories\ServicesFactory;
 use Pedros80\NREphp\Services\LiveDepartureBoard;
@@ -13,16 +12,8 @@ use Thomas\Boards\Domain\BoardClient;
 use Thomas\Boards\Domain\BoardService;
 use Thomas\Boards\Infrastructure\HttpBoardClient;
 use Thomas\Boards\Infrastructure\HttpBoardService;
-use Thomas\News\Application\Queries\GetNewsHeadlines;
-use Thomas\News\Domain\RSSReader;
-use Thomas\News\Infrastructure\BBCRSSParser;
-use Thomas\News\Infrastructure\HttpRSSReader;
-use Thomas\News\Infrastructure\Queries\GetNewsHeadlinesBBCRSS;
-use Thomas\Stations\Application\Queries\SearchStations;
-use Thomas\Stations\Domain\StationService;
-use Thomas\Stations\Infrastructure\ArrayStationService;
 
-final class ThomasServiceProvider extends ServiceProvider
+final class BoardsServiceProvider extends ServiceProvider
 {
     private ServicesFactory $factory;
 
@@ -33,10 +24,6 @@ final class ThomasServiceProvider extends ServiceProvider
         $this->bindBoardClient();
         $this->bindBoardService();
         $this->bindBoardQueries();
-        $this->bindStationService();
-        $this->bindStationQueries();
-        $this->bindRSS();
-        $this->bindNewsQueries();
     }
 
     private function bindLDB(): void
@@ -79,52 +66,6 @@ final class ThomasServiceProvider extends ServiceProvider
         $this->app->bind(
             GetPlatformBoardDepartures::class,
             fn () => new GetPlatformBoardDepartures($this->app->make(BoardService::class))
-        );
-    }
-
-    private function bindStationService(): void
-    {
-        $this->app->bind(
-            StationService::class,
-            fn () => new ArrayStationService()
-        );
-    }
-
-    private function bindStationQueries(): void
-    {
-        $this->app->bind(
-            SearchStations::class,
-            fn () => new SearchStations($this->app->make(StationService::class))
-        );
-    }
-
-    private function bindRSS(): void
-    {
-        $this->app->bind(
-            RSSReader::class,
-            fn () => new HttpRSSReader(
-                new Client([
-                    'headers' => [
-                        'User-Agent' => 'Thomas Rss Reader',
-                        'Accept'     => 'application/xml',
-                    ],
-                    'base_uri' => config('services.rss.bbc.url'),
-                ]),
-                new BBCRSSParser()
-            )
-        );
-
-        $this->app->bind(
-            GetNewsHeadlinesBBCRSS::class,
-            fn () => new GetNewsHeadlinesBBCRSS($this->app->make(RSSReader::class))
-        );
-    }
-
-    private function bindNewsQueries(): void
-    {
-        $this->app->bind(
-            GetNewsHeadlines::class,
-            fn () => $this->app->make(GetNewsHeadlinesBBCRSS::class)
         );
     }
 }

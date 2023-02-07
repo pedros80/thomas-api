@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb7f35ac193fdbdb1391412e1e18588f",
+    "content-hash": "59bec89d24218eef082211c105a491fd",
     "packages": [
         {
             "name": "async-aws/core",
@@ -182,16 +182,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.258.1",
+            "version": "3.258.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "7d7c4f89d2d0bd77c36cb8f3c8cd20b5aa8c0e6d"
+                "reference": "ed1bede7fe80a5e1528d6cff530341ad2018a128"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7d7c4f89d2d0bd77c36cb8f3c8cd20b5aa8c0e6d",
-                "reference": "7d7c4f89d2d0bd77c36cb8f3c8cd20b5aa8c0e6d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed1bede7fe80a5e1528d6cff530341ad2018a128",
+                "reference": "ed1bede7fe80a5e1528d6cff530341ad2018a128",
                 "shasum": ""
             },
             "require": {
@@ -270,9 +270,76 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.258.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.258.2"
             },
-            "time": "2023-02-01T19:22:26+00:00"
+            "time": "2023-02-02T19:41:58+00:00"
+        },
+        {
+            "name": "beberlei/assert",
+            "version": "v3.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/assert.git",
+                "reference": "cb70015c04be1baee6f5f5c953703347c0ac1655"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/cb70015c04be1baee6f5f5c953703347c0ac1655",
+                "reference": "cb70015c04be1baee6f5f5c953703347c0ac1655",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-simplexml": "*",
+                "php": "^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "*",
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": ">=6.0.0",
+                "yoast/phpunit-polyfills": "^0.1.0"
+            },
+            "suggest": {
+                "ext-intl": "Needed to allow Assertion::count(), Assertion::isCountable(), Assertion::minCount(), and Assertion::maxCount() to operate on ResourceBundles"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/Assert/functions.php"
+                ],
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Richard Quadling",
+                    "email": "rquadling@gmail.com",
+                    "role": "Collaborator"
+                }
+            ],
+            "description": "Thin assertion library for input validation in business models.",
+            "keywords": [
+                "assert",
+                "assertion",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/beberlei/assert/issues",
+                "source": "https://github.com/beberlei/assert/tree/v3.3.2"
+            },
+            "time": "2021-12-16T21:41:27+00:00"
         },
         {
             "name": "bref/bref",
@@ -474,6 +541,141 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "broadway/broadway",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/broadway/broadway.git",
+                "reference": "d2e54aec3c01cf4025f93a85c7176e990bd67a5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/broadway/broadway/zipball/d2e54aec3c01cf4025f93a85c7176e990bd67a5d",
+                "reference": "d2e54aec3c01cf4025f93a85c7176e990bd67a5d",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^3.0",
+                "broadway/uuid-generator": "^1.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "broadway/coding-standard": "^1.0",
+                "monolog/monolog": "~2.0",
+                "phpstan/phpstan": "@stable",
+                "phpunit/phpunit": "^8.0",
+                "ramsey/uuid": "^4.0"
+            },
+            "suggest": {
+                "broadway/broadway-bundle": "Symfony bundle for broadway/broadway",
+                "broadway/broadway-saga": "Saga component for Broadway",
+                "broadway/event-store-dbal": "Event store implementation using doctrine/dbal",
+                "broadway/read-model-elasticsearch": "Elasticsearch read model implementation",
+                "psr/log-implementation": "Implementation for PSR3, LoggerInterface"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Broadway\\": "src/Broadway/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
+                },
+                {
+                    "name": "Emil",
+                    "email": "emil@broekmeulen.com"
+                },
+                {
+                    "name": "Fritsjan",
+                    "email": "fritsjan@qandidate.com"
+                },
+                {
+                    "name": "othillo",
+                    "email": "othillo@othillo.nl"
+                },
+                {
+                    "name": "Willem-Jan",
+                    "email": "wjzijderveld@gmail.com"
+                },
+                {
+                    "name": "Qandidate.com",
+                    "homepage": "http://labs.qandidate.com/"
+                }
+            ],
+            "description": "Infrastructure and testing helpers for creating CQRS and event sourced applications.",
+            "keywords": [
+                "cqrs",
+                "ddd",
+                "domain-driven design",
+                "event sourcing"
+            ],
+            "support": {
+                "issues": "https://github.com/broadway/broadway/issues",
+                "source": "https://github.com/broadway/broadway/tree/2.4.0"
+            },
+            "time": "2020-12-29T11:52:48+00:00"
+        },
+        {
+            "name": "broadway/uuid-generator",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/broadway/broadway-uuid-generator.git",
+                "reference": "908de6999cdb77f1b323abd3e64e8ce6f86db3e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/broadway/broadway-uuid-generator/zipball/908de6999cdb77f1b323abd3e64e8ce6f86db3e5",
+                "reference": "908de6999cdb77f1b323abd3e64e8ce6f86db3e5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "broadway/coding-standard": "^1.0",
+                "phpstan/phpstan": "@stable",
+                "phpunit/phpunit": "^8.0",
+                "ramsey/uuid": "^3.0"
+            },
+            "suggest": {
+                "ramsey/uuid": "Allows creating UUIDs"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Broadway\\UuidGenerator\\": "src/Broadway/UuidGenerator"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "UUID generator for broadway/broadway.",
+            "support": {
+                "issues": "https://github.com/broadway/broadway-uuid-generator/issues",
+                "source": "https://github.com/broadway/broadway-uuid-generator/tree/master"
+            },
+            "time": "2020-03-06T10:09:30+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

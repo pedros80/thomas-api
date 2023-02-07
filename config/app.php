@@ -194,8 +194,16 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ThomasServiceProvider::class,
 
+        Thomas\Shared\Framework\DatabaseServiceProvider::class,
+        Thomas\Shared\Framework\EventSourcingServiceProvider::class,
+        Thomas\Shared\Framework\SharedServiceProvider::class,
+        Thomas\Shared\Framework\CommandBusServiceProvider::class,
+        Thomas\Boards\Framework\BoardsServiceProvider::class,
+        Thomas\News\Framework\NewsServiceProvider::class,
+        Thomas\Stations\Framework\StationsServiceProvider::class,
+        Thomas\ServiceIndicator\Framework\ServiceIndicatorServiceProvider::class,
+        Thomas\RealTimeIncidents\Framework\RealTimeIncidentsServiceProvider::class,
     ],
 
     /*

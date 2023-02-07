@@ -1,0 +1,52 @@
+Resources:
+  Thomas:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: EType
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: EType
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: EType
+          KeySchema:
+            - AttributeName: EType
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+      BillingMode: PAY_PER_REQUEST
+      TableName: ${env:THOMAS_TABLE}
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: ${file(serverless/Infrastructure.json):${opt:stage}.${opt:region}.dynamo.pointInTimeRecovery}
+      Tags: ${self:custom.Tags}
+
+  EventStore:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: StreamId
+          AttributeType: S
+        - AttributeName: StreamVersion
+          AttributeType: N
+      KeySchema:
+        - AttributeName: StreamId
+          KeyType: HASH
+        - AttributeName: StreamVersion
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      TableName: ${env:EVENT_STORE_TABLE}
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: ${file(serverless/Infrastructure.json):${opt:stage}.${opt:region}.dynamo.pointInTimeRecovery}
+      Tags: ${self:custom.Tags}

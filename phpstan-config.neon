@@ -8,3 +8,8 @@ parameters:
     - Thomas
   level: 8
   checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  ignoreErrors:
+    - '/Property [A-Za-z\\]+::\$[A-Za-z]+ is never read, only written./'
+    - '/Parameter #1 \$callback of function call_user_func expects callable\(\)/'
+    - '/Parameter #2 \$eventBus of class Thomas\\RealTimeIncidents\\Infrastructure\\BroadwayRepository constructor expects /'

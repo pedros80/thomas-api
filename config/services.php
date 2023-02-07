@@ -36,6 +36,14 @@ return [
             'key'     => env('LDB_KEY'),
             'numRows' => env('LDB_NUM_ROWS', 10),
         ],
+        'kb' => [
+            'user' => env('KB_USER'),
+            'pass' => env('KB_PASS'),
+        ],
+        'kbrti' => [
+            'user' => env('KBRTI_USER'),
+            'pass' => env('KBRTI_PASS'),
+        ],
     ],
 
     'rss' => [

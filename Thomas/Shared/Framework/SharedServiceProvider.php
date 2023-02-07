@@ -1,0 +1,64 @@
+<?php
+
+namespace Thomas\Shared\Framework;
+
+use Illuminate\Support\ServiceProvider;
+use Pedros80\NREphp\Factories\ServicesFactory;
+use Pedros80\NREphp\Services\KnowledgeBase;
+use Pedros80\NREphp\Services\TokenGenerator;
+use Thomas\Shared\Domain\KBService;
+use Thomas\Shared\Domain\TokenService;
+use Thomas\Shared\Infrastructure\HttpKBService;
+use Thomas\Shared\Infrastructure\HttpTokenService;
+
+final class SharedServiceProvider extends ServiceProvider
+{
+    private ServicesFactory $factory;
+
+    public function register(): void
+    {
+        $this->factory = new ServicesFactory();
+        $this->bindKB();
+        $this->bindKBService();
+        $this->bindTokenGenerator();
+        $this->bindTokenService();
+    }
+
+    private function bindKBService(): void
+    {
+        $this->app->bind(
+            KBService::class,
+            fn () => new HttpKBService(
+                $this->app->make(TokenService::class),
+                $this->app->make(KnowledgeBase::class)
+            )
+        );
+    }
+
+    private function bindKB(): void
+    {
+        $this->app->bind(
+            KnowledgeBase::class,
+            fn () => $this->factory->makeKnowledgeBase()
+        );
+    }
+
+    private function bindTokenService(): void
+    {
+        $this->app->bind(
+            TokenService::class,
+            fn () => new HttpTokenService($this->app->make(TokenGenerator::class))
+        );
+    }
+
+    private function bindTokenGenerator(): void
+    {
+        $this->app->bind(
+            TokenGenerator::class,
+            fn () => $this->factory->makeTokenGenerator(
+                config('services.nre.kb.user'),
+                config('services.nre.kb.pass')
+            )
+        );
+    }
+}

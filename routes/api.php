@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\RealTimeIncidentsController;
+use App\Http\Controllers\ServiceIndicatorController;
 use App\Http\Controllers\StationController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +30,12 @@ Route::prefix('stations')->group(function () {
 
 Route::prefix('news')->group(function () {
     Route::get('/', [NewsController::class, 'get']);
+});
+
+Route::prefix('service-indicator')->group(function () {
+    Route::get('/', [ServiceIndicatorController::class, 'get']);
+});
+
+Route::prefix('rti')->group(function () {
+    Route::get('/', [RealTimeIncidentsController::class, 'get']);
 });

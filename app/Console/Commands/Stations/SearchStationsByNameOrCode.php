@@ -7,8 +7,7 @@ use Thomas\Stations\Application\Queries\SearchStations;
 
 final class SearchStationsByNameOrCode extends Command
 {
-    protected $signature = 'stations:search';
-
+    protected $signature   = 'stations:search';
     protected $description = 'Search station names and return code';
 
     public function handle(SearchStations $query): void
