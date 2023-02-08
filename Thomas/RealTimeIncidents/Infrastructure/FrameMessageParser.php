@@ -2,20 +2,20 @@
 
 namespace Thomas\RealTimeIncidents\Infrastructure;
 
-use ErrorException;
 use Stomp\Transport\Frame;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\Incident;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 use Thomas\RealTimeIncidents\Domain\MessageParser;
+use Throwable;
 
 final class FrameMessageParser implements MessageParser
 {
     public function parse(Frame $message): Incident
     {
         $headers = $message->getHeaders();
-        $body = $message->getBody();
+        $body    = $message->getBody();
 
         return new Incident(
             new IncidentID($headers['INCIDENT_ID']),
@@ -30,7 +30,7 @@ final class FrameMessageParser implements MessageParser
 
             $unzipped = gzdecode($body);
             $body     = $unzipped !== false ? $unzipped : $body;
-        } catch (ErrorException) {
+        } catch (Throwable) {
             // $body wasn't gzipped ¯\_(ツ)_/¯
         }
 

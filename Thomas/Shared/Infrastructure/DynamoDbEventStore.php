@@ -9,7 +9,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Thomas\Shared\Domain\EventStore;
+use Broadway\EventStore\EventStore;
 use Thomas\Shared\Infrastructure\Exceptions\DuplicatePlayhead;
 use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 

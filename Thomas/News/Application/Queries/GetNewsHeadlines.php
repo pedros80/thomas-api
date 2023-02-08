@@ -2,7 +2,17 @@
 
 namespace Thomas\News\Application\Queries;
 
-interface GetNewsHeadlines
+use Thomas\News\Domain\NewsService;
+
+final class GetNewsHeadlines
 {
-    public function get(int $num = 10): array;
+    public function __construct(
+        private NewsService $service
+    ) {
+    }
+
+    public function get(): array
+    {
+        return $this->service->get();
+    }
 }

@@ -11,9 +11,9 @@ final class CommandFactory
 {
     public function fromIncident(Incident $incident): Command
     {
-        return match ($incident->status()) {
-            IncidentMessageStatus::new() => $this->makeAddIncident($incident),
-            IncidentMessageStatus::modified() => $this->makeUpdateIncident($incident),
+        return match ((string) $incident->status()) {
+            IncidentMessageStatus::NEW => $this->makeAddIncident($incident),
+            IncidentMessageStatus::MODIFIED => $this->makeUpdateIncident($incident),
             default => $this->makeRemoveIncident($incident),
         };
     }

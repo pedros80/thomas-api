@@ -4,6 +4,7 @@ namespace Tests\Feature\Thomas\News\Application\Queries;
 
 use Tests\TestCase;
 use Thomas\News\Application\Queries\GetNewsHeadlines;
+use Thomas\News\Domain\News;
 
 final class GetNewsHeadlinesTest extends TestCase
 {
@@ -13,6 +14,7 @@ final class GetNewsHeadlinesTest extends TestCase
         $result = $query->get();
 
         $this->assertIsArray($result);
-        $this->assertGreaterThan(0, count($result));
+        $this->assertNotEmpty($result);
+        $this->assertInstanceOf(News::class, $result[0]);
     }
 }

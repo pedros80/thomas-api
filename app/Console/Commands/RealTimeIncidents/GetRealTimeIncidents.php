@@ -4,6 +4,7 @@ namespace App\Console\Commands\RealTimeIncidents;
 
 use Illuminate\Console\Command;
 use Thomas\RealTimeIncidents\Application\Queries\GetIncidents;
+use Thomas\RealTimeIncidents\Domain\Incident;
 
 final class GetRealTimeIncidents extends Command
 {
@@ -12,6 +13,15 @@ final class GetRealTimeIncidents extends Command
 
     public function handle(GetIncidents $query): void
     {
-        var_dump($query->get());
+        $this->table(
+            ['ID', 'STATUS', 'SUMMARY'],
+            array_map(function (Incident $incident) {
+                return [
+                    $incident->id(),
+                    $incident->status(),
+                    $incident->body()->summary(),
+                ];
+            }, $query->get())
+        );
     }
 }

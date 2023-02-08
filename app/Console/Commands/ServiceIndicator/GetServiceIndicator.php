@@ -4,6 +4,7 @@ namespace App\Console\Commands\ServiceIndicator;
 
 use Illuminate\Console\Command;
 use Thomas\ServiceIndicator\Application\Queries\GetServiceIndicators;
+use Thomas\ServiceIndicator\Domain\ServiceIndicator;
 
 final class GetServiceIndicator extends Command
 {
@@ -14,6 +15,9 @@ final class GetServiceIndicator extends Command
     {
         $data = $query->get();
 
-        $this->table(['Code', 'Name', 'Status', 'Image'], $data);
+        $this->table(
+            ['Code', 'Name', 'Status', 'Image'],
+            array_map(fn (ServiceIndicator $service) => $service->toArray(), $data)
+        );
     }
 }

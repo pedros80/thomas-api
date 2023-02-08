@@ -39,7 +39,7 @@ You may be entitled to&amp;#160;&lt;a href="http://www.nationalrail.co.uk/compen
     {
         $headers = json_decode('{"expires":"1675678006574","KNOWLEDGEBASE_DATA_TYPE":"INCIDENT_MESSAGE","INCIDENT_ID":"D85AA5FB1954428C84A2F636014C2A4A","destination":"\/topic\/kb.incidents","ack":"ID:nrdp-prod-01.dsg.caci.co.uk-45902-1674502186804-2:656431571","subscription":"3806349285722602907","priority":"4","INCIDENT_MESSAGE_STATUS":"MODIFIED","breadcrumbId":"ID-nrdp-prod-03-dsg-caci-co-uk-1674825898397-0-2766","message-id":"ID:nrdp-prod-03.dsg.caci.co.uk-45533-1674825909115-1:1082:1:1:1","timestamp":"1675677706574"}', true);
 
-        return new Frame(self::COMMAND, $headers, self::BODY);
+        return new Frame(self::COMMAND, $headers, gzencode(self::BODY));
     }
 
     public static function removed(): Frame

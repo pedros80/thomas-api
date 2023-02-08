@@ -4,10 +4,9 @@ namespace Thomas\News\Infrastructure;
 
 use GuzzleHttp\Client;
 use SimpleXMLElement;
-use Thomas\News\Domain\RSSParser;
-use Thomas\News\Domain\RSSReader;
+use Thomas\News\Domain\NewsService;
 
-final class HttpRSSReader implements RSSReader
+final class HttpNewsService implements NewsService
 {
     public function __construct(
         private Client $client,
@@ -15,7 +14,7 @@ final class HttpRSSReader implements RSSReader
     ) {
     }
 
-    public function read(): array
+    public function get(): array
     {
         return $this->parser->parse($this->xml());
     }

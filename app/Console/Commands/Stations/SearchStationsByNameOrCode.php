@@ -4,6 +4,7 @@ namespace App\Console\Commands\Stations;
 
 use Illuminate\Console\Command;
 use Thomas\Stations\Application\Queries\SearchStations;
+use Thomas\Stations\Domain\Station;
 
 final class SearchStationsByNameOrCode extends Command
 {
@@ -33,6 +34,6 @@ final class SearchStationsByNameOrCode extends Command
             return;
         }
 
-        $this->table(['Code', 'Name'], $results);
+        $this->table(['Code', 'Name'], array_map(fn (Station $station) => $station->toArray(), $results));
     }
 }

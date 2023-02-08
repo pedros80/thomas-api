@@ -4,6 +4,8 @@ namespace Thomas\RealTimeIncidents\Framework;
 
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Marshaler;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\NREphp\Services\RealTimeIncidentsBroker;
 use Thomas\RealTimeIncidents\Application\Commands\Handlers\AddIncidentCommandHandler;
@@ -19,8 +21,6 @@ use Thomas\RealTimeIncidents\Infrastructure\Projections\IncidentWasRemovedProjec
 use Thomas\RealTimeIncidents\Infrastructure\Projections\IncidentWasUpdatedProjection;
 use Thomas\RealTimeIncidents\Infrastructure\Queries\DynamoDbGetIncidents;
 use Thomas\Shared\Application\CommandBus;
-use Thomas\Shared\Domain\EventBus;
-use Thomas\Shared\Domain\EventStore;
 
 final class RealTimeIncidentsServiceProvider extends ServiceProvider
 {

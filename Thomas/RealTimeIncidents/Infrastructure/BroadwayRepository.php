@@ -3,15 +3,15 @@
 namespace Thomas\RealTimeIncidents\Infrastructure;
 
 use Broadway\Domain\AggregateRoot;
+use Broadway\EventHandling\EventBus;
 use Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
+use Broadway\EventStore\EventStore;
 use Broadway\Repository\AggregateNotFoundException;
 use Thomas\RealTimeIncidents\Domain\Entities\Incident;
 use Thomas\RealTimeIncidents\Domain\Exceptions\IncidentNotFound;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentsRepository;
-use Thomas\Shared\Domain\EventBus;
-use Thomas\Shared\Domain\EventStore;
 
 class BroadwayRepository extends EventSourcingRepository implements IncidentsRepository
 {

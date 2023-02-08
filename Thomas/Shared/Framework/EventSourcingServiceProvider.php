@@ -5,11 +5,11 @@ namespace Thomas\Shared\Framework;
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Marshaler;
 use Broadway\Domain\DomainEventStream;
+use Broadway\EventHandling\EventBus;
 use Broadway\EventHandling\EventListener;
 use Broadway\EventHandling\SimpleEventBus;
+use Broadway\EventStore\EventStore;
 use Illuminate\Support\ServiceProvider;
-use Thomas\Shared\Domain\EventBus;
-use Thomas\Shared\Domain\EventStore;
 use Thomas\Shared\Infrastructure\DynamoDbEventStore;
 
 class EventSourcingServiceProvider extends ServiceProvider
@@ -24,23 +24,6 @@ class EventSourcingServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(EventBus::class, function () {
-            return new class (new SimpleEventBus()) implements EventBus {
-                public function __construct(
-                    private SimpleEventBus $bus
-                ) {
-                }
-
-                public function subscribe(EventListener $eventListener): void
-                {
-                    $this->bus->subscribe($eventListener);
-                }
-
-                public function publish(DomainEventStream $domainMessages): void
-                {
-                    $this->bus->publish($domainMessages);
-                }
-            };
-        });
+        $this->app->singleton(EventBus::class, fn () => new SimpleEventBus());
     }
 }

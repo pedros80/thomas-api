@@ -3,6 +3,9 @@
 namespace Thomas\Stations\Infrastructure;
 
 use Pedros80\NREphp\Params\StationCode;
+use Thomas\Stations\Domain\Code;
+use Thomas\Stations\Domain\Name;
+use Thomas\Stations\Domain\Station;
 use Thomas\Stations\Domain\StationService;
 
 final class ArrayStationService implements StationService
@@ -18,7 +21,7 @@ final class ArrayStationService implements StationService
         );
 
         return array_map(
-            fn (string $key, string $value) => ['code' => $key, 'name' => $value],
+            fn (string $key, string $value) => new Station(new Code($key), new Name($value)),
             array_keys($filtered),
             array_values($filtered)
         );

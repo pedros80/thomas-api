@@ -4,18 +4,21 @@ namespace Tests\Unit\Thomas\Stations\Application\Queries;
 
 use PHPUnit\Framework\TestCase;
 use Thomas\Stations\Application\Queries\SearchStations;
+use Thomas\Stations\Domain\Station;
 use Thomas\Stations\Infrastructure\ArrayStationService;
 
 final class SearchStationsTest extends TestCase
 {
     public function testSearchKnownCodeReturnsArray(): void
     {
-        $query  = new SearchStations(new ArrayStationService());
-        $result = $query->get('DAM');
+        $query   = new SearchStations(new ArrayStationService());
+        $result  = $query->get('DAM');
+        $station = $result[0];
 
         $this->assertCount(1, $result);
-        $this->assertEquals('DAM', $result[0]['code']);
-        $this->assertEquals('Dalmeny', $result[0]['name']);
+        $this->assertInstanceOf(Station::class, $station);
+        $this->assertEquals('DAM', $station->toArray()['code']);
+        $this->assertEquals('Dalmeny', $station->toArray()['name']);
     }
 
     public function testSearchKnownSubstringReturnsArray(): void
@@ -31,6 +34,6 @@ final class SearchStationsTest extends TestCase
         $query  = new SearchStations(new ArrayStationService());
         $result = $query->get('jobbyjobbyjobby');
 
-        $this->assertCount(0, $result);
+        $this->assertEmpty($result);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Console\Commands\News;
 
 use Illuminate\Console\Command;
 use Thomas\News\Application\Queries\GetNewsHeadlines;
+use Thomas\News\Domain\News;
 
 final class GetNews extends Command
 {
@@ -18,8 +19,8 @@ final class GetNews extends Command
     private function displayNews(array $news): void
     {
         $this->table(
-            ['Title', 'Date'],
-            array_map(fn (array $item) => [trim($item['title']), $item['date']], $news)
+            ['Title', 'URL',  'Date'],
+            array_map(fn (News $item) => $item->toArray(), $news)
         );
     }
 }
