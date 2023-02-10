@@ -12,9 +12,9 @@ final class CommandFactory
     public function fromIncident(Incident $incident): Command
     {
         return match ((string) $incident->status()) {
-            IncidentMessageStatus::NEW => $this->makeAddIncident($incident),
+            IncidentMessageStatus::NEW      => $this->makeAddIncident($incident),
             IncidentMessageStatus::MODIFIED => $this->makeUpdateIncident($incident),
-            default => $this->makeRemoveIncident($incident),
+            default                         => $this->makeRemoveIncident($incident),
         };
     }
 

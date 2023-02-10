@@ -48,7 +48,7 @@ final class UpdateIncidentCommandHandlerTest extends CommandHandlerScenarioTestC
             ->when(new UpdateIncident($incidentID, IncidentMessageStatus::modified(), new Body($content)))
             ->then([
                 new IncidentWasAdded($incidentID, IncidentMessageStatus::new(), new Body($content)),
-                new IncidentWasUpdated($incidentID, IncidentMessageStatus::modified(), new Body($content))
+                new IncidentWasUpdated($incidentID, IncidentMessageStatus::modified(), new Body($content)),
             ]);
     }
 }

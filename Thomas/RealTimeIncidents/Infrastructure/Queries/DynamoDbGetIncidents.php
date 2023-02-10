@@ -13,30 +13,27 @@ final class DynamoDbGetIncidents extends InteractsWithDynamoDb implements GetInc
 {
     public function get(): array
     {
-        $params = [
-            'TableName'                => $this->tableName,
-            'IndexName'                => 'EType',
-            'KeyConditionExpression'   => "EType=:EType",
-            'ExpressionAttributeValues' => [
-                ':EType' => [
-                    'S' => 'RTI',
-                ],
-            ],
-        ];
-
         return array_map(
-            function (array $item) {
+            fn (array $item) => $this->itemToIncident($item),
+            $this->getItemsRecursively([
+                'TableName'                 => $this->tableName,
+                'IndexName'                 => 'SKe',
+                'KeyConditionExpression'    => "#SKe=:SKe",
+                'ExpressionAttributeNames'  => ['#SKe' => 'SKe'],
+                'ExpressionAttributeValues' => [':SKe' => ['S' => 'RTI']],
+            ])
+        );
+    }
 
-                /** @var array $data */
-                $data = $this->marshaler->unmarshalItem($item);
+    private function itemToIncident(array $item): Incident
+    {
+        /** @var array $data */
+        $data = $this->marshaler->unmarshalItem($item);
 
-                return new Incident(
-                    new IncidentID($data['PK']),
-                    new IncidentMessageStatus($data['istatus']),
-                    new Body($data['body'])
-                );
-            },
-            $this->getItemsRecursively($params)
+        return new Incident(
+            new IncidentID($data['PK']),
+            new IncidentMessageStatus($data['istatus']),
+            new Body($data['body'])
         );
     }
 }

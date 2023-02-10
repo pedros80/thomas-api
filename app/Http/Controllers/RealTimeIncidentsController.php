@@ -11,7 +11,7 @@ final class RealTimeIncidentsController extends Controller
     {
         return new JsonResponse([
             'success' => true,
-            'data'    => $query->get()
+            'data'    => $query->get(),
         ]);
     }
 }

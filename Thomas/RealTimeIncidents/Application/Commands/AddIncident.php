@@ -3,11 +3,11 @@
 namespace Thomas\RealTimeIncidents\Application\Commands;
 
 use Thomas\RealTimeIncidents\Domain\Body;
-use Thomas\Shared\Application\Command;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
+use Thomas\Shared\Application\Command;
 
-final class AddIncident implements Command
+final class AddIncident extends Command
 {
     public function __construct(
         private IncidentID $id,
@@ -29,5 +29,14 @@ final class AddIncident implements Command
     public function body(): Body
     {
         return $this->body;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id'     => (string) $this->id,
+            'status' => (string) $this->status,
+            'body'   => (string) $this->body,
+        ];
     }
 }

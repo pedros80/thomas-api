@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Thomas\News\Domain\News;
 use Thomas\News\Infrastructure\HttpNewsService;
-use Thomas\News\Infrastructure\NewsFactory;
+use Thomas\News\Infrastructure\MockNewsFactory;
 use Thomas\News\Infrastructure\RSSParser;
 
 final class HttpNewsServiceTest extends TestCase
@@ -19,7 +19,7 @@ final class HttpNewsServiceTest extends TestCase
 
     public function testServiceReturnsArrayOfDomainObjects(): void
     {
-        $factory = new NewsFactory();
+        $factory = new MockNewsFactory();
         $mock    = new MockHandler([
             new Response(200, [], $factory->makeXML()),
         ]);

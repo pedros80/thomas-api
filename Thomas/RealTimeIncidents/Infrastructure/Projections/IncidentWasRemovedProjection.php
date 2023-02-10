@@ -3,16 +3,16 @@
 namespace Thomas\RealTimeIncidents\Infrastructure\Projections;
 
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasRemoved;
-use Thomas\Shared\Infrastructure\Projector;
+use Thomas\Shared\Infrastructure\InteractsWithDynamoDb;
 
-final class IncidentWasRemovedProjection extends Projector
+final class IncidentWasRemovedProjection extends InteractsWithDynamoDb
 {
     public function applyIncidentWasRemoved(IncidentWasRemoved $event): void
     {
-        $this->client->deleteItem([
+        $this->db->deleteItem([
             'Key'    => $this->marshaler->marshalItem([
-                'PK'    => (string) $event->id(),
-                'EType' => 'RTI',
+                'PK'  => (string) $event->id(),
+                'SKe' => 'RTI',
             ]),
             'TableName' => $this->tableName,
         ]);

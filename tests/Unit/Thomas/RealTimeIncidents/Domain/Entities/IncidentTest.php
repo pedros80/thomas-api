@@ -42,7 +42,7 @@ final class IncidentTest extends AggregateRootScenarioTestCase
                 $this->incidentID,
                 new IncidentMessageStatus(IncidentMessageStatus::NEW),
                 new Body($this->body)
-            )
+            ),
         ]);
     }
 
@@ -55,7 +55,7 @@ final class IncidentTest extends AggregateRootScenarioTestCase
                     $this->incidentID,
                     new IncidentMessageStatus(IncidentMessageStatus::NEW),
                     new Body($this->body)
-                )
+                ),
             ])->when(fn (Incident $incident) => $incident->update(
                 $this->incidentID,
                 new IncidentMessageStatus(IncidentMessageStatus::MODIFIED),
@@ -65,7 +65,7 @@ final class IncidentTest extends AggregateRootScenarioTestCase
                     $this->incidentID,
                     new IncidentMessageStatus(IncidentMessageStatus::MODIFIED),
                     new Body($this->body)
-                )
+                ),
             ]);
     }
 
@@ -83,7 +83,7 @@ final class IncidentTest extends AggregateRootScenarioTestCase
                     $this->incidentID,
                     new IncidentMessageStatus(IncidentMessageStatus::MODIFIED),
                     new Body($this->body)
-                )
+                ),
             ])->when(fn (Incident $incident) => $incident->remove(
                 $this->incidentID,
                 new IncidentMessageStatus(IncidentMessageStatus::REMOVED),
@@ -91,7 +91,7 @@ final class IncidentTest extends AggregateRootScenarioTestCase
                 new IncidentWasRemoved(
                     $this->incidentID,
                     new IncidentMessageStatus(IncidentMessageStatus::REMOVED)
-                )
+                ),
             ]);
     }
 }

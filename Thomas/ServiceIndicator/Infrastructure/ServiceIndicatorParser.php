@@ -17,7 +17,6 @@ final class ServiceIndicatorParser
         $xml = new SimpleXMLElement($xml);
 
         foreach ($xml as $toc) {
-
             $out[] = new ServiceIndicator(
                 new TocCode((string) $toc->TocCode),
                 new TocName((string) $toc->TocName),

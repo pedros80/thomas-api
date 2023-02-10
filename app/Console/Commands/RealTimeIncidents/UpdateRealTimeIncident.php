@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Thomas\RealTimeIncidents\Application\Commands\UpdateIncident;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\MessageParser;
-use Thomas\RealTimeIncidents\Infrastructure\MessageFactory;
+use Thomas\RealTimeIncidents\Infrastructure\MockMessageFactory;
 use Thomas\Shared\Application\CommandBus;
 
 final class UpdateRealTimeIncident extends Command
@@ -16,7 +16,7 @@ final class UpdateRealTimeIncident extends Command
 
     public function handle(CommandBus $commandBus, MessageParser $messageParser): void
     {
-        $message  = MessageFactory::modified();
+        $message  = MockMessageFactory::modified();
         $incident = $messageParser->parse($message);
 
         /** @var Body $body */
@@ -27,5 +27,7 @@ final class UpdateRealTimeIncident extends Command
         $command  = new UpdateIncident($id, $status, $body);
 
         $commandBus->dispatch($command);
+
+        $this->info('Command dispatched to update rti.');
     }
 }

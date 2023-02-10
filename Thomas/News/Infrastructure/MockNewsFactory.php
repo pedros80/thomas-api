@@ -2,7 +2,7 @@
 
 namespace Thomas\News\Infrastructure;
 
-final class NewsFactory
+final class MockNewsFactory
 {
     public function makeXML(): string
     {

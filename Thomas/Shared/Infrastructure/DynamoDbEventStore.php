@@ -23,21 +23,21 @@ final class DynamoDbEventStore extends InteractsWithDynamoDb implements EventSto
     public function loadFromPlayhead($id, int $playhead): DomainEventStream
     {
         $params = [
-            'TableName' => $this->tableName,
-            'Limit' => 100,
-            'KeyConditionExpression' => '#StreamId = :id AND #StreamVersion >= :version',
+            'TableName'                => $this->tableName,
+            'Limit'                    => 100,
+            'KeyConditionExpression'   => '#StreamId = :id AND #StreamVersion >= :version',
             'ExpressionAttributeNames' => [
                 '#StreamId'      => 'StreamId',
                 '#StreamVersion' => 'StreamVersion',
             ],
             'ExpressionAttributeValues' => [
                 ':id' => [
-                    'S' => (string) $id
+                    'S' => (string) $id,
                 ],
                 ':version' => [
-                    'N' => $playhead
+                    'N' => $playhead,
                 ],
-            ]
+            ],
         ];
 
         $items = $this->getItemsRecursively($params);
@@ -62,8 +62,8 @@ final class DynamoDbEventStore extends InteractsWithDynamoDb implements EventSto
             try {
                 $this->db->putItem([
                     'ConditionExpression' => 'attribute_not_exists(StreamId) AND attribute_not_exists(StreamVersion)',
-                    'Item'      => $this->marshaler->marshalItem($event),
-                    'TableName' => $this->tableName,
+                    'Item'                => $this->marshaler->marshalItem($event),
+                    'TableName'           => $this->tableName,
                 ]);
             } catch (DynamoDbException $e) {
                 if ($e->getAwsErrorCode() === 'ConditionalCheckFailedException') {
@@ -86,7 +86,7 @@ final class DynamoDbEventStore extends InteractsWithDynamoDb implements EventSto
                 'EventName'     => get_class($eventData),
                 'EventData'     => json_encode($eventData),
                 'MetaData'      => json_encode($event->getMetadata()->serialize()),
-                'StoredAt'      => $event->getRecordedOn()->toString()
+                'StoredAt'      => $event->getRecordedOn()->toString(),
             ];
         }, $eventStream->getIterator()->getArrayCopy());
     }

@@ -10,14 +10,14 @@ use PHPUnit\Framework\TestCase;
 use Thomas\News\Application\Queries\GetNewsHeadlines;
 use Thomas\News\Domain\News;
 use Thomas\News\Infrastructure\HttpNewsService;
-use Thomas\News\Infrastructure\NewsFactory;
+use Thomas\News\Infrastructure\MockNewsFactory;
 use Thomas\News\Infrastructure\RSSParser;
 
 final class GetNewsHeadlinesTest extends TestCase
 {
     public function testQueryReturnsArrayOfDomainObjects(): void
     {
-        $factory = new NewsFactory();
+        $factory = new MockNewsFactory();
         $mock    = new MockHandler([
             new Response(200, [], $factory->makeXML()),
         ]);

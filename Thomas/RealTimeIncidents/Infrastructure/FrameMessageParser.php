@@ -27,7 +27,6 @@ final class FrameMessageParser implements MessageParser
     private function parseBody(string $body): string
     {
         try {
-
             $unzipped = gzdecode($body);
             $body     = $unzipped !== false ? $unzipped : $body;
         } catch (Throwable) {

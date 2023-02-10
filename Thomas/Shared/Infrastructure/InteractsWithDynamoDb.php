@@ -6,8 +6,9 @@ namespace Thomas\Shared\Infrastructure;
 
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Marshaler;
+use Broadway\ReadModel\Projector;
 
-abstract class InteractsWithDynamoDb
+abstract class InteractsWithDynamoDb extends Projector
 {
     public function __construct(
         protected DynamoDbClient $db,
@@ -23,6 +24,7 @@ abstract class InteractsWithDynamoDb
 
         if (isset($result['LastEvaluatedKey'])) {
             $params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
+
             return $this->getItemsRecursively($params, $items);
         }
 
@@ -36,6 +38,7 @@ abstract class InteractsWithDynamoDb
 
         if (isset($result['LastEvaluatedKey'])) {
             $params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
+
             return $this->scanItemsRecursively($params, $items);
         }
 

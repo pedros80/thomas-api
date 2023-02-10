@@ -19,7 +19,7 @@ final class GetRealTimeIncidents extends Command
                 return [
                     $incident->id(),
                     $incident->status(),
-                    $incident->body()->summary(),
+                    $incident->body()?->summary(),
                 ];
             }, $query->get())
         );

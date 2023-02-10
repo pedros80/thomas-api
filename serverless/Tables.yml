@@ -6,17 +6,17 @@ Resources:
       AttributeDefinitions:
         - AttributeName: PK
           AttributeType: S
-        - AttributeName: EType
+        - AttributeName: SKe
           AttributeType: S
       KeySchema:
         - AttributeName: PK
           KeyType: HASH
-        - AttributeName: EType
+        - AttributeName: SKe
           KeyType: RANGE
       GlobalSecondaryIndexes:
-        - IndexName: EType
+        - IndexName: SKe
           KeySchema:
-            - AttributeName: EType
+            - AttributeName: SKe
               KeyType: HASH
           Projection:
             ProjectionType: ALL

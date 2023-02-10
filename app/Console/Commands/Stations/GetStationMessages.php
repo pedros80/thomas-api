@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Console\Commands\Stations;
+
+use Illuminate\Console\Command;
+use Pedros80\NREphp\Params\StationCode;
+use Thomas\Stations\Application\Queries\GetStationMessages as QueriesGetStationMessages;
+use Thomas\Stations\Domain\Message;
+use Thomas\Stations\Domain\Station;
+
+final class GetStationMessages extends Command
+{
+    protected $signature   = 'stations:get-messages {code : Which Station?}';
+    protected $description = 'Get all messages by station';
+
+    public function handle(QueriesGetStationMessages $query): void
+    {
+        $code = $this->getCode();
+        $msgs = $query->get((string) $code);
+
+        if (!$msgs) {
+            $this->info("No messages found for {$code->name()}");
+
+            return;
+        }
+
+        $this->table([
+            'ID', 'Category', 'Severity', 'Body', 'Station',
+        ], array_map(fn (Message $message) => $this->parseMessage($message), $msgs));
+    }
+
+    private function getCode(): StationCode
+    {
+        $code = $this->argument('code');
+
+        $code = is_array($code) ? $code[0] : $code;
+
+        return new StationCode(strtoupper($code));
+    }
+
+    private function parseMessage(Message $message): array
+    {
+        $message = $message->toArray();
+
+        return [
+            $message['id'],
+            $message['category'],
+            $message['severity'],
+            $message['body'],
+            array_map(
+                fn (Station $station) => $station->toArray()['name'],
+                $message['stations']
+            )[0],
+        ];
+    }
+}

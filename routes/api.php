@@ -26,6 +26,7 @@ Route::prefix('boards')->group(function () {
 
 Route::prefix('stations')->group(function () {
     Route::post('/search', [StationController::class, 'search']);
+    Route::get('/messages/{station}', [StationController::class, 'messages']);
 });
 
 Route::prefix('news')->group(function () {

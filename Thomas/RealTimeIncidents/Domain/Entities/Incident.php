@@ -21,7 +21,6 @@ final class Incident extends EventSourcedAggregateRoot
         IncidentMessageStatus $status,
         Body $body
     ): Incident {
-
         $incident = new Incident();
 
         $incident->apply(
@@ -40,7 +39,6 @@ final class Incident extends EventSourcedAggregateRoot
         IncidentMessageStatus $status,
         Body $body
     ): void {
-
         $this->apply(
             new IncidentWasUpdated(
                 $id,
@@ -54,7 +52,6 @@ final class Incident extends EventSourcedAggregateRoot
         IncidentID $id,
         IncidentMessageStatus $status
     ): void {
-
         $this->apply(
             new IncidentWasRemoved(
                 $id,

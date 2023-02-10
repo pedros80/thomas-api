@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Thomas\RealTimeIncidents\Application\Commands\AddIncident;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\MessageParser;
-use Thomas\RealTimeIncidents\Infrastructure\MessageFactory;
+use Thomas\RealTimeIncidents\Infrastructure\MockMessageFactory;
 use Thomas\Shared\Application\CommandBus;
 
 final class AddRealTimeIncident extends Command
@@ -16,7 +16,7 @@ final class AddRealTimeIncident extends Command
 
     public function handle(CommandBus $commandBus, MessageParser $messageParser): void
     {
-        $message  = MessageFactory::new();
+        $message  = MockMessageFactory::new();
         $incident = $messageParser->parse($message);
 
         /** @var Body $body */

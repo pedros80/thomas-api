@@ -21,8 +21,8 @@ final class HttpBoardServiceTest extends TestCase
                 'crs'               => 'DAM',
                 'platformAvailable' => true,
                 'busServices'       => [
-                    'this will be removed'
-                ]
+                    'this will be removed',
+                ],
             ],
         ]);
 
@@ -77,7 +77,7 @@ final class HttpBoardServiceTest extends TestCase
                             '_' => '<p> A gas leak near the railway at Carnoustie means all lines are closed. Trains running through the station may be cancelled or revised. More details can be found in <a href="http://nationalrail.co.uk/service_disruptions/316990.aspx">Latest Travel News</a>.</p>',
                         ],
                         [
-                            '_' => 'Severe weather is affecting various routes across the ScotRail network. More details can be found in<a href="http://nationalrail.co.uk/service_disruptions/317000.aspx"> Latest Travel News</a>.'
+                            '_' => 'Severe weather is affecting various routes across the ScotRail network. More details can be found in<a href="http://nationalrail.co.uk/service_disruptions/317000.aspx"> Latest Travel News</a>.',
                         ],
                     ],
                 ],
@@ -118,7 +118,7 @@ final class HttpBoardServiceTest extends TestCase
                             'etd'      => 'On time',
                             'platform' => '2',
                         ],
-                    ]
+                    ],
                 ],
             ],
         ]);

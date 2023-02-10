@@ -13,12 +13,12 @@ final class IncidentWasRemovedTest extends TestCase
     {
         $event = new IncidentWasRemoved(
             new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'),
-            IncidentMessageStatus::new(),
-            null
+            IncidentMessageStatus::removed()
         );
 
-        $serialized = json_encode($event);
-        $newEvent   = IncidentWasRemoved::deserialize($serialized);
+        /** @var string $json */
+        $json     = json_encode($event);
+        $newEvent = IncidentWasRemoved::deserialize($json);
 
         $this->assertInstanceOf(IncidentWasRemoved::class, $newEvent);
         $this->assertEquals(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), $event->id());

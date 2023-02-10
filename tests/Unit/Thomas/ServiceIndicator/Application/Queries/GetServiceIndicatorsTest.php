@@ -7,7 +7,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Thomas\ServiceIndicator\Application\Queries\GetServiceIndicators;
 use Thomas\ServiceIndicator\Domain\ServiceIndicator;
 use Thomas\ServiceIndicator\Infrastructure\HttpServiceIndicatorService;
-use Thomas\ServiceIndicator\Infrastructure\ServiceIndicatorFactory;
+use Thomas\ServiceIndicator\Infrastructure\MockServiceIndicatorFactory;
 use Thomas\ServiceIndicator\Infrastructure\ServiceIndicatorParser;
 use Thomas\Shared\Domain\KBService;
 
@@ -17,7 +17,7 @@ final class GetServiceIndicatorsTest extends TestCase
 
     public function testQueryReturnsArrayOfDomainObjects(): void
     {
-        $factory   = new ServiceIndicatorFactory();
+        $factory   = new MockServiceIndicatorFactory();
         $kbService = $this->prophesize(KBService::class);
         $kbService->serviceIndicators()->willReturn($factory->makeXML());
 

@@ -16,8 +16,7 @@ final class SetupDynamo extends Command
         private DynamoMigrations $migrations,
         private YmlDatabaseConfigLoader $dbConfig,
         // private DynamoTestSeeder $seeder,
-    )
-    {
+    ) {
         parent::__construct();
 
         if (!app()->environment('local', 'testing')) {
@@ -35,14 +34,14 @@ final class SetupDynamo extends Command
         ) {
             $this->dropTestTables();
             $this->addTables();
-            // $this->seed();
+        // $this->seed();
         } elseif (
             $this->argument('do') === 'reset' &&
             ($this->option('confirm') || $this->confirm('Really drop all DynamoDB tables?'))
         ) {
             $this->dropTables();
             $this->addTables();
-            // $this->seed();
+        // $this->seed();
         } elseif (
             $this->argument('do') === 'add' &&
             ($this->option('confirm') || $this->confirm('Really add all DynamoDB tables?'))

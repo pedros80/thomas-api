@@ -7,7 +7,7 @@ use Thomas\Boards\Domain\BoardService;
 
 final class GetBoard extends Command
 {
-    protected $signature = 'board:get';
+    protected $signature   = 'board:get';
     protected $description = "I'm bored, I'm chairman of the board.";
 
     public function handle(BoardService $boards): void

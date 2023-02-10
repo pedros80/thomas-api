@@ -7,7 +7,7 @@ use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 use Thomas\Shared\Application\Command;
 
-final class UpdateIncident implements Command
+final class UpdateIncident extends Command
 {
     public function __construct(
         private IncidentID $id,
@@ -29,5 +29,14 @@ final class UpdateIncident implements Command
     public function body(): Body
     {
         return $this->body;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id'     => (string) $this->id,
+            'status' => (string) $this->status,
+            'body'   => (string) $this->body,
+        ];
     }
 }

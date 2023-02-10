@@ -22,8 +22,9 @@ final class IncidentWasAddedTest extends TestCase
             $body
         );
 
-        $serialized = json_encode($event);
-        $newEvent   = IncidentWasAdded::deserialize($serialized);
+        /** @var string $json */
+        $json     = json_encode($event);
+        $newEvent = IncidentWasAdded::deserialize($json);
 
         $this->assertInstanceOf(IncidentWasAdded::class, $newEvent);
         $this->assertEquals($event, $newEvent);

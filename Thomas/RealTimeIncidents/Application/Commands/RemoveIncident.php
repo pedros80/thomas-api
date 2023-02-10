@@ -6,7 +6,7 @@ use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 use Thomas\Shared\Application\Command;
 
-final class RemoveIncident implements Command
+final class RemoveIncident extends Command
 {
     public function __construct(
         private IncidentID $id,
@@ -22,5 +22,13 @@ final class RemoveIncident implements Command
     public function status(): IncidentMessageStatus
     {
         return $this->status;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id'     => (string) $this->id,
+            'status' => (string) $this->status,
+        ];
     }
 }

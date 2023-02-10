@@ -5,11 +5,14 @@ namespace Thomas\Shared\Framework;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\NREphp\Factories\ServicesFactory;
 use Pedros80\NREphp\Services\KnowledgeBase;
+use Pedros80\NREphp\Services\PushPortBroker;
 use Pedros80\NREphp\Services\TokenGenerator;
+use Thomas\Shared\Application\DarwinCommandFactory;
 use Thomas\Shared\Domain\KBService;
 use Thomas\Shared\Domain\TokenService;
 use Thomas\Shared\Infrastructure\HttpKBService;
 use Thomas\Shared\Infrastructure\HttpTokenService;
+use Thomas\Stations\Application\Commands\StationMessageToCommand;
 
 final class SharedServiceProvider extends ServiceProvider
 {
@@ -22,6 +25,29 @@ final class SharedServiceProvider extends ServiceProvider
         $this->bindKBService();
         $this->bindTokenGenerator();
         $this->bindTokenService();
+        $this->bindPushPortBroker();
+        $this->bindDarwinCommandFactory();
+    }
+
+    private function bindDarwinCommandFactory(): void
+    {
+        $this->app->bind(
+            DarwinCommandFactory::class,
+            fn () => new DarwinCommandFactory([
+                'OW' => new StationMessageToCommand(),
+            ])
+        );
+    }
+
+    private function bindPushPortBroker(): void
+    {
+        $this->app->bind(
+            PushPortBroker::class,
+            fn () => PushPortBroker::fromCredentials(
+                config('services.nre.darwin.user'),
+                config('services.nre.darwin.pass')
+            )
+        );
     }
 
     private function bindKBService(): void

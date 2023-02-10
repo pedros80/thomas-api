@@ -14,7 +14,6 @@ final class RSSParser
     {
         $out = [];
         foreach ($xml->channel->item as $item) {
-
             $out[] = new News(
                 new Title((string) $item->title),
                 new Url((string) $item->link),

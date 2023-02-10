@@ -30,7 +30,6 @@ final class CommandFactoryTest extends TestCase
     {
         $command = $this->factory->fromIncident($incident);
         $this->assertEquals($class, $command::class);
-
     }
 
     public function provideIncidents(): array
@@ -48,7 +47,7 @@ final class CommandFactoryTest extends TestCase
                     $incidentID,
                     IncidentMessageStatus::new(),
                     new Body($content)
-                )
+                ),
             ],
             [
                 'class'    => UpdateIncident::class,
@@ -56,7 +55,7 @@ final class CommandFactoryTest extends TestCase
                     $incidentID,
                     IncidentMessageStatus::modified(),
                     new Body($content)
-                )
+                ),
             ],
             [
                 'class'    => RemoveIncident::class,
@@ -64,7 +63,7 @@ final class CommandFactoryTest extends TestCase
                     $incidentID,
                     IncidentMessageStatus::removed(),
                     null
-                )
+                ),
             ],
         ];
     }

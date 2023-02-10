@@ -3,7 +3,6 @@
 namespace Thomas\RealTimeIncidents\Domain;
 
 use DateTimeImmutable;
-use Illuminate\Support\Facades\Log;
 use JsonSerializable;
 use SimpleXMLElement;
 
