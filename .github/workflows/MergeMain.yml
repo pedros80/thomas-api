@@ -10,14 +10,14 @@ jobs:
       - uses: actions/checkout@v3
       - name: Docker Up
         run: docker-compose up -d
-      - name: Replace Values in Config Files
-        run: |
-          cat .env.github-testing | sed s/{{LDB_KEY}}/${{ secrets.LDB_KEY }}/g | sed s/{{KB_USER}}/${{ secrets.KB_USER }}/g | sed s/{{KB_PASS}}/${{ secrets.KB_PASS }}/g | sed s/{{KBRTI_USER}}/${{ secrets.KBRTI_USER }}/g | sed s/{{KBRTI_PASS}}/${{ secrets.KBRTI_PASS }}/g | sed s/{{DARWIN_TOPIC_USER}}/${{ secrets.DARWIN_TOPIC_USER }}/g | sed s/{{DARWIN_TOPIC_PASS}}/${{ secrets.DARWIN_TOPIC_PASS }}/g > .env
-          sudo composer install
-      - name: Run All Tests
-        run: |
-          docker-compose exec -T php php artisan dynamo:setup --confirm
-          docker-compose exec -T php ./vendor/bin/phpunit --coverage-clover=coverage.xml
+      - name: Get .env
+        run: cat .env.github-testing | sed s/{{LDB_KEY}}/${{ secrets.LDB_KEY }}/g | sed s/{{KB_USER}}/${{ secrets.KB_USER }}/g | sed s/{{KB_PASS}}/${{ secrets.KB_PASS }}/g | sed s/{{KBRTI_USER}}/${{ secrets.KBRTI_USER }}/g | sed s/{{KBRTI_PASS}}/${{ secrets.KBRTI_PASS }}/g | sed s/{{DARWIN_TOPIC_USER}}/${{ secrets.DARWIN_TOPIC_USER }}/g | sed s/{{DARWIN_TOPIC_PASS}}/${{ secrets.DARWIN_TOPIC_PASS }}/g > .env
+      - name: Install Dependencies
+        run: sudo composer install -q --no-ansi --no-dev --no-interaction --no-scripts --no-progress
+      - name: Setup DynamoDb
+        run: docker-compose exec -T php php artisan dynamo:setup --confirm
+      - name: Run Tests
+        run: docker-compose exec -T php ./vendor/bin/phpunit --coverage-clover=coverage.xml
       - name: phpunit-coverage-badge
         uses: timkrase/phpunit-coverage-badge@v1.2.0
         with:
