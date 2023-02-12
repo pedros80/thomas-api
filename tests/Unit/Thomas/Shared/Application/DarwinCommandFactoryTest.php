@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Thmoas\Shared\Application;
+namespace Tests\Unit\Thomas\Shared\Application;
 
 use PHPUnit\Framework\TestCase;
 use Thomas\Shared\Application\DarwinCommandFactory;
