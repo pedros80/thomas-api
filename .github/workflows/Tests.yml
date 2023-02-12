@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  shoogly-peg-api-tests:
+  thomas-api-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
