@@ -19,6 +19,7 @@
         </include>
             <exclude>
                 <directory suffix=".php">./app/Providers/</directory>
+                <directory suffix=".php">./app/Console/Commands/Dynamo/</directory>
                 <directory suffix=".php">./app/Http/Middleware/</directory>
                 <directory suffix=".php">./Thomas/*/Framework/</directory>
                 <file>./app/Console/Kernel.php</file>
@@ -33,5 +34,7 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="EVENT_STORE_TABLE" value="TestEventStore"/>
+        <env name="THOMAS_TABLE" value="TestThomas"/>
     </php>
 </phpunit>

@@ -3,8 +3,9 @@
 namespace Thomas\Shared\Application;
 
 use Stomp\Transport\Frame;
+use Thomas\Shared\Application\Command;
 
-interface DarwinMessageToCommand
+interface MessageToCommand
 {
     public function convert(Frame $message): Command;
 }

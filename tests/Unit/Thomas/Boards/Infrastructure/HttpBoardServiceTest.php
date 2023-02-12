@@ -135,4 +135,82 @@ final class HttpBoardServiceTest extends TestCase
         $this->assertTrue($result->GetStationBoardResult->platformAvailable);
         $this->assertCount(1, $result->GetStationBoardResult->trainServices->service);
     }
+
+    public function testDeparturesBoard(): void
+    {
+        /** @var string $data */
+        $data = json_encode([
+            'GetStationBoardResult' => [
+                'generatedAt'       => '2023-02-02T23:54:00.0627469+00:00',
+                'locationName'      => 'Dalmeny',
+                'crs'               => 'DAM',
+                'platformAvailable' => true,
+                'trainServices'     => [
+                    'service' => [
+                        [
+                            'std'      => '00:22',
+                            'etd'      => 'On time',
+                            'platform' => '1',
+                        ],
+                        [
+                            'std'      => '00:22',
+                            'etd'      => 'On time',
+                            'platform' => '2',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $client = $this->prophesize(BoardClient::class);
+        $client->getDepBoardWithDetails(10, 'DAM')->willReturn(json_decode($data));
+        $service = new HttpBoardService(
+            $client->reveal(),
+            10
+        );
+
+        $result = $service->departures('dam');
+
+        $this->assertTrue($result->GetStationBoardResult->platformAvailable);
+        $this->assertCount(2, $result->GetStationBoardResult->trainServices->service);
+    }
+
+    public function testArrivalsBoard(): void
+    {
+        /** @var string $data */
+        $data = json_encode([
+            'GetStationBoardResult' => [
+                'generatedAt'       => '2023-02-02T23:54:00.0627469+00:00',
+                'locationName'      => 'Dalmeny',
+                'crs'               => 'DAM',
+                'platformAvailable' => true,
+                'trainServices'     => [
+                    'service' => [
+                        [
+                            'sta'      => '00:22',
+                            'eta'      => 'On time',
+                            'platform' => '1',
+                        ],
+                        [
+                            'sta'      => '00:22',
+                            'eta'      => 'On time',
+                            'platform' => '2',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $client = $this->prophesize(BoardClient::class);
+        $client->getArrBoardWithDetails(10, 'DAM')->willReturn(json_decode($data));
+        $service = new HttpBoardService(
+            $client->reveal(),
+            10
+        );
+
+        $result = $service->arrivals('dam');
+
+        $this->assertTrue($result->GetStationBoardResult->platformAvailable);
+        $this->assertCount(2, $result->GetStationBoardResult->trainServices->service);
+    }
 }

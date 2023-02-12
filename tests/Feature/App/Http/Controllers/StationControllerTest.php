@@ -12,4 +12,11 @@ final class StationControllerTest extends TestCase
 
         $response->assertStatus(200)->assertJson(['success' => true]);
     }
+
+    public function testGetStationsMessagesReturnsSuccessfully(): void
+    {
+        $response = $this->get('api/stations/messages/DAM');
+
+        $response->assertStatus(200)->assertJson(['success' => true]);
+    }
 }

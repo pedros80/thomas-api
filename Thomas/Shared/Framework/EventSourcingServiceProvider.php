@@ -4,9 +4,7 @@ namespace Thomas\Shared\Framework;
 
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Marshaler;
-use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
-use Broadway\EventHandling\EventListener;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\EventStore;
 use Illuminate\Support\ServiceProvider;

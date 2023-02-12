@@ -31,17 +31,17 @@ abstract class InteractsWithDynamoDb extends Projector
         return $items;
     }
 
-    protected function scanItemsRecursively(array $params, array $items = []): array
-    {
-        $result = $this->db->scan($params);
-        $items  = array_merge($items, $result['Items']);
+    // protected function scanItemsRecursively(array $params, array $items = []): array
+    // {
+    //     $result = $this->db->scan($params);
+    //     $items  = array_merge($items, $result['Items']);
 
-        if (isset($result['LastEvaluatedKey'])) {
-            $params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
+    //     if (isset($result['LastEvaluatedKey'])) {
+    //         $params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
 
-            return $this->scanItemsRecursively($params, $items);
-        }
+    //         return $this->scanItemsRecursively($params, $items);
+    //     }
 
-        return $items;
-    }
+    //     return $items;
+    // }
 }

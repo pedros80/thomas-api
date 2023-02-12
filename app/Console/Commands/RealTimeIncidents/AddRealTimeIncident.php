@@ -3,29 +3,19 @@
 namespace App\Console\Commands\RealTimeIncidents;
 
 use Illuminate\Console\Command;
-use Thomas\RealTimeIncidents\Application\Commands\AddIncident;
-use Thomas\RealTimeIncidents\Domain\Body;
-use Thomas\RealTimeIncidents\Domain\MessageParser;
-use Thomas\RealTimeIncidents\Infrastructure\MockMessageFactory;
-use Thomas\Shared\Application\CommandBus;
+use Thomas\RealTimeIncidents\Application\RTIMessageRouter;
+use Thomas\RealTimeIncidents\Infrastructure\MockRTIMessageFactory;
 
 final class AddRealTimeIncident extends Command
 {
     protected $signature   = 'rti:add';
     protected $description = 'Record a new Real Time Incident';
 
-    public function handle(CommandBus $commandBus, MessageParser $messageParser): void
+    public function handle(RTIMessageRouter $router): void
     {
-        $message  = MockMessageFactory::new();
-        $incident = $messageParser->parse($message);
+        $message  = MockRTIMessageFactory::new();
+        $router->route($message);
 
-        /** @var Body $body */
-        $body   = $incident->body();
-        $id     = $incident->id();
-        $status = $incident->status();
-
-        $command = new AddIncident($id, $status, $body);
-
-        $commandBus->dispatch($command);
+        $this->info('Command to add RTI dispatched.');
     }
 }

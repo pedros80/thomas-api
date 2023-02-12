@@ -6,7 +6,7 @@ use Stomp\Transport\Frame;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Shared\Application\DarwinCommandFactory;
 
-final class MessageRouter
+final class DarwinMessageRouter
 {
     public function __construct(
         private CommandBus $commandBus,

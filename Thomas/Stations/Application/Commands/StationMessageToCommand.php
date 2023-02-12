@@ -6,7 +6,7 @@ use Pedros80\NREphp\Params\StationCode;
 use SimpleXMLElement;
 use Stomp\Transport\Frame;
 use Thomas\Shared\Application\Command;
-use Thomas\Shared\Application\DarwinMessageToCommand;
+use Thomas\Shared\Application\MessageToCommand;
 use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
@@ -15,7 +15,7 @@ use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
 
-final class StationMessageToCommand implements DarwinMessageToCommand
+final class StationMessageToCommand implements MessageToCommand
 {
     public function convert(Frame $message): Command
     {

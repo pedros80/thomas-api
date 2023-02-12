@@ -3,31 +3,27 @@
 namespace Tests\Unit\Thomas\Stations\Application\Commands;
 
 use PHPUnit\Framework\TestCase;
+use Thomas\Shared\Infrastructure\MockDarwinMessageFactory;
 use Thomas\Stations\Application\Commands\RecordStationMessage;
 use Thomas\Stations\Application\Commands\StationMessageToCommand;
-use Thomas\Stations\Infrastructure\MockMessageFactory;
 
 final class StationMessageToCommandTest extends TestCase
 {
-    public function testCanConvertMessageWithNoStationsToCommand(): void
+    public function testCanConvertMessageWithStationsToCommand(): void
     {
-        $convert = new StationMessageToCommand();
-        $factory = new MockMessageFactory();
-        $message = $factory->stations();
+        $converter = new StationMessageToCommand();
         /** @var RecordStationMessage $command */
-        $command = $convert->convert($message);
+        $command = $converter->convert(MockDarwinMessageFactory::stationMessage(1));
 
         $this->assertInstanceOf(RecordStationMessage::class, $command);
         $this->assertNotEmpty($command->stations());
     }
 
-    public function testCanConvertMessageWithStatiosToCommand(): void
+    public function testCanConvertMessageWithoutStationsToCommand(): void
     {
-        $convert = new StationMessageToCommand();
-        $factory = new MockMessageFactory();
-        $message = $factory->noStations();
+        $converter = new StationMessageToCommand();
         /** @var RecordStationMessage $command */
-        $command = $convert->convert($message);
+        $command = $converter->convert(MockDarwinMessageFactory::stationMessage());
 
         $this->assertInstanceOf(RecordStationMessage::class, $command);
         $this->assertEmpty($command->stations());

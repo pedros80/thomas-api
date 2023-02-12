@@ -1,12 +1,12 @@
 <?php
 
-namespace Thomas\Shared\Application;
+namespace Thomas\RealTimeIncidents\Application\Commands;
 
 use Stomp\Transport\Frame;
 use Thomas\Shared\Application\Command;
 use Thomas\Shared\Application\MessageToCommand;
 
-final class DarwinCommandFactory
+final class RTICommandFactory
 {
     public function __construct(
         private array $converters
@@ -26,7 +26,7 @@ final class DarwinCommandFactory
 
     private function getConverter(Frame $message): ?MessageToCommand
     {
-        $type = $message->getHeaders()['MessageType'];
+        $type = $message->getHeaders()['INCIDENT_MESSAGE_STATUS'];
 
         if (array_key_exists($type, $this->converters)) {
             return $this->converters[$type];

@@ -4,16 +4,16 @@ namespace Tests\Unit\Thomas\RealTimeIncidents\Infrastructure;
 
 use PHPUnit\Framework\TestCase;
 use Stomp\Transport\Frame;
-use Thomas\RealTimeIncidents\Infrastructure\MockMessageFactory;
+use Thomas\RealTimeIncidents\Infrastructure\MockRTIMessageFactory;
 
-final class MockMessageFactoryTest extends TestCase
+final class MockRTIMessageFactoryTest extends TestCase
 {
     /**
      * @dataProvider provideMethods
      */
     public function testFactoryMethodsMakeFrames(string $method): void
     {
-        $message = MockMessageFactory::$method();
+        $message = MockRTIMessageFactory::$method();
 
         $this->assertInstanceOf(Frame::class, $message);
         $this->assertEquals(strtoupper($method), $message->getHeaders()['INCIDENT_MESSAGE_STATUS']);

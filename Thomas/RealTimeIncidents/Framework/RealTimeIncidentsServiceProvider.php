@@ -8,14 +8,17 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\NREphp\Services\RealTimeIncidentsBroker;
+use Thomas\RealTimeIncidents\Application\Commands\Converters\ModifiedMessageToCommand;
+use Thomas\RealTimeIncidents\Application\Commands\Converters\NewMessageToCommand;
+use Thomas\RealTimeIncidents\Application\Commands\Converters\RemovedMessageToCommand;
 use Thomas\RealTimeIncidents\Application\Commands\Handlers\AddIncidentCommandHandler;
 use Thomas\RealTimeIncidents\Application\Commands\Handlers\RemoveIncidentCommandHandler;
 use Thomas\RealTimeIncidents\Application\Commands\Handlers\UpdateIncidentCommandHandler;
+use Thomas\RealTimeIncidents\Application\Commands\RTICommandFactory;
 use Thomas\RealTimeIncidents\Application\Queries\GetIncidents;
+use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 use Thomas\RealTimeIncidents\Domain\IncidentsRepository;
-use Thomas\RealTimeIncidents\Domain\MessageParser;
 use Thomas\RealTimeIncidents\Infrastructure\BroadwayRepository;
-use Thomas\RealTimeIncidents\Infrastructure\FrameMessageParser;
 use Thomas\RealTimeIncidents\Infrastructure\Projections\IncidentWasAddedProjection;
 use Thomas\RealTimeIncidents\Infrastructure\Projections\IncidentWasRemovedProjection;
 use Thomas\RealTimeIncidents\Infrastructure\Projections\IncidentWasUpdatedProjection;
@@ -26,12 +29,24 @@ final class RealTimeIncidentsServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->bindMessageParser();
         $this->bindRealTimeIncidentsBroker();
         $this->bindIncidentsRepository();
         $this->bindAndSubscribeCommandHandlers();
         $this->subscribeEventListeners();
         $this->bindQueries();
+        $this->bindRTICommandFactory();
+    }
+
+    private function bindRTICommandFactory(): void
+    {
+        $this->app->bind(
+            RTICommandFactory::class,
+            fn () => new RTICommandFactory([
+                IncidentMessageStatus::NEW      => new NewMessageToCommand(),
+                IncidentMessageStatus::MODIFIED => new ModifiedMessageToCommand(),
+                IncidentMessageStatus::REMOVED  => new RemovedMessageToCommand(),
+            ])
+        );
     }
 
     private function bindQueries(): void
@@ -43,14 +58,6 @@ final class RealTimeIncidentsServiceProvider extends ServiceProvider
                 $this->app->make(Marshaler::class),
                 config('nosql.tables.thomas_table')
             )
-        );
-    }
-
-    private function bindMessageParser(): void
-    {
-        $this->app->bind(
-            MessageParser::class,
-            fn () => new FrameMessageParser()
         );
     }
 
