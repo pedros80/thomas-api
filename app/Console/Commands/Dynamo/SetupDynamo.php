@@ -19,7 +19,7 @@ final class SetupDynamo extends Command
     ) {
         parent::__construct();
 
-        $this->info(app()->environment('local', 'testing'));
+        // $this->info(app()->environment('local', 'testing'));
         if (!app()->environment('local', 'testing')) {
             $this->info('not in this environment...');
 
