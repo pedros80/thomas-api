@@ -8,18 +8,15 @@ use Thomas\Shared\Infrastructure\YmlDatabaseConfigLoader;
 
 final class SetupDynamo extends Command
 {
-    protected $signature = 'dynamo:setup {do=prepare-tests : what to do?} {--confirm : really...}';
-
+    protected $signature   = 'dynamo:setup {do=prepare-tests : what to do?} {--confirm : really...}';
     protected $description = 'Setup the Dynamo tables';
 
     public function __construct(
         private DynamoMigrations $migrations,
         private YmlDatabaseConfigLoader $dbConfig,
-        // private DynamoTestSeeder $seeder,
     ) {
         parent::__construct();
 
-        // $this->info(app()->environment('local', 'testing'));
         if (!app()->environment('local', 'testing')) {
             $this->info('not in this environment...');
 
@@ -35,14 +32,12 @@ final class SetupDynamo extends Command
         ) {
             $this->dropTestTables();
             $this->addTables();
-        // $this->seed();
         } elseif (
             $this->argument('do') === 'reset' &&
             ($this->option('confirm') || $this->confirm('Really drop all DynamoDB tables?'))
         ) {
             $this->dropTables();
             $this->addTables();
-        // $this->seed();
         } elseif (
             $this->argument('do') === 'add' &&
             ($this->option('confirm') || $this->confirm('Really add all DynamoDB tables?'))
@@ -70,10 +65,4 @@ final class SetupDynamo extends Command
             $this->info("{$tableConfig['TableName']}: {$status}");
         }, $this->dbConfig->getTableDefinitions());
     }
-
-    // private function seed(): void
-    // {
-    //     $this->info('Seeding test data');
-    //     // $this->seeder->seedIntegration();
-    // }
 }
