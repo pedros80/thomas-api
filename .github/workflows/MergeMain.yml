@@ -25,6 +25,14 @@ jobs:
       - name: Setup DynamoDb
         run: docker-compose exec -T php php artisan dynamo:setup --confirm
       - name: Run Tests
+        env:
+          LDB_KEY: ${{ secrets.LDB_KEY }}
+          KB_USER: ${{ secrets.KB_USER }}
+          KB_PASS: ${{ secrets.KB_PASS }}
+          KBRTI_USER: ${{ secrets.KBRTI_USER }}
+          KBRTI_PASS: ${{ secrets.KBRTI_PASS }}
+          DARWIN_TOPIC_USER: ${{ secrets.DARWIN_TOPIC_USER }}
+          DARWIN_TOPIC_PASS: ${{ secrets.DARWIN_TOPIC_PASS }}
         run: docker-compose exec -T php ./vendor/bin/phpunit --coverage-clover=coverage.xml
       - name: phpunit-coverage-badge
         uses: timkrase/phpunit-coverage-badge@v1.2.0
