@@ -19,3 +19,4 @@ yarn-error.log
 /coverage
 /tmp/cache
 .php-cs-fixer.cache
+composer.lock
