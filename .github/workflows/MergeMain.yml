@@ -15,6 +15,7 @@ jobs:
           cat .env.github-testing | sed s/{{LDB_KEY}}/${{ secrets.LDB_KEY }}/g | sed s/{{KB_USER}}/${{ secrets.KB_USER }}/g | sed s/{{KB_PASS}}/${{ secrets.KB_PASS }}/g | sed s/{{KBRTI_USER}}/${{ secrets.KBRTI_USER }}/g | sed s/{{KBRTI_PASS}}/${{ secrets.KBRTI_PASS }}/g | sed s/{{DARWIN_TOPIC_USER}}/${{ secrets.DARWIN_TOPIC_USER }}/g | sed s/{{DARWIN_TOPIC_PASS}}/${{ secrets.DARWIN_TOPIC_PASS }}/g > .env
       - name: Composer Install, DB Migrate and Seed
         run: |
+          sudo chmod -R a+rw  ~/.composer/cache
           pwd
           composer install
           docker-compose exec -T php php artisan dynamo:setup add --confirm
