@@ -29,4 +29,4 @@ jobs:
 
       - name: Execute PHPStan
         run:
-          vendor/bin/phpstan analyse $OPTIONS --configuration ./phpstan-config.neon
+          vendor/bin/phpstan analyse --configuration ./phpstan-config.neon
