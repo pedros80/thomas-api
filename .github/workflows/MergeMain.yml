@@ -16,7 +16,7 @@ jobs:
           sudo composer install
       - name: Composer Install, DB Migrate and Seed
         run: |
-          docker-compose exec -T php php artisan dynamo:setup add --confirm
+          docker-compose exec -T php php artisan dynamo:setup reset --confirm
       - name: Run All Tests
         run: |
           docker-compose exec -T php ./vendor/bin/phpunit --coverage-clover=coverage.xml
