@@ -16,6 +16,7 @@ jobs:
       - name: Composer Install, DB Migrate and Seed
         run: |
           pwd
+          chmod 777 /home/runner/work/thomas-api/thomas-api/
           composer install
           docker-compose exec -T php php artisan dynamo:setup add --confirm
       - name: Run All Tests
