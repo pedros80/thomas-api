@@ -18,25 +18,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('boards')->group(function () {
-    Route::get('/departures/{station?}', [BoardController::class, 'departures']);
-    Route::get('/departures/{station}/platform/{platform}', [BoardController::class, 'departuresPlatform']);
+Route::controller(BoardController::class)->prefix('boards')->group(function () {
+    Route::get('/departures/{station?}', 'departures');
+    Route::get('/departures/{station}/platform/{platform}', 'departuresPlatform');
     Route::get('/arrivals/{station?}', [BoardController::class, 'arrivals']);
 });
 
-Route::prefix('stations')->group(function () {
-    Route::post('/search', [StationController::class, 'search']);
-    Route::get('/messages/{station}', [StationController::class, 'messages']);
+Route::controller(StationController::class)->prefix('stations')->group(function () {
+    Route::post('/search', 'search');
+    Route::get('/messages/{station}', 'messages');
 });
 
-Route::prefix('news')->group(function () {
-    Route::get('/', [NewsController::class, 'get']);
+Route::controller(NewsController::class)->prefix('news')->group(function () {
+    Route::get('/', 'get');
 });
 
-Route::prefix('service-indicator')->group(function () {
-    Route::get('/', [ServiceIndicatorController::class, 'get']);
+Route::controller(ServiceIndicatorController::class)->prefix('service-indicator')->group(function () {
+    Route::get('/', 'get');
 });
 
-Route::prefix('rti')->group(function () {
-    Route::get('/', [RealTimeIncidentsController::class, 'get']);
+Route::controller(RealTimeIncidentsController::class)->prefix('rti')->group(function () {
+    Route::get('/', 'get');
 });
