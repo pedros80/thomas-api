@@ -204,6 +204,7 @@ return [
         Thomas\Stations\Framework\StationsServiceProvider::class,
         Thomas\ServiceIndicator\Framework\ServiceIndicatorServiceProvider::class,
         Thomas\RealTimeIncidents\Framework\RealTimeIncidentsServiceProvider::class,
+        Thomas\Users\Framework\UsersServiceProvider::class,
     ],
 
     /*

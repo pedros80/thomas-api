@@ -5,6 +5,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RealTimeIncidentsController;
 use App\Http\Controllers\ServiceIndicatorController;
 use App\Http\Controllers\StationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,4 +40,9 @@ Route::controller(ServiceIndicatorController::class)->prefix('service-indicator'
 
 Route::controller(RealTimeIncidentsController::class)->prefix('rti')->group(function () {
     Route::get('/', 'get');
+});
+
+Route::controller(UserController::class)->prefix('users')->group(function () {
+    Route::post('/', 'register');
+    Route::get('/{userId}/verify/{verifyToken}', 'verify');
 });

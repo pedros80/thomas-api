@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Thomas\Users\Domain\Exceptions\UserNotFound;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,9 +51,14 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
+        $code = match (get_class($e)) {
+            UserNotFound::class => 404,
+            default             => 400
+        };
+
         return response(
             ['success' => false, 'message' => $e->getMessage()],
-            400
+            $code
         );
     }
 }
