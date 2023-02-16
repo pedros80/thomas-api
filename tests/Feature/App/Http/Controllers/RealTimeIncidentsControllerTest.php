@@ -8,7 +8,7 @@ final class RealTimeIncidentsControllerTest extends TestCase
 {
     public function testGetRTIReturnsSuccessfully(): void
     {
-        $response = $this->get('api/rti');
+        $response = $this->get('api/rti', $this->getAuthHeaders());
 
         $response->assertStatus(200)->assertJson(['success' => true]);
     }

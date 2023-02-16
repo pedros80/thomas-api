@@ -8,14 +8,10 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Illuminate\Support\ServiceProvider;
 use Thomas\Shared\Application\CommandBus;
-use Thomas\Users\Application\Commands\Handlers\RegisterUserCommandHandler;
-use Thomas\Users\Application\Commands\Handlers\VerifyUserCommandHandler;
-use Thomas\Users\Application\Queries\GetEmailFromUserIdAndVerifyToken;
+use Thomas\Users\Application\Commands\Handlers\AddUserCommandHandler;
 use Thomas\Users\Domain\UsersRepository;
 use Thomas\Users\Infrastructure\BroadwayRepository;
-use Thomas\Users\Infrastructure\Projections\UserWasRegisteredProjection;
-use Thomas\Users\Infrastructure\Projections\UserWasVerifiedProjection;
-use Thomas\Users\Infrastructure\Queries\DynamoDbGetEmailFromUserIdAndVerifyToken;
+use Thomas\Users\Infrastructure\Projections\UserWasAddedProjection;
 
 final class UsersServiceProvider extends ServiceProvider
 {
@@ -24,19 +20,6 @@ final class UsersServiceProvider extends ServiceProvider
         $this->bindUsersRepo();
         $this->bindAndSubscribeCommandHandlers();
         $this->subscribeEventListeners();
-        $this->bindQueries();
-    }
-
-    private function bindQueries(): void
-    {
-        $this->app->bind(
-            GetEmailFromUserIdAndVerifyToken::class,
-            fn () => new DynamoDbGetEmailFromUserIdAndVerifyToken(
-                $this->app->make(DynamoDbClient::class),
-                $this->app->make(Marshaler::class),
-                config('nosql.tables.thomas_table')
-            )
-        );
     }
 
     private function bindUsersRepo(): void
@@ -53,8 +36,7 @@ final class UsersServiceProvider extends ServiceProvider
     private function bindAndSubscribeCommandHandlers(): void
     {
         $handlers = [
-            RegisterUserCommandHandler::class,
-            VerifyUserCommandHandler::class,
+            AddUserCommandHandler::class,
         ];
 
         /** @var CommandBus $commandBus */
@@ -71,8 +53,7 @@ final class UsersServiceProvider extends ServiceProvider
     private function subscribeEventListeners(): void
     {
         $listener = [
-            UserWasRegisteredProjection::class,
-            UserWasVerifiedProjection::class,
+            UserWasAddedProjection::class,
         ];
 
         $eventBus = $this->app->get(EventBus::class);

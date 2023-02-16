@@ -8,7 +8,7 @@ final class NewsControllerTest extends TestCase
 {
     public function testGetNewsReturnsSuccessfully(): void
     {
-        $response = $this->get('api/news');
+        $response = $this->get('api/news', $this->getAuthHeaders());
 
         $response->assertStatus(200)->assertJson(['success' => true]);
     }

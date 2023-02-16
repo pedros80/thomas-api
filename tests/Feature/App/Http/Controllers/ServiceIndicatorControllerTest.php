@@ -8,7 +8,7 @@ final class ServiceIndicatorControllerTest extends TestCase
 {
     public function testGetServiceIndicatorReturnsSuccessfully(): void
     {
-        $response = $this->get('api/service-indicator');
+        $response = $this->get('api/service-indicator', $this->getAuthHeaders());
 
         $response->assertStatus(200)->assertJson(['success' => true]);
     }

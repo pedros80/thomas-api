@@ -4,15 +4,15 @@ namespace Thomas\Users\Domain\Events;
 
 use Thomas\Shared\Domain\Event;
 use Thomas\Users\Domain\Email;
+use Thomas\Users\Domain\Name;
 use Thomas\Users\Domain\UserId;
-use Thomas\Users\Domain\VerifyToken;
 
-final class UserWasVerified extends Event
+final class UserWasAdded extends Event
 {
     public function __construct(
         private Email $email,
-        private VerifyToken $verifyToken,
-        private UserId $userId
+        private Name $name,
+        private UserId $userId,
     ) {
     }
 
@@ -21,9 +21,9 @@ final class UserWasVerified extends Event
         return $this->email;
     }
 
-    public function verifyToken(): VerifyToken
+    public function name(): Name
     {
-        return $this->verifyToken;
+        return $this->name;
     }
 
     public function userId(): UserId
@@ -34,9 +34,9 @@ final class UserWasVerified extends Event
     public function toArray(): array
     {
         return [
-            'email'       => (string) $this->email,
-            'verifyToken' => (string) $this->verifyToken,
-            'userId'      => (string) $this->userId,
+            'email'  => (string) $this->email,
+            'name'   => (string) $this->name,
+            'userId' => (string) $this->userId,
         ];
     }
 
@@ -44,9 +44,9 @@ final class UserWasVerified extends Event
     {
         $payload = json_decode($json);
 
-        return new UserWasVerified(
+        return new UserWasAdded(
             new Email($payload->email),
-            new VerifyToken($payload->verifyToken),
+            new Name($payload->name),
             new UserId($payload->userId)
         );
     }

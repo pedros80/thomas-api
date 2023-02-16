@@ -8,14 +8,14 @@ final class StationControllerTest extends TestCase
 {
     public function testSearchingKnownStationReturnsSuccessfully(): void
     {
-        $response = $this->post('api/stations/search', ['search' => 'dalmeny']);
+        $response = $this->post('api/stations/search', ['search' => 'dalmeny'], $this->getAuthHeaders());
 
         $response->assertStatus(200)->assertJson(['success' => true]);
     }
 
     public function testGetStationsMessagesReturnsSuccessfully(): void
     {
-        $response = $this->get('api/stations/messages/DAM');
+        $response = $this->get('api/stations/messages/DAM', $this->getAuthHeaders());
 
         $response->assertStatus(200)->assertJson(['success' => true]);
     }

@@ -5,12 +5,9 @@ namespace Tests\Unit\Thomas\Users\Domain\Entities;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Entities\User;
-use Thomas\Users\Domain\Events\UserWasRegistered;
-use Thomas\Users\Domain\Events\UserWasVerified;
+use Thomas\Users\Domain\Events\UserWasAdded;
 use Thomas\Users\Domain\Name;
-use Thomas\Users\Domain\Password;
 use Thomas\Users\Domain\UserId;
-use Thomas\Users\Domain\VerifyToken;
 
 final class UserTest extends AggregateRootScenarioTestCase
 {
@@ -19,52 +16,14 @@ final class UserTest extends AggregateRootScenarioTestCase
         return User::class;
     }
 
-    public function testUserCanBeRegistered(): void
+    public function testUserCanBeAdded(): void
     {
-        $passwordHash = Password::generate()->hash();
-        $userId       = UserId::generate();
-        $verifyToken  = VerifyToken::fromUserId($userId);
-
-        $this->scenario->when(fn () => User::register(
-            new Email('peterwsomerville@gmail.com'),
-            new Name('Peter Somerville'),
-            $passwordHash,
-            $userId,
-            $verifyToken
-        ))->then([
-            new UserWasRegistered(
-                new Email('peterwsomerville@gmail.com'),
-                new Name('Peter Somerville'),
-                $passwordHash,
-                $userId,
-                $verifyToken
-            ),
-        ]);
-    }
-
-    public function testRegisteredUserCanBeVerified(): void
-    {
-        $passwordHash = Password::generate()->hash();
-        $userId       = UserId::generate();
-        $verifyToken  = VerifyToken::fromUserId($userId);
+        $userId = UserId::generate();
+        $email  = new Email('peterwsomerville@gmail.com');
+        $name   = new Name('Peter Somerville');
 
         $this->scenario
-            ->withAggregateId(new Email('peterwsomerville@gmail.com'))
-            ->given([
-                new UserWasRegistered(
-                    new Email('peterwsomerville@gmail.com'),
-                    new Name('Peter Somerville'),
-                    $passwordHash,
-                    $userId,
-                    $verifyToken
-                ),
-            ])->when(fn (User $user) => $user->verify($verifyToken))
-            ->then([
-                new UserWasVerified(
-                    new Email('peterwsomerville@gmail.com'),
-                    $verifyToken,
-                    $userId
-                )
-            ]);
+            ->when(fn () => User::add($email, $name, $userId))
+            ->then([new UserWasAdded($email, $name, $userId)]);
     }
 }

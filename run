@@ -62,14 +62,16 @@ then
 elif [ $RUN = 'tests' ];
 then
 	docker compose exec php php artisan dynamo:setup --confirm
+	docker compose exec php php artisan db:seed
 	docker compose exec php cat /dev/null > ./storage/logs/laravel.log
-	docker compose exec php ./vendor/bin/phpunit $OPTIONS --stop-on-failure
+	docker compose exec php ./vendor/bin/phpunit --columns max $OPTIONS --stop-on-failure
 
 elif [ $RUN = 'coverage' ];
 then
 	docker compose exec php php artisan dynamo:setup --confirm
+	docker compose exec php php artisan db:seed
 	docker compose exec php cat /dev/null > ./storage/logs/laravel.log
-	docker compose exec php ./vendor/bin/phpunit $OPTIONS --coverage-html coverage
+	docker compose exec php ./vendor/bin/phpunit --columns max $OPTIONS --coverage-html coverage
 	open file:///$PWD/coverage/index.html
 
 elif [ $RUN = 'phpmd' ];
