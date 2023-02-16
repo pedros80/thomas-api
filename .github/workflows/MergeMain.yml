@@ -16,6 +16,8 @@ jobs:
         run: sudo composer install -q --no-ansi --no-interaction --no-scripts --no-progress
       - name: Setup DynamoDb
         run: docker-compose exec -T php php artisan dynamo:setup --confirm
+      - name: Seed Users
+        run: docker-compose exec -T php php artisan db:seed
       - name: Run Tests
         run: docker-compose exec -T php ./vendor/bin/phpunit --coverage-clover=coverage.xml
       - name: phpunit-coverage-badge
