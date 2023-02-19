@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Users\Domain\Email;
+use Thomas\Users\Domain\Exceptions\InvalidJWT;
 use Thomas\Users\Domain\Exceptions\UserNotFound;
 use Thomas\Users\Domain\UsersRepository;
 
@@ -42,7 +43,12 @@ class AuthServiceProvider extends ServiceProvider
             $repo  = app(UsersRepository::class);
             /** @var string $jwt */
             $jwt   = $request->bearerToken();
-            $token = JWT::decode($jwt, new Key(config('jwt.key'), 'HS256'));
+
+            if (!$jwt) {
+                throw InvalidJWT::create();
+            }
+
+            $token = JWT::decode($jwt, new Key(config('jwt.secret'), config('jwt.algo')));
             $email = new Email($token->email);
 
             if (isset($token->exp) && $token->exp > time()) {

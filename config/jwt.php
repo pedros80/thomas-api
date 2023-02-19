@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'key'  => env('JWT_KEY', 'secret'),
-    'test' => env('USER_TEST_JWT'),
+    'secret' => env('JWT_SECRET', 'secret'),
+    'algo'   => env('JWT_ALGO', 'HS256'),
+    'test'   => env('USER_TEST_JWT'),
 ];

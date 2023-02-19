@@ -18,7 +18,7 @@ final class GenerateJWT extends Command
             'email' => $email,
             'test'  => rand(),
             // 'exp'   => strtotime('+7 days'),
-        ], config('jwt.key'), 'HS256');
+        ], config('jwt.secret'), config('jwt.algo'));
 
         $this->info($token);
     }

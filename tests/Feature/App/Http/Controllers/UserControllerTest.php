@@ -6,7 +6,7 @@ use Faker\Factory;
 use Tests\TestCase;
 use Thomas\Users\Domain\UserId;
 
-final class UsersControllerTest extends TestCase
+final class UserControllerTest extends TestCase
 {
     public function testAddSuccessful(): void
     {

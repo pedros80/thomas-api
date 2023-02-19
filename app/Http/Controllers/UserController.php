@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddUserRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Users\Application\Commands\AddUser;
 use Thomas\Users\Domain\Email;
