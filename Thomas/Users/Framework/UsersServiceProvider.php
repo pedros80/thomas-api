@@ -12,6 +12,7 @@ use Thomas\Users\Application\Commands\Handlers\AddUserCommandHandler;
 use Thomas\Users\Domain\UsersRepository;
 use Thomas\Users\Infrastructure\BroadwayRepository;
 use Thomas\Users\Infrastructure\Projections\UserWasAddedProjection;
+use Thomas\Users\Infrastructure\UserResolver;
 
 final class UsersServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,19 @@ final class UsersServiceProvider extends ServiceProvider
         $this->bindUsersRepo();
         $this->bindAndSubscribeCommandHandlers();
         $this->subscribeEventListeners();
+        $this->bindUserResolver();
+    }
+
+    private function bindUserResolver(): void
+    {
+        $this->app->bind(
+            UserResolver::class,
+            fn () => new UserResolver(
+                $this->app->make(UsersRepository::class),
+                config('jwt.secret'),
+                config('jwt.algo')
+            )
+        );
     }
 
     private function bindUsersRepo(): void

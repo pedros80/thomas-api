@@ -31,7 +31,7 @@ final class UserControllerTest extends TestCase
             'userId' => 'blah',
         ]);
 
-        $response->assertStatus(400)->assertJson(['success' => false, 'message' => 'The user id field must be a valid ULID.']);
+        $response->assertStatus(400)->assertJson(['success' => false, 'errors' => 'The user id field must be a valid ULID.']);
     }
 
     public function testAddInvalidEmailThrowsException(): void
@@ -44,6 +44,6 @@ final class UserControllerTest extends TestCase
             'userId' => (string) UserId::generate(),
         ]);
 
-        $response->assertStatus(400)->assertJson(['success' => false, 'message' => 'The email must be a valid email address.']);
+        $response->assertStatus(400)->assertJson(['success' => false, 'errors' => 'The email must be a valid email address.']);
     }
 }

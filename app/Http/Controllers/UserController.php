@@ -26,9 +26,7 @@ final class UserController extends Controller
 
         return new JsonResponse([
             'success' => true,
-            'data'    => [
-                'message' => 'Added.',
-            ],
+            'data'    => 'Added.',
         ]);
     }
 }
