@@ -19,14 +19,20 @@ final class AddNewUser extends Command
     {
         $faker = Factory::create();
 
-        $command = new AddUser(
-            new Email($faker->email),
-            new Name($faker->name()),
-            UserId::generate(),
-        );
+        $email  = new Email($faker->email);
+        $name   = new Name($faker->name());
+        $userId = UserId::generate();
+
+        $command = new AddUser($email, $name, $userId);
 
         $commandBus->dispatch($command);
 
         $this->info('Command Dispatched to Add User.');
+
+        $this->table([
+            'Email', 'Name', 'UserID'
+        ], [
+            [$email, $name, $userId]
+        ]);
     }
 }

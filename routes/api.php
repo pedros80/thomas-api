@@ -44,6 +44,7 @@ Route::middleware('auth:api')->group(function () {
     });
 });
 
-Route::controller(UserController::class)->prefix('users')->group(function () {
-    Route::post('/', 'add')->middleware('fatcontroller');
+Route::controller(UserController::class)->middleware('fatcontroller')->prefix('users')->group(function () {
+    Route::post('/', 'add');
+    Route::delete('/', 'remove');
 });

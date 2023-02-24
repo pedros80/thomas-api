@@ -10,6 +10,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventStore\EventStore;
+use Illuminate\Support\Facades\Log;
 use Thomas\Shared\Infrastructure\Exceptions\DuplicatePlayhead;
 use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 
@@ -60,6 +61,7 @@ final class DynamoDbEventStore extends InteractsWithDynamoDb implements EventSto
     {
         array_map(function ($event) use ($eventStream) {
             try {
+                Log::info($this->marshaler->marshalItem($event));
                 $this->db->putItem([
                     'ConditionExpression' => 'attribute_not_exists(StreamId) AND attribute_not_exists(StreamVersion)',
                     'Item'                => $this->marshaler->marshalItem($event),

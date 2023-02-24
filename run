@@ -8,6 +8,10 @@ OPTIONS="$(echo $ALL | sed "s/^$RUN//g")"
 if [ $RUN = 'up' ];
 then
 	docker compose up -d
+	docker compose exec php php artisan route:clear
+	docker compose exec php php artisan config:clear
+	docker compose exec php php artisan cache:clear
+	docker compose exec php php artisan dynamo:setup --confirm
 
 elif [ $RUN = 'rebuild' ];
 then
@@ -20,11 +24,7 @@ then
 	docker compose rm -f
 	docker system prune -f
 	docker compose build
-	docker compose up -d
-	docker compose exec php php artisan route:clear
-	docker compose exec php php artisan config:clear
-	docker compose exec php php artisan cache:clear
-	docker compose exec php php artisan dynamo:setup --confirm
+	./run up
 
     end=`date +%s`
 

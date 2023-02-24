@@ -7,6 +7,7 @@ use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Events\UserWasAdded;
+use Thomas\Users\Domain\Events\UserWasRemoved;
 use Thomas\Users\Domain\Name;
 use Thomas\Users\Domain\UserId;
 
@@ -36,6 +37,16 @@ final class User extends EventSourcedAggregateRoot implements Authenticatable
         $this->name   = $event->name();
         $this->userId = $event->userId();
     }
+
+    public function remove(): void
+    {
+        $this->apply(
+            new UserWasRemoved($this->email, $this->userId)
+        );
+    }
+
+    // @todo applyUserWasRemoved. timestamps for entities??
+
 
     public function getAggregateRootId(): string
     {

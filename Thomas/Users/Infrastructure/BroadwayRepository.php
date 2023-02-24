@@ -8,6 +8,7 @@ use Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\AggregateNotFoundException;
+use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Entities\User;
 use Thomas\Users\Domain\Exceptions\UserNotFound;
@@ -32,7 +33,7 @@ class BroadwayRepository extends EventSourcingRepository implements UsersReposit
             $user = parent::load((string) $id);
 
             return $user;
-        } catch (AggregateNotFoundException) {
+        } catch (AggregateNotFoundException | EventStreamNotFound) { // @todo - catch this exception in all repos; remove from command handlers?
             throw UserNotFound::fromEmail($id);
         }
     }

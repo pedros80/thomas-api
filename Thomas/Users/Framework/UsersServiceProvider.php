@@ -9,9 +9,11 @@ use Broadway\EventStore\EventStore;
 use Illuminate\Support\ServiceProvider;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Users\Application\Commands\Handlers\AddUserCommandHandler;
+use Thomas\Users\Application\Commands\Handlers\RemoveUserCommandHandler;
 use Thomas\Users\Domain\UsersRepository;
 use Thomas\Users\Infrastructure\BroadwayRepository;
 use Thomas\Users\Infrastructure\Projections\UserWasAddedProjection;
+use Thomas\Users\Infrastructure\Projections\UserWasRemovedProjection;
 use Thomas\Users\Infrastructure\UserResolver;
 
 final class UsersServiceProvider extends ServiceProvider
@@ -51,6 +53,7 @@ final class UsersServiceProvider extends ServiceProvider
     {
         $handlers = [
             AddUserCommandHandler::class,
+            RemoveUserCommandHandler::class,
         ];
 
         /** @var CommandBus $commandBus */
@@ -68,6 +71,7 @@ final class UsersServiceProvider extends ServiceProvider
     {
         $listener = [
             UserWasAddedProjection::class,
+            UserWasRemovedProjection::class,
         ];
 
         $eventBus = $this->app->get(EventBus::class);
