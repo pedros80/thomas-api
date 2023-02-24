@@ -10,7 +10,7 @@ jobs:
       - name: Docker Up
         run: docker-compose up -d
       - name: Get .env
-        run: cat .env.github-testing | sed s/{{JWT_SECRET}}/${{ secrets.JWT_SECRET }}/g | sed s/{{LDB_KEY}}/${{ secrets.LDB_KEY }}/g | sed s/{{KB_USER}}/${{ secrets.KB_USER }}/g | sed s/{{KB_PASS}}/${{ secrets.KB_PASS }}/g | sed s/{{KBRTI_USER}}/${{ secrets.KBRTI_USER }}/g | sed s/{{KBRTI_PASS}}/${{ secrets.KBRTI_PASS }}/g | sed s/{{DARWIN_TOPIC_USER}}/${{ secrets.DARWIN_TOPIC_USER }}/g | sed s/{{DARWIN_TOPIC_PASS}}/${{ secrets.DARWIN_TOPIC_PASS }}/g | sed s/{{USER_TEST_JWT}}/${{ secrets.USER_TEST_JWT }}/g > .env
+        run: cat .env.github-testing | sed s/{{LDB_KEY}}/${{ secrets.LDB_KEY }}/g | sed s/{{KB_USER}}/${{ secrets.KB_USER }}/g | sed s/{{KB_PASS}}/${{ secrets.KB_PASS }}/g | sed s/{{KBRTI_USER}}/${{ secrets.KBRTI_USER }}/g | sed s/{{KBRTI_PASS}}/${{ secrets.KBRTI_PASS }}/g | sed s/{{DARWIN_TOPIC_USER}}/${{ secrets.DARWIN_TOPIC_USER }}/g | sed s/{{DARWIN_TOPIC_PASS}}/${{ secrets.DARWIN_TOPIC_PASS }}/g | sed s/{{USER_TEST_JWT}}/${{ secrets.USER_TEST_JWT }}/g > .env
       - name: Install Dependencies
         run: sudo composer install -q --no-ansi --no-interaction --no-scripts --no-progress
       - name: Setup DynamoDb

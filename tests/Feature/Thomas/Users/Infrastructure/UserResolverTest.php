@@ -9,7 +9,7 @@ use Thomas\Users\Infrastructure\UserResolver;
 
 final class UserResolverTest extends TestCase
 {
-    private string $userNotFoundJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBldGVyd3NvbWVydmlsbGUrNDA0QGdtYWlsLmNvbSIsInRlc3QiOjEzMDkxNzg5MDR9.KREsamvO88gwHG4ggV1ishym0De34PVbePlz76_Q4Uc';
+    private string $userNotFoundJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBldGVyd3NvbWVydmlsbGUrNDA0QGdtYWlsLmNvbSIsInRlc3QiOjE1MTE2MDMwODV9.zJWZtz-EZhj06ofp00kW5IKA6cSBpKm4GHrUKUQHI7I';
 
     public function testMissingJWTThrowsException(): void
     {

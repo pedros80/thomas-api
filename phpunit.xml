@@ -38,5 +38,6 @@
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="EVENT_STORE_TABLE" value="TestEventStore"/>
         <env name="THOMAS_TABLE" value="TestThomas"/>
+        <env name="JWT_SECRET" value="secret"/>
     </php>
 </phpunit>
