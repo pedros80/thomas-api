@@ -3,6 +3,7 @@
 namespace Thomas\News\Framework;
 
 use GuzzleHttp\Client;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\ServiceProvider;
 use Thomas\News\Application\Queries\GetNewsHeadlines;
 use Thomas\News\Domain\NewsService;
@@ -28,7 +29,8 @@ final class NewsServiceProvider extends ServiceProvider
                     ],
                     'base_uri' => config('services.rss.bbc.url'),
                 ]),
-                new RSSParser()
+                new RSSParser(),
+                $this->app->make(Repository::class)
             )
         );
 

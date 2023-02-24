@@ -55,4 +55,8 @@ return [
             'url' => 'http://feeds.bbci.co.uk/news/rss.xml',
         ],
     ],
+
+    'admin' => [
+        'secret' => env('ADMIN_SECRET', 'secret'),
+    ],
 ];

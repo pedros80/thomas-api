@@ -2,9 +2,16 @@
 
 namespace Thomas\News\Infrastructure;
 
+use SimpleXMLElement;
+
 final class MockNewsFactory
 {
-    public function makeXML(): string
+    public function makeXML(): SimpleXMLElement
+    {
+        return new SimpleXMLElement($this->makeContent());
+    }
+
+    public function makeContent(): string
     {
         return '<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet title="XSL_formatting" type="text/xsl" href="/shared/bsp/xsl/rss/nolsol.xsl"?>

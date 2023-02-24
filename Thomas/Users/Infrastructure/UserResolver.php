@@ -29,10 +29,6 @@ final class UserResolver
         $token = JWT::decode($jwt, new Key($this->secret, $this->algo));
         $email = new Email($token->email);
 
-        // if (isset($token->exp) && $token->exp < time()) {
-        //     throw UserNotFound::fromEmail($email);
-        // }
-
         try {
             $user = $this->users->find($email);
 

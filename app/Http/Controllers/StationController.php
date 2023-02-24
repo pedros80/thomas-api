@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchStationRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Thomas\Stations\Application\Queries\GetStationMessages;
 use Thomas\Stations\Application\Queries\SearchStations;
 
 final class StationController extends Controller
 {
-    public function search(Request $request, SearchStations $query): JsonResponse
+    public function search(SearchStationRequest $request, SearchStations $query): JsonResponse
     {
         return new JsonResponse([
             'success' => true,

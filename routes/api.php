@@ -19,29 +19,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(BoardController::class)->middleware('auth:api')->prefix('boards')->group(function () {
-    Route::get('/departures/{station?}', 'departures');
-    Route::get('/departures/{station}/platform/{platform}', 'departuresPlatform');
-    Route::get('/arrivals/{station?}', [BoardController::class, 'arrivals']);
-});
+Route::middleware('auth:api')->group(function () {
+    Route::controller(BoardController::class)->prefix('boards')->group(function () {
+        Route::get('/departures/{station?}', 'departures');
+        Route::get('/departures/{station}/platform/{platform}', 'departuresPlatform');
+        Route::get('/arrivals/{station?}', [BoardController::class, 'arrivals']);
+    });
 
-Route::controller(StationController::class)->middleware('auth:api')->prefix('stations')->group(function () {
-    Route::post('/search', 'search');
-    Route::get('/messages/{station}', 'messages');
-});
+    Route::controller(StationController::class)->prefix('stations')->group(function () {
+        Route::post('/search', 'search');
+        Route::get('/messages/{station}', 'messages');
+    });
 
-Route::controller(NewsController::class)->middleware('auth:api')->prefix('news')->group(function () {
-    Route::get('/', 'get');
-});
+    Route::controller(NewsController::class)->prefix('news')->group(function () {
+        Route::get('/', 'get');
+    });
 
-Route::controller(ServiceIndicatorController::class)->middleware('auth:api')->prefix('service-indicator')->group(function () {
-    Route::get('/', 'get');
-});
+    Route::controller(ServiceIndicatorController::class)->prefix('service-indicator')->group(function () {
+        Route::get('/', 'get');
+    });
 
-Route::controller(RealTimeIncidentsController::class)->middleware('auth:api')->prefix('rti')->group(function () {
-    Route::get('/', 'get');
+    Route::controller(RealTimeIncidentsController::class)->prefix('rti')->group(function () {
+        Route::get('/', 'get');
+    });
 });
 
 Route::controller(UserController::class)->prefix('users')->group(function () {
-    Route::post('/', 'add');
+    Route::post('/', 'add')->middleware('fatcontroller');
 });

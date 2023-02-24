@@ -19,4 +19,11 @@ final class StationControllerTest extends TestCase
 
         $response->assertStatus(200)->assertJson(['success' => true]);
     }
+
+    public function testMissingSearchParameterThrowsException(): void
+    {
+        $response = $this->post('api/stations/search', ['searchy' => 'dalmeny'], $this->getAuthHeaders());
+
+        $response->assertStatus(400)->assertJson(['success' => false])->assertJson(['errors' => 'The search field is required.']);
+    }
 }
