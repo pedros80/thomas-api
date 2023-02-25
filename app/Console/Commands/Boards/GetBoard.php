@@ -8,12 +8,12 @@ use Thomas\Boards\Domain\BoardService;
 
 final class GetBoard extends Command
 {
-    protected $signature   = 'board:get';
+    protected $signature   = 'board:get {station? : Which Station?}';
     protected $description = "I'm bored, I'm chairman of the board.";
 
     public function handle(BoardService $boards): void
     {
-        $station = $this->ask('Which Station?');
+        $station = $this->getStation();
 
         $result = $boards->departures($station);
 
@@ -26,5 +26,13 @@ final class GetBoard extends Command
                 (string) $stationCode,
             ]
         ]);
+    }
+
+    private function getStation(): string
+    {
+        $station = $this->argument('station') ?: $this->ask('Which Station?');
+        $station = is_array($station) ? $station[0] : $station;
+
+        return $station;
     }
 }

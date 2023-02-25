@@ -8,7 +8,7 @@ use Thomas\Stations\Domain\Station;
 
 final class SearchStationsByNameOrCode extends Command
 {
-    protected $signature   = 'stations:search';
+    protected $signature   = 'stations:search {search? : Term to search for}';
     protected $description = 'Search station names and return code';
 
     public function handle(SearchStations $query): void
@@ -18,7 +18,7 @@ final class SearchStationsByNameOrCode extends Command
 
     private function getSearchTerm(): string
     {
-        $search = $this->ask('Enter Search Term?');
+        $search = $this->argument('search') ?: $this->ask('Enter Search Term?');
 
         return is_array($search) ? $search[0] : $search;
     }

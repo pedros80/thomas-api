@@ -10,7 +10,7 @@ use Thomas\Stations\Domain\Station;
 
 final class GetStationMessages extends Command
 {
-    protected $signature   = 'stations:get-messages';
+    protected $signature   = 'stations:get-messages {station? : Which Station}';
     protected $description = 'Get all messages by station';
 
     public function handle(QueriesGetStationMessages $query): void
@@ -31,7 +31,7 @@ final class GetStationMessages extends Command
 
     private function getCode(): StationCode
     {
-        $code = $this->ask('Which Station Code?');
+        $code = $this->argument('station') ?: $this->ask('Which Station Code?');
 
         $code = is_array($code) ? $code[0] : $code;
 

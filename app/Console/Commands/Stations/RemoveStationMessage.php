@@ -9,7 +9,7 @@ use Thomas\Stations\Domain\MessageID;
 
 final class RemoveStationMessage extends Command
 {
-    protected $signature   = 'stations:remove-message';
+    protected $signature   = 'stations:remove-message {id? : Which message ID?}';
     protected $description = 'Remove a message from each station';
 
     public function handle(CommandBus $commandBus): void
@@ -25,9 +25,8 @@ final class RemoveStationMessage extends Command
 
     private function getId(): string
     {
-        $id = $this->ask('Which Station Message ID?');
-        $id = is_array($id) ? $id[0] : $id;
+        $id = $this->argument('id') ?: $this->ask('Which Station Message ID?');
 
-        return $id;
+        return is_array($id) ? $id[0] : $id;
     }
 }
