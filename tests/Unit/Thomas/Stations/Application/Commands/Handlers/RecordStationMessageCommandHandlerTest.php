@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\Stations\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\CommandHandler;
@@ -29,7 +31,7 @@ final class RecordStationMessageCommandHandlerTest extends CommandHandlerScenari
     public function testExistingStationMessageCanBeUpdated(): void
     {
         $this->scenario
-            ->withAggregateId(new MessageID('12345'))
+            ->withAggregateId((string) new MessageID('12345'))
             ->given([
                 new MessageWasAdded(
                     new MessageID('12345'),

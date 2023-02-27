@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\RealTimeIncidents\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\CommandHandler;
@@ -30,7 +32,7 @@ final class RemoveIncidentCommandHandlerTest extends CommandHandlerScenarioTestC
         </ns3:Description><ns3:InfoLinks><ns3:InfoLink><ns3:Uri>https://www.nationalrail.co.uk/service_disruptions/317211.aspx</ns3:Uri><ns3:Label>nationalrail.co.uk</ns3:Label></ns3:InfoLink></ns3:InfoLinks><ns3:Affects><ns3:Operators><ns3:AffectedOperator><ns3:OperatorRef>TL</ns3:OperatorRef><ns3:OperatorName>Thameslink</ns3:OperatorName></ns3:AffectedOperator></ns3:Operators><ns3:RoutesAffected>&lt;p&gt;between London St Pancras International and St Albans&lt;/p&gt;</ns3:RoutesAffected></ns3:Affects><ns3:ClearedIncident>false</ns3:ClearedIncident><ns3:IncidentPriority>2</ns3:IncidentPriority></uk.co.nationalrail.xml.incident.PtIncidentStructure>';
 
         $this->scenario
-            ->withAggregateId($incidentID)
+            ->withAggregateId((string) $incidentID)
             ->given([new IncidentWasAdded($incidentID, IncidentMessageStatus::new(), new Body($content))])
             ->when(new RemoveIncident($incidentID, IncidentMessageStatus::removed()))
             ->then([new IncidentWasRemoved($incidentID, IncidentMessageStatus::removed())]);

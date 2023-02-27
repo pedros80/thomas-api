@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\Boards\Framework;
 
 use Illuminate\Support\ServiceProvider;
@@ -55,17 +57,17 @@ final class BoardsServiceProvider extends ServiceProvider
 
     private function bindBoardQueries(): void
     {
-        $this->app->bind(
+        $queries = [
             GetStationBoardArrivals::class,
-            fn () => new GetStationBoardArrivals($this->app->make(BoardService::class))
-        );
-        $this->app->bind(
             GetStationBoardDepartures::class,
-            fn () => new GetStationBoardDepartures($this->app->make(BoardService::class))
-        );
-        $this->app->bind(
             GetPlatformBoardDepartures::class,
-            fn () => new GetPlatformBoardDepartures($this->app->make(BoardService::class))
-        );
+        ];
+
+        foreach ($queries as $query) {
+            $this->app->bind(
+                $query,
+                fn () => new $query($this->app->make(BoardService::class))
+            );
+        }
     }
 }

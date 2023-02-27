@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\RealTimeIncidents\Domain\Entities;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
@@ -59,7 +61,6 @@ final class Incident extends EventSourcedAggregateRoot
             )
         );
     }
-
 
     public function applyIncidentWasAdded(IncidentWasAdded $event): void
     {

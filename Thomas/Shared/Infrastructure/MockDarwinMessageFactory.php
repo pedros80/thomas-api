@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\Shared\Infrastructure;
 
 use Pedros80\NREphp\Params\StationCode;

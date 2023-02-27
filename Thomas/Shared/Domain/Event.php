@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\Shared\Domain;
 
 use Illuminate\Contracts\Support\Arrayable;

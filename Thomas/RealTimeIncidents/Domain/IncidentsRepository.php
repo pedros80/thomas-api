@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\RealTimeIncidents\Domain;
 
 use Thomas\RealTimeIncidents\Domain\Entities\Incident;

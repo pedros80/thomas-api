@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\Stations\Domain\Events;
 
 use Thomas\Shared\Domain\Event;

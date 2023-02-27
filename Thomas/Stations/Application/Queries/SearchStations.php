@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\Stations\Application\Queries;
 
 use Thomas\Stations\Domain\StationService;

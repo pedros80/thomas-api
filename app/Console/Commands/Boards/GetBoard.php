@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands\Boards;
 
 use Illuminate\Console\Command;
@@ -31,8 +33,7 @@ final class GetBoard extends Command
     private function getStation(): string
     {
         $station = $this->argument('station') ?: $this->ask('Which Station?');
-        $station = is_array($station) ? $station[0] : $station;
 
-        return $station;
+        return is_array($station) ? $station[0] : $station;
     }
 }

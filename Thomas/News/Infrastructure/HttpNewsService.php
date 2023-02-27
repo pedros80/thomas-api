@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\News\Infrastructure;
 
 use GuzzleHttp\Client;
@@ -33,6 +35,7 @@ final class HttpNewsService implements NewsService
 
     private function xml(): SimpleXMLElement
     {
+        // @todo - catch client exceptions; try again or something?
         return new SimpleXMLElement($this->client->get('')->getBody()->getContents());
     }
 }

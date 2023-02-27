@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\Stations\Domain\Entities;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
@@ -41,7 +43,7 @@ final class MessageTest extends AggregateRootScenarioTestCase
     public function testCanRemoveExistingMessage(): void
     {
         $this->scenario
-            ->withAggregateId(new MessageID('12345'))
+            ->withAggregateId((string) new MessageID('12345'))
             ->given([
                 new MessageWasAdded(
                     new MessageID('12345'),
@@ -58,7 +60,7 @@ final class MessageTest extends AggregateRootScenarioTestCase
     public function testCanUpdateMessage(): void
     {
         $this->scenario
-            ->withAggregateId(new MessageID('12345'))
+            ->withAggregateId((string) new MessageID('12345'))
             ->given([
                 new MessageWasAdded(
                     new MessageID('12345'),

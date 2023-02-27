@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\Boards\Infrastructure;
 
 use PHPUnit\Framework\TestCase;

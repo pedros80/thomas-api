@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\App\Console\Commands\Users;
 
 use Illuminate\Testing\PendingCommand;

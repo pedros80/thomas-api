@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\RealTimeIncidents\Domain\Entities;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
@@ -49,7 +51,7 @@ final class IncidentTest extends AggregateRootScenarioTestCase
     public function testCanUpdateIncident(): void
     {
         $this->scenario
-            ->withAggregateId($this->incidentID)
+            ->withAggregateId((string) $this->incidentID)
             ->given([
                 new IncidentWasAdded(
                     $this->incidentID,
@@ -72,7 +74,7 @@ final class IncidentTest extends AggregateRootScenarioTestCase
     public function testCanRemoveIncident(): void
     {
         $this->scenario
-            ->withAggregateId($this->incidentID)
+            ->withAggregateId((string) $this->incidentID)
             ->given([
                 new IncidentWasAdded(
                     $this->incidentID,

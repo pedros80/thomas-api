@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\Users\Domain\Entities;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
@@ -35,7 +37,7 @@ final class UserTest extends AggregateRootScenarioTestCase
         $name   = new Name('Peter Somerville');
 
         $this->scenario
-            ->withAggregateId($email)
+            ->withAggregateId((string) $email)
             ->given([new UserWasAdded($email, $name, $userId)])
             ->when(fn (User $user) => $user->remove())
             ->then([new UserWasRemoved($email, $userId)]);

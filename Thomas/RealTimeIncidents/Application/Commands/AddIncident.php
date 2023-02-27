@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\RealTimeIncidents\Application\Commands;
 
 use Thomas\RealTimeIncidents\Domain\Body;

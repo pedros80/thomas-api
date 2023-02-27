@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\Shared\Infrastructure;
 
 use Aws\DynamoDb\DynamoDbClient;

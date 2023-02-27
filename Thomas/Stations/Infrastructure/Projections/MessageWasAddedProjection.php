@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\Stations\Infrastructure\Projections;
 
 use Thomas\Shared\Infrastructure\InteractsWithDynamoDb;

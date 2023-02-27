@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\RealTimeIncidents\Framework;
 
 use Aws\DynamoDb\DynamoDbClient;

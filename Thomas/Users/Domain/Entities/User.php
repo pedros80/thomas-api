@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\Users\Domain\Entities;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;

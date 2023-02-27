@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\ServiceIndicator\Application\Queries;
 
 use Thomas\ServiceIndicator\Domain\ServiceIndicatorService;

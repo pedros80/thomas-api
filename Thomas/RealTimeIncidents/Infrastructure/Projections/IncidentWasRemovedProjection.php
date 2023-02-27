@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thomas\RealTimeIncidents\Infrastructure\Projections;
 
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasRemoved;

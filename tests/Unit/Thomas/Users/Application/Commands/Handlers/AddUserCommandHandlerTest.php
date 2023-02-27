@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\Users\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\CommandHandler;
@@ -33,7 +35,7 @@ final class AddUserCommandHandlerTest extends CommandHandlerScenarioTestCase
         $command = new AddUser($email, $name, $userId);
 
         $this->scenario
-            ->withAggregateId($email)
+            ->withAggregateId((string) $email)
             ->given([new UserWasAdded($email, $name, $userId)])
             ->when($command);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Thomas\Stations\Application\Commands;
 
 use PHPUnit\Framework\TestCase;
