@@ -14,7 +14,7 @@ final class BroadwayRepositoryTest extends TestCase
     public function testIncidentCantBeFoundThrowsException(): void
     {
         $this->expectException(IncidentNotFound::class);
-        $this->expectExceptionMessage('Incident D85AA5FB1954428C84A2F636014C2A4A not found.');
+        $this->expectExceptionMessage("Incident 'D85AA5FB1954428C84A2F636014C2A4A' not found.");
 
         $repo = new BroadwayRepository(
             new InMemoryEventStore(),
