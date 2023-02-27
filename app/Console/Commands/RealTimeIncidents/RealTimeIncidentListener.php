@@ -74,7 +74,7 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
 
                     return;
                 }
-                $wait = $this->tries * self::WAIT;
+                $wait = $this->tries * 1000 * 60;
                 $this->info("<error>HeartBeatException: waiting for {$wait}ms</error>");
                 usleep($wait);
                 $this->tries *= 2;

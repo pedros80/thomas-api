@@ -33,7 +33,7 @@ class BroadwayRepository extends EventSourcingRepository implements UsersReposit
             $user = parent::load((string) $id);
 
             return $user;
-        } catch (AggregateNotFoundException | EventStreamNotFound) { // @todo - catch this exception in all repos; remove from command handlers?
+        } catch (AggregateNotFoundException | EventStreamNotFound) {
             throw UserNotFound::fromEmail($id);
         }
     }

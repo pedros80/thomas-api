@@ -73,7 +73,7 @@ final class UserControllerTest extends TestCase
             'email' => $email,
         ], $this->getHeaders());
 
-        $response->assertStatus(404)->assertJson(['success' => false])->assertJson(['errors' => "User Not Found: {$email}"]);
+        $response->assertStatus(404)->assertJson(['success' => false])->assertJson(['errors' => "User Not Found: '{$email}'"]);
     }
 
     public function testRemoveInvalidEmailThrowsException(): void

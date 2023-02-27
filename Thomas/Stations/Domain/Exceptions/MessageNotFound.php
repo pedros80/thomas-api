@@ -16,6 +16,6 @@ final class MessageNotFound extends Exception
 
     public static function fromId(MessageID $id): MessageNotFound
     {
-        return new MessageNotFound("Message {$id} not found.");
+        return new MessageNotFound("Message '{$id}' not found.");
     }
 }

@@ -4,7 +4,6 @@ namespace Thomas\Stations\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\SimpleCommandHandler;
 use Thomas\Shared\Application\CommandHandler;
-use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Stations\Application\Commands\RecordStationMessage;
 use Thomas\Stations\Domain\Entities\Message;
 use Thomas\Stations\Domain\Exceptions\MessageNotFound;
@@ -30,7 +29,7 @@ final class RecordStationMessageCommandHandler extends SimpleCommandHandler impl
             );
 
             $this->messages->save($message);
-        } catch (EventStreamNotFound | MessageNotFound) {
+        } catch (MessageNotFound) {
             $message = Message::add(
                 $command->id(),
                 $command->category(),

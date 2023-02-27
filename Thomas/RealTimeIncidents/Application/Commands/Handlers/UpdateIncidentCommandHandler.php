@@ -7,7 +7,6 @@ use Thomas\RealTimeIncidents\Application\Commands\UpdateIncident;
 use Thomas\RealTimeIncidents\Domain\Entities\Incident;
 use Thomas\RealTimeIncidents\Domain\Exceptions\IncidentNotFound;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
-use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 
 final class UpdateIncidentCommandHandler extends IncidentCommandHandler
 {
@@ -15,7 +14,7 @@ final class UpdateIncidentCommandHandler extends IncidentCommandHandler
     {
         try {
             $incident = $this->incidents->find($command->id());
-        } catch (EventStreamNotFound | IncidentNotFound) {
+        } catch (IncidentNotFound) {
             // maybe we're picking up a modify event for an incident we've missed...
 
             $incident = Incident::add(

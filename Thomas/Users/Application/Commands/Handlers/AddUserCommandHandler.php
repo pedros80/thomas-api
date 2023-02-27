@@ -4,7 +4,6 @@ namespace Thomas\Users\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\SimpleCommandHandler;
 use Thomas\Shared\Application\CommandHandler;
-use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Users\Application\Commands\AddUser;
 use Thomas\Users\Domain\Entities\User;
 use Thomas\Users\Domain\Exceptions\EmailAlreadyAdded;
@@ -24,7 +23,7 @@ final class AddUserCommandHandler extends SimpleCommandHandler implements Comman
             $this->users->find($command->email());
 
             throw EmailAlreadyAdded::fromEmail($command->email());
-        } catch (EventStreamNotFound | UserNotFound) {
+        } catch (UserNotFound) {
             $user = User::add(
                 $command->email(),
                 $command->name(),

@@ -16,6 +16,6 @@ final class IncidentNotFound extends Exception
 
     public static function fromId(IncidentID $id): IncidentNotFound
     {
-        return new IncidentNotFound("Incident {$id} not found.");
+        return new IncidentNotFound("Incident '{$id}' not found.");
     }
 }

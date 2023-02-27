@@ -24,7 +24,7 @@ final class UserResolverTest extends TestCase
     public function testJWTForUnknownUserThrowsException(): void
     {
         $this->expectException(UserNotFound::class);
-        $this->expectExceptionMessage('User Not Found: peterwsomerville+404@gmail.com');
+        $this->expectExceptionMessage("User Not Found: 'peterwsomerville+404@gmail.com'");
 
         /** @var UserResolver $resolver */
         $resolver = app(UserResolver::class);

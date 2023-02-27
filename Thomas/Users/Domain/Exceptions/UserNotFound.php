@@ -16,6 +16,6 @@ final class UserNotFound extends Exception
 
     public static function fromEmail(Email $email): UserNotFound
     {
-        return new UserNotFound("User Not Found: {$email}");
+        return new UserNotFound("User Not Found: '{$email}'");
     }
 }

@@ -75,11 +75,14 @@ final class DarwinListener extends Command implements SignalableCommandInterface
 
                     return;
                 }
-                $wait = $this->tries * self::WAIT;
+                $wait = $this->tries * 1000 * 60;
                 $this->info("<error>HeartBeatException: waiting for {$wait}ms</error>");
                 usleep($wait);
                 $this->tries *= 2;
             }
+
+            // @todo - Catch Stomp\Exception\ConnectionException
+            // Was not possible to read data from stream. <- what's that mean?
         }
     }
 }

@@ -4,7 +4,6 @@ namespace Thomas\Users\Infrastructure;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Entities\User;
 use Thomas\Users\Domain\Exceptions\InvalidJWT;
@@ -33,7 +32,7 @@ final class UserResolver
             $user = $this->users->find($email);
 
             return $user;
-        } catch (EventStreamNotFound | UserNotFound) {
+        } catch (UserNotFound) {
             throw UserNotFound::fromEmail($email);
         }
     }

@@ -26,7 +26,7 @@ final class RemoveUserCommandHandlerTest extends CommandHandlerScenarioTestCase
     public function testRemovingUnknownUserThrowsException(): void
     {
         $this->expectException(UserNotFound::class);
-        $this->expectExceptionMessage('User Not Found: peterwsomerville@gmail.com'); // @todo - quotes in exceptions 'email' etc...
+        $this->expectExceptionMessage("User Not Found: 'peterwsomerville@gmail.com'");
 
         $email   = new Email('peterwsomerville@gmail.com');
         $command = new RemoveUser($email);

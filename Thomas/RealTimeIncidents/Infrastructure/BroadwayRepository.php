@@ -12,6 +12,7 @@ use Thomas\RealTimeIncidents\Domain\Entities\Incident;
 use Thomas\RealTimeIncidents\Domain\Exceptions\IncidentNotFound;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentsRepository;
+use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 
 class BroadwayRepository extends EventSourcingRepository implements IncidentsRepository
 {
@@ -32,7 +33,7 @@ class BroadwayRepository extends EventSourcingRepository implements IncidentsRep
             $incident = parent::load($id);
 
             return $incident;
-        } catch (AggregateNotFoundException) {
+        } catch (AggregateNotFoundException | EventStreamNotFound) {
             throw IncidentNotFound::fromId($id);
         }
     }
