@@ -36,7 +36,7 @@ final class StationMessagesCommandsTest extends TestCase
                         '123606',
                         'Train',
                         'minor',
-                        'Message Message Message Message',
+                        'The lifts are out of order between Platforms 1 and 2 and the footbridge at St Neots station.',
                         $name
                     ],
                 ]

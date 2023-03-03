@@ -53,14 +53,20 @@ final class RealTimeIncidentsServiceProvider extends ServiceProvider
 
     private function bindQueries(): void
     {
-        $this->app->bind(
-            GetIncidents::class,
-            fn () => new DynamoDbGetIncidents(
-                $this->app->make(DynamoDbClient::class),
-                $this->app->make(Marshaler::class),
-                config('nosql.tables.thomas_table')
-            )
-        );
+        $queries = [
+            GetIncidents::class => DynamoDbGetIncidents::class,
+        ];
+
+        foreach ($queries as $interface => $concrete) {
+            $this->app->bind(
+                $interface,
+                fn () => new $concrete(
+                    $this->app->make(DynamoDbClient::class),
+                    $this->app->make(Marshaler::class),
+                    config('nosql.tables.thomas_table')
+                )
+            );
+        }
     }
 
     private function bindRealTimeIncidentsBroker(): void

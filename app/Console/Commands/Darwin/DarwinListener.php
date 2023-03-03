@@ -19,7 +19,7 @@ final class DarwinListener extends Command implements SignalableCommandInterface
     private bool $run = true;
 
     private int $tries = 1;
-    private const WAIT = 100000;
+    private const WAIT = 10000;
 
     private PushPortBroker $broker;
 
@@ -52,24 +52,30 @@ final class DarwinListener extends Command implements SignalableCommandInterface
         $this->run = false;
     }
 
+    private function listen(): void
+    {
+        while ($this->run) {
+            $message = $this->broker->read();
+            if ($message instanceof Frame) {
+                if ($message['type'] === 'terminate') {
+                    $this->info('<comment>Received shutdown command</comment>');
+
+                    return;
+                }
+                $this->router->route($message);
+                $this->broker->ack($message);
+            }
+            usleep(self::WAIT);
+        }
+    }
+
     public function handle(PushPortBroker $broker): void
     {
         $this->broker = $broker;
 
         while ($this->run) {
             try {
-                $message = $this->broker->read();
-                if ($message instanceof Frame) {
-                    if ($message['type'] === 'terminate') {
-                        $this->info('<comment>Received shutdown command</comment>');
-
-                        return;
-                    }
-
-                    $this->router->route($message);
-                    $this->broker->ack($message);
-                }
-                usleep(self::WAIT);
+                $this->listen();
             } catch (HeartbeatException) {
                 if ($this->tries / 2 >= 6) {
                     $this->info("<error>Too many HeartBeatExceptions: disconnecting...");
@@ -77,14 +83,13 @@ final class DarwinListener extends Command implements SignalableCommandInterface
 
                     return;
                 }
-                $wait = $this->tries * 1000 * 60;
-                $this->info("<error>HeartBeatException: waiting for {$wait}ms</error>");
-                usleep($wait);
                 $this->tries *= 2;
+                $wait = $this->tries * 60;
+                $this->info(date('Y-m-d H:i:s'));
+                $this->info("<error>HeartBeatException: waiting for {$wait}ms</error>");
+                sleep($wait);
+                $this->info(date('Y-m-d H:i:s'));
             }
-
-            // @todo - Catch Stomp\Exception\ConnectionException
-            // Was not possible to read data from stream. <- what's that mean?
         }
     }
 }

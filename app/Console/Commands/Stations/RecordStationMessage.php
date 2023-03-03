@@ -10,7 +10,7 @@ use Thomas\Shared\Infrastructure\MockDarwinMessageFactory;
 
 final class RecordStationMessage extends Command
 {
-    protected $signature   = 'stations:add-message';
+    protected $signature   = 'stations:add-message {numStations? : How many stations?}';
     protected $description = 'Record a station message';
 
     public function handle(DarwinMessageRouter $router): void
@@ -24,7 +24,7 @@ final class RecordStationMessage extends Command
 
     private function getNumberOfStations(): int
     {
-        $stations = $this->ask('How many Stations to include in message?', '0');
+        $stations = $this->argument('numStations') ?: $this->ask('How many Stations to include in message?', '0');
 
         $stations = is_array($stations) ? $stations[0] : $stations;
 

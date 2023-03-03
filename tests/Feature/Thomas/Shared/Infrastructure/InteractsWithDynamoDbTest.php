@@ -14,7 +14,7 @@ final class InteractsWithDynamoDbTest extends TestCase
     {
         /** @var DarwinMessageRouter $router */
         $router  = app(DarwinMessageRouter::class);
-        $message = MockDarwinMessageFactory::stationMessage(120);
+        $message = MockDarwinMessageFactory::stationMessage(120, 3);
         $router->route($message);
         $router->route($message);
 

@@ -50,6 +50,8 @@ final class HttpBoardService implements BoardService
     {
         $data = $this->client->$method($this->numRows, strtoupper($station));
 
+        $data->operators = $this->getOperators($data);
+
         return $this->clean($data);
     }
 
@@ -83,5 +85,21 @@ final class HttpBoardService implements BoardService
         }
 
         return $data;
+    }
+
+    private function getOperators(stdClass $board): array
+    {
+        if (!isset($board->GetStationBoardResult->trainServices)) {
+            return [];
+        }
+
+        $operators = [];
+        foreach ($board->GetStationBoardResult->trainServices->service as $service) {
+            $operators[] = $service->operatorCode;
+        }
+
+        $operators = array_unique($operators);
+
+        return $operators;
     }
 }

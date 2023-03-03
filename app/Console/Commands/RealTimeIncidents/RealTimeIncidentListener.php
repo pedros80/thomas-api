@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands\RealTimeIncidents;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Pedros80\NREphp\Services\RealTimeIncidentsBroker;
 use Stomp\Network\Observer\Exception\HeartbeatException;
 use Stomp\Transport\Frame;
@@ -19,7 +20,7 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
     private bool $run = true;
 
     private int $tries = 1;
-    private const WAIT = 100000;
+    private const WAIT = 10000;
 
     private RealTimeIncidentsBroker $broker;
 
@@ -52,23 +53,30 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
         $this->run = false;
     }
 
+    private function listen(): void
+    {
+        while ($this->run) {
+            $message = $this->broker->read();
+            if ($message instanceof Frame) {
+                if ($message['type'] === 'terminate') {
+                    $this->info('<comment>Received shutdown command</comment>');
+
+                    return;
+                }
+                $this->router->route($message);
+                $this->broker->ack($message);
+            }
+            usleep(self::WAIT);
+        }
+    }
+
     public function handle(RealTimeIncidentsBroker $broker): void
     {
         $this->broker = $broker;
 
         while ($this->run) {
             try {
-                $message = $this->broker->read();
-                if ($message instanceof Frame) {
-                    if ($message['type'] === 'terminate') {
-                        $this->info('<comment>Received shutdown command</comment>');
-
-                        return;
-                    }
-                    $this->router->route($message);
-                    $this->broker->ack($message);
-                }
-                usleep(self::WAIT);
+                $this->listen();
             } catch (HeartbeatException) {
                 if ($this->tries / 2 >= 6) {
                     $this->info("<error>Too many HeartBeatExceptions: disconnecting...");
@@ -76,10 +84,12 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
 
                     return;
                 }
-                $wait = $this->tries * 1000 * 60;
-                $this->info("<error>HeartBeatException: waiting for {$wait}ms</error>");
-                usleep($wait);
                 $this->tries *= 2;
+                $wait = $this->tries * 60;
+                $this->info(date('Y-m-d H:i:s'));
+                $this->info("<error>HeartBeatException: waiting for {$wait}ms</error>");
+                $this->info(date('Y-m-d H:i:s'));
+                sleep($wait);
             }
         }
     }

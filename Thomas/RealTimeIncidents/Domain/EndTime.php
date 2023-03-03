@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Thomas\News\Domain;
+namespace Thomas\RealTimeIncidents\Domain;
 
 use Thomas\Shared\Domain\Date;
 
-final class DatePublished extends Date
+final class EndTime extends Date
 {
     //
 }

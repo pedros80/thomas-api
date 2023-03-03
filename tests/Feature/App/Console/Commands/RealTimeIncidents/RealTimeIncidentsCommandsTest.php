@@ -34,11 +34,12 @@ final class RealTimeIncidentsCommandsTest extends TestCase
         /** @var PendingCommand $command */
         $command = $this->artisan('rti:get');
         $command
-            ->expectsTable(['ID', 'STATUS', 'SUMMARY'], [
+            ->expectsTable(['ID', 'STATUS', 'SUMMARY', 'OPERATORS'], [
                 [
                     'D85AA5FB1954428C84A2F636014C2A4A',
                     'NEW',
-                    'Delays between London St Pancras International and St Albans expected until 11:30'
+                    'Delays between London St Pancras International and St Albans expected until 11:30',
+                    'TL'
                 ]
             ])
             ->assertSuccessful();

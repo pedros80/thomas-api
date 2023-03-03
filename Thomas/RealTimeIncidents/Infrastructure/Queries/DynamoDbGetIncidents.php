@@ -13,17 +13,28 @@ use Thomas\Shared\Infrastructure\InteractsWithDynamoDb;
 
 final class DynamoDbGetIncidents extends InteractsWithDynamoDb implements GetIncidents
 {
-    public function get(): array
+    public function get(array $operators = []): array
     {
-        return array_map(
+        $incidents = array_map(
             fn (array $item) => $this->itemToIncident($item),
             $this->getItemsRecursively([
                 'TableName'                 => $this->tableName,
                 'IndexName'                 => 'SKe',
-                'KeyConditionExpression'    => "#SKe=:SKe",
+                'KeyConditionExpression'    => '#SKe=:SKe',
                 'ExpressionAttributeNames'  => ['#SKe' => 'SKe'],
                 'ExpressionAttributeValues' => [':SKe' => ['S' => 'RTI']],
             ])
+        );
+
+        if (!$operators) {
+            return $incidents;
+        }
+
+        return array_values(
+            array_filter(
+                $incidents,
+                fn (Incident $incident) => array_intersect($incident->body()?->operators() ?: [], $operators)
+            )
         );
     }
 

@@ -111,14 +111,16 @@ final class HttpBoardServiceTest extends TestCase
                 'trainServices'     => [
                     'service' => [
                         [
-                            'std'      => '00:22',
-                            'etd'      => 'On time',
-                            'platform' => '1',
+                            'std'          => '00:22',
+                            'etd'          => 'On time',
+                            'platform'     => '1',
+                            'operatorCode' => 'SR',
                         ],
                         [
-                            'std'      => '00:22',
-                            'etd'      => 'On time',
-                            'platform' => '2',
+                            'std'          => '00:22',
+                            'etd'          => 'On time',
+                            'platform'     => '2',
+                            'operatorCode' => 'SR',
                         ],
                     ],
                 ],
@@ -150,14 +152,16 @@ final class HttpBoardServiceTest extends TestCase
                 'trainServices'     => [
                     'service' => [
                         [
-                            'std'      => '00:22',
-                            'etd'      => 'On time',
-                            'platform' => '1',
+                            'std'          => '00:22',
+                            'etd'          => 'On time',
+                            'platform'     => '1',
+                            'operatorCode' => 'SR',
                         ],
                         [
-                            'std'      => '00:22',
-                            'etd'      => 'On time',
-                            'platform' => '2',
+                            'std'          => '00:22',
+                            'etd'          => 'On time',
+                            'platform'     => '2',
+                            'operatorCode' => 'SR',
                         ],
                     ],
                 ],
@@ -189,14 +193,17 @@ final class HttpBoardServiceTest extends TestCase
                 'trainServices'     => [
                     'service' => [
                         [
-                            'sta'      => '00:22',
-                            'eta'      => 'On time',
-                            'platform' => '1',
+                            'sta'          => '00:22',
+                            'eta'          => 'On time',
+                            'platform'     => '1',
+                            'operatorCode' => 'SR',
+
                         ],
                         [
-                            'sta'      => '00:22',
-                            'eta'      => 'On time',
-                            'platform' => '2',
+                            'sta'          => '00:22',
+                            'eta'          => 'On time',
+                            'platform'     => '2',
+                            'operatorCode' => 'SR',
                         ],
                     ],
                 ],

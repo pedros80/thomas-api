@@ -27,16 +27,16 @@ final class MockDarwinMessageFactory
                 ts="2023-02-08T23:15:40.9166875Z"
                 version="16.0">
                 <uR updateOrigin="Workstation">
-                    <OW id="123606" cat="Train" sev="1">
+                    <OW id="123606" cat="Train" sev="{{SEVERITY}}">
                         {{STATIONS}}
                         <ns7:Msg>
-                            Message Message Message Message
+                            The lifts are out of order between Platforms 1 and 2 and the footbridge at St Neots station.
                         </ns7:Msg>
                     </OW>
                 </uR>
             </Pport>';
 
-    public static function stationMessage(int $num=0): Frame
+    public static function stationMessage(int $num=0, int $severity=1): Frame
     {
         $stations = array_slice(
             array_map(
@@ -48,6 +48,7 @@ final class MockDarwinMessageFactory
         );
 
         $content = str_replace('{{STATIONS}}', implode("\n", $stations), self::STATION_MESSAGE);
+        $content = str_replace('{{SEVERITY}}', (string) $severity, $content);
 
         $body = gzencode($content);
         $body = $body !== false ? $body : $content;

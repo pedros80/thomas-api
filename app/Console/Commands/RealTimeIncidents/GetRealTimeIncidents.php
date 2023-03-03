@@ -16,12 +16,13 @@ final class GetRealTimeIncidents extends Command
     public function handle(GetIncidents $query): void
     {
         $this->table(
-            ['ID', 'STATUS', 'SUMMARY'],
+            ['ID', 'STATUS', 'SUMMARY', "OPERATORS"],
             array_map(function (Incident $incident) {
                 return [
                     $incident->id(),
                     $incident->status(),
                     $incident->body()?->summary(),
+                    implode(', ', $incident->body()?->operators()),
                 ];
             }, $query->get())
         );

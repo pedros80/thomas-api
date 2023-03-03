@@ -6,6 +6,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Thomas\RealTimeIncidents\Domain\Exceptions\IncidentNotFound;
+use Thomas\Stations\Domain\Exceptions\MessageNotFound;
+use Thomas\Users\Domain\Exceptions\InvalidJWT;
 use Thomas\Users\Domain\Exceptions\UserNotFound;
 use Throwable;
 
@@ -55,8 +58,11 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e): JsonResponse
     {
         $code = match (get_class($e)) {
-            UserNotFound::class => 404,
-            default             => 400
+            InvalidJWT::class       => 401,
+            UserNotFound::class     => 404,
+            IncidentNotFound::class => 404,
+            MessageNotFound::class  => 404,
+            default                 => 400
         };
 
         return new JsonResponse(

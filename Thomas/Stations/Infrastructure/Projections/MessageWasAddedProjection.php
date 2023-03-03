@@ -12,7 +12,7 @@ final class MessageWasAddedProjection extends InteractsWithDynamoDb
     public function applyMessageWasAdded(MessageWasAdded $event): void
     {
         foreach ($event->stations() as $station) {
-            if ($event->severity()->toInt() > 0 && (string) $event->body()) {
+            if ((string) $event->body()) {
                 $item = [
                     'PK'       => (string) $event->id(),
                     'SKe'      => "SM:{$station->toArray()['code']}",

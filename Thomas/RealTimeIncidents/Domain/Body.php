@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomas\RealTimeIncidents\Domain;
 
-use DateTimeImmutable;
 use JsonSerializable;
 use SimpleXMLElement;
 
@@ -25,22 +24,66 @@ final class Body implements JsonSerializable
 
     public function summary(): string
     {
-        return trim((string) $this->xml->children('ns3', true)->Summary);
+        return $this->getAttribute('//ns3:Summary') ?: '';
     }
 
     public function description(): string
     {
-        return trim((string) $this->xml->children('ns3', true)->Description);
+        return $this->getAttribute('//ns3:Description') ?: '';
     }
 
-    public function creationTime(): DateTimeImmutable
+    public function creationTime(): ?CreationTime
     {
-        return $this->getDate('CreationTime');
+        $attribute = $this->getAttribute('//ns3:CreationTime');
+
+        return $attribute ? CreationTime::fromString($attribute) : null;
     }
 
-    public function lastChanged(): DateTimeImmutable
+    public function lastChanged(): ?LastChangedDate
     {
-        return $this->getDate('LastChangedDate', 'ns2');
+        $attribute = $this->getAttribute('//ns3:ChangeHistory//ns2:LastChangedDate');
+
+        return $attribute ? LastChangedDate::fromString($attribute) : null;
+    }
+
+    public function startTime(): ?StartTime
+    {
+        $attribute = $this->getAttribute('//ns3:ValidityPeriod//ns2:StartTime');
+
+        return $attribute ? StartTime::fromString($attribute) : null;
+    }
+
+    public function endTime(): ?EndTime
+    {
+        $attribute = $this->getAttribute('//ns3:ValidityPeriod//ns2:EndTime');
+
+        return $attribute ? EndTime::fromString($attribute) : null;
+    }
+
+    public function cleared(): bool
+    {
+        $attribute = $this->getAttribute('//ns3:ClearedIncident');
+
+        return $attribute === 'true';
+    }
+
+    public function planned(): bool
+    {
+        $attribute = $this->getAttribute('//ns3:Planned');
+
+        return $attribute === 'true';
+    }
+
+    public function operators(): array
+    {
+        $nodes = (array) $this->xml->xpath('//ns3:Affects//ns3:Operators//ns3:AffectedOperator//ns3:OperatorRef');
+
+        $out = [];
+        foreach ($nodes as $node) {
+            $out[] = (string) $node;
+        }
+
+        return $out;
     }
 
     public function toArray(): array
@@ -48,8 +91,13 @@ final class Body implements JsonSerializable
         return [
             'summary'      => $this->summary(),
             'description'  => $this->description(),
-            'creationTime' => $this->creationTime()->format('Y-m-d H:i:s'),
-            'lastChanged'  => $this->lastChanged()->format('Y-m-d H:i:s'),
+            'creationTime' => $this->creationTime()?->format('Y-m-d H:i:s'),
+            'lastChanged'  => $this->lastChanged()?->format('Y-m-d H:i:s'),
+            'startTime'    => $this->startTime()?->format('Y-m-d H:i:s'),
+            'endTime'      => $this->endTime()?->format('Y-m-d H:i:s'),
+            'cleared'      => $this->cleared(),
+            'planned'      => $this->planned(),
+            'operators'    => $this->operators(),
         ];
     }
 
@@ -58,10 +106,14 @@ final class Body implements JsonSerializable
         return $this->toArray();
     }
 
-    private function getDate(string $attribute, string $namespace = 'ns3'): DateTimeImmutable
+    private function getAttribute(string $xpath): ?string
     {
-        $date = trim((string) $this->xml->children($namespace, true)->$attribute);
+        $attribute = $this->xml->xpath($xpath);
 
-        return new DateTimeImmutable($date);
+        if ($attribute) {
+            return trim((string) $attribute[0]);
+        }
+
+        return null;
     }
 }

@@ -6,5 +6,5 @@ namespace Thomas\RealTimeIncidents\Application\Queries;
 
 interface GetIncidents
 {
-    public function get(): array;
+    public function get(array $operators = []): array;
 }
