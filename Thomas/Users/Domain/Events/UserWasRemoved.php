@@ -6,13 +6,15 @@ namespace Thomas\Users\Domain\Events;
 
 use Thomas\Shared\Domain\Event;
 use Thomas\Users\Domain\Email;
+use Thomas\Users\Domain\RemovedAt;
 use Thomas\Users\Domain\UserId;
 
 final class UserWasRemoved extends Event
 {
     public function __construct(
         private Email $email,
-        private UserId $userId
+        private UserId $userId,
+        private RemovedAt $removedAt
     ) {
     }
 
@@ -26,11 +28,17 @@ final class UserWasRemoved extends Event
         return $this->userId;
     }
 
+    public function removedAt(): RemovedAt
+    {
+        return $this->removedAt;
+    }
+
     public function toArray(): array
     {
         return [
-            'email'  => (string) $this->email,
-            'userId' => (string) $this->userId,
+            'email'     => (string) $this->email,
+            'userId'    => (string) $this->userId,
+            'removedAt' => (string) $this->removedAt,
         ];
     }
 
@@ -40,7 +48,8 @@ final class UserWasRemoved extends Event
 
         return new UserWasRemoved(
             new Email($payload->email),
-            new UserId($payload->userId)
+            new UserId($payload->userId),
+            RemovedAt::fromString($payload->removedAt)
         );
     }
 }

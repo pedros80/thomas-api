@@ -22,9 +22,14 @@ final class AddUserCommandHandler extends SimpleCommandHandler implements Comman
     public function handleAddUser(AddUser $command): void
     {
         try {
-            $this->users->find($command->email());
+            $user = $this->users->find($command->email());
 
-            throw EmailAlreadyAdded::fromEmail($command->email());
+            if (!$user->removedAt()) {
+                throw EmailAlreadyAdded::fromEmail($command->email());
+            }
+
+            $user->reinstate($command->name(), $command->userId());
+            $this->users->save($user);
         } catch (UserNotFound) {
             $user = User::add(
                 $command->email(),

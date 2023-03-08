@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Darwin;
 
+use Exception;
 use Illuminate\Console\Command;
+use Pedros80\NREphp\Services\Broker;
 use Pedros80\NREphp\Services\PushPortBroker;
 use Stomp\Network\Observer\Exception\HeartbeatException;
 use Stomp\Transport\Frame;
@@ -18,10 +20,11 @@ final class DarwinListener extends Command implements SignalableCommandInterface
 
     private bool $run = true;
 
-    private int $tries = 1;
-    private const WAIT = 10000;
+    private int $backOff  = 1;
+    private int $numFails = 0;
+    private const WAIT    = 10000;
 
-    private PushPortBroker $broker;
+    private Broker $broker;
 
     public function __construct(
         private DarwinMessageRouter $router
@@ -76,19 +79,26 @@ final class DarwinListener extends Command implements SignalableCommandInterface
         while ($this->run) {
             try {
                 $this->listen();
-            } catch (HeartbeatException) {
-                if ($this->tries / 2 >= 6) {
-                    $this->info("<error>Too many HeartBeatExceptions: disconnecting...");
+            } catch (Exception $e) {
+                if (++$this->numFails > 10) {
+                    $this->error("Too many Exceptions: disconnecting...");
                     $this->shutdown();
 
                     return;
                 }
-                $this->tries *= 2;
-                $wait = $this->tries * 60;
-                $this->info(date('Y-m-d H:i:s'));
-                $this->info("<error>HeartBeatException: waiting for {$wait}ms</error>");
+
+                if (
+                    get_class($e) === HeartbeatException::class &&
+                    str_contains($e->getMessage(), 'Could not send heartbeat')
+                ) {
+                    $wait = 60 * 5; // wait 5 minutes
+                } else {
+                    $this->backOff *= 2;
+                    $wait = $this->backOff;
+                }
+
+                $this->error("{$e->getMessage()}: waiting for {$wait} secconds");
                 sleep($wait);
-                $this->info(date('Y-m-d H:i:s'));
             }
         }
     }

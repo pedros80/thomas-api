@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Users\Application\Commands\RemoveUser;
 use Thomas\Users\Domain\Email;
+use Thomas\Users\Domain\RemovedAt;
 
 final class RemoveUserByEmail extends Command
 {
@@ -17,7 +18,7 @@ final class RemoveUserByEmail extends Command
     public function handle(CommandBus $commandBus): void
     {
         $email = new Email($this->getEmail());
-        $commandBus->dispatch(new RemoveUser($email));
+        $commandBus->dispatch(new RemoveUser($email, RemovedAt::now()));
 
         $this->info("Command to delete {$email} has been dispatched");
     }

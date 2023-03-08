@@ -13,6 +13,7 @@ use Thomas\Users\Application\Commands\AddUser;
 use Thomas\Users\Application\Commands\RemoveUser;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Name;
+use Thomas\Users\Domain\RemovedAt;
 use Thomas\Users\Domain\UserId;
 
 final class UserController extends Controller
@@ -36,7 +37,8 @@ final class UserController extends Controller
     public function remove(RemoveUserRequest $request, CommandBus $commandBus): JsonResponse
     {
         $command = new RemoveUser(
-            new Email($request->email)
+            new Email($request->email),
+            RemovedAt::now()
         );
 
         $commandBus->dispatch($command);

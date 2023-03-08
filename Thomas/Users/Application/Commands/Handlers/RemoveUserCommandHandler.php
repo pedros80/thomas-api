@@ -20,7 +20,7 @@ final class RemoveUserCommandHandler extends SimpleCommandHandler implements Com
     {
         $user = $this->users->find($command->email());
 
-        $user->remove();
+        $user->remove($command->removedAt());
 
         $this->users->save($user);
     }

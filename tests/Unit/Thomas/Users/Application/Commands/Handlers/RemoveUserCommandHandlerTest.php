@@ -15,6 +15,7 @@ use Thomas\Users\Domain\Events\UserWasAdded;
 use Thomas\Users\Domain\Events\UserWasRemoved;
 use Thomas\Users\Domain\Exceptions\UserNotFound;
 use Thomas\Users\Domain\Name;
+use Thomas\Users\Domain\RemovedAt;
 use Thomas\Users\Domain\UserId;
 use Thomas\Users\Infrastructure\BroadwayRepository as InfrastructureBroadwayRepository;
 
@@ -30,8 +31,9 @@ final class RemoveUserCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->expectException(UserNotFound::class);
         $this->expectExceptionMessage("User Not Found: 'peterwsomerville@gmail.com'");
 
-        $email   = new Email('peterwsomerville@gmail.com');
-        $command = new RemoveUser($email);
+        $removedAt = RemovedAt::now();
+        $email     = new Email('peterwsomerville@gmail.com');
+        $command   = new RemoveUser($email, $removedAt);
 
         $this->scenario
             ->given([])
@@ -40,15 +42,16 @@ final class RemoveUserCommandHandlerTest extends CommandHandlerScenarioTestCase
 
     public function testExistingUserCanBeRemoved(): void
     {
-        $email   = new Email('peterwsomerville@gmail.com');
-        $userId  = UserId::generate();
-        $name    = new Name('Peter Somerville');
-        $command = new RemoveUser($email);
+        $email     = new Email('peterwsomerville@gmail.com');
+        $userId    = UserId::generate();
+        $name      = new Name('Peter Somerville');
+        $removedAt = RemovedAt::now();
+        $command   = new RemoveUser($email, $removedAt);
 
         $this->scenario
             ->withAggregateId((string) $email)
             ->given([new UserWasAdded($email, $name, $userId)])
             ->when($command)
-            ->then([new UserWasRemoved($email, $userId)]);
+            ->then([new UserWasRemoved($email, $userId, $removedAt)]);
     }
 }

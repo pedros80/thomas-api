@@ -112,6 +112,30 @@ final class UserControllerTest extends TestCase
         $response->assertStatus(200)->assertJson(['success' => true])->assertJson(['data' => 'Removed.']);
     }
 
+    public function testCanReinstateUser(): void
+    {
+        $faker = Factory::create();
+        $email = $faker->email;
+
+        $this->post('api/users', [
+            'email'  => $email,
+            'name'   => $faker->name(),
+            'userId' => (string) UserId::generate(),
+        ], $this->getHeaders());
+
+        $this->delete('api/users', [
+            'email' => $email,
+        ], $this->getHeaders());
+
+        $response = $this->post('api/users', [
+            'email'  => $email,
+            'name'   => $faker->name(),
+            'userId' => (string) UserId::generate()
+        ], $this->getHeaders());
+
+        $response->assertStatus(200)->assertJson(['success' => true])->assertJson(['data' => 'Added.']);
+    }
+
     private function getHeaders(): array
     {
         $time   = time();

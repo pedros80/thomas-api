@@ -27,4 +27,9 @@ abstract class Date
     {
         return new static(new DateTimeImmutable($date));
     }
+
+    public static function now(): static
+    {
+        return new static(new DateTimeImmutable(date('Y-m-d H:i:s')));
+    }
 }

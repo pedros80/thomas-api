@@ -7,8 +7,9 @@ namespace Thomas\RealTimeIncidents\Application;
 use Stomp\Transport\Frame;
 use Thomas\RealTimeIncidents\Application\Commands\RTICommandFactory;
 use Thomas\Shared\Application\CommandBus;
+use Thomas\Shared\Application\MessageRouter;
 
-final class RTIMessageRouter
+final class RTIMessageRouter implements MessageRouter
 {
     public function __construct(
         private CommandBus $commandBus,
