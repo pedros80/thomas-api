@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1678309005">
-  <project timestamp="1678309005">
+<coverage generated="1679130627">
+  <project timestamp="1679130627">
     <file name="/var/task/Thomas/Boards/Application/Queries/GetPlatformBoardDepartures.php">
       <class name="Thomas\Boards\Application\Queries\GetPlatformBoardDepartures" namespace="global">
         <metrics complexity="2" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="4" coveredelements="4"/>
