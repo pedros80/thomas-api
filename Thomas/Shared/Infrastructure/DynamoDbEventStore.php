@@ -48,9 +48,7 @@ final class DynamoDbEventStore extends InteractsWithDynamoDb implements EventSto
 
         return new DomainEventStream(
             array_map(
-                function ($event) {
-                    return $this->eventStoreToDomainMessage((array) $this->marshaler->unmarshalItem($event));
-                },
+                fn ($event) => $this->eventStoreToDomainMessage((array) $this->marshaler->unmarshalItem($event)),
                 $items
             )
         );

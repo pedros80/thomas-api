@@ -31,9 +31,7 @@ final class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Auth::provider('custom', function ($app, array $config) {
-            return new CustomUserProvider($app->make(UsersRepository::class));
-        });
+        Auth::provider('custom', fn ($app, array $config) => new CustomUserProvider($app->make(UsersRepository::class)));
 
         Auth::viaRequest('jwt', function (Request $request) {
             /** @var UserResolver $resolver */

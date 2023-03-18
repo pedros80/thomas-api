@@ -61,4 +61,6 @@ return $config->setRules([
     'php_unit_method_casing' => ['case' => 'camel_case'],
     'php_unit_set_up_tear_down_visibility' => true,
     'new_with_braces' => ['named_class' => true, 'anonymous_class' => true],
+    'use_arrow_functions' => true,
+    'cast_spaces' => ['space' => 'single'],
 ])->setFinder($finder);

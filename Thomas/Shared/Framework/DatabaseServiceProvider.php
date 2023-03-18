@@ -45,9 +45,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
     private function bindDynamoMigrations(): void
     {
-        $this->app->bind(DynamoMigrations::class, function () {
-            return new DynamoMigrations($this->app->make(DynamoDbClient::class));
-        });
+        $this->app->bind(DynamoMigrations::class, fn () => new DynamoMigrations($this->app->make(DynamoDbClient::class)));
     }
 
     private function bindDatabaseConfigLoader(): void
