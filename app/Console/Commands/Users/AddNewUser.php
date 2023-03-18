@@ -33,9 +33,9 @@ final class AddNewUser extends Command
         $this->info('Command Dispatched to Add User.');
 
         $this->table([
-            'Email', 'Name', 'UserID'
+            'Email', 'Name', 'UserID',
         ], [
-            [$email, $name, $userId]
+            [$email, $name, $userId],
         ]);
     }
 

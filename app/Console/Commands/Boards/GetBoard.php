@@ -26,7 +26,7 @@ final class GetBoard extends Command
             [
                 $stationCode->name(),
                 (string) $stationCode,
-            ]
+            ],
         ]);
     }
 

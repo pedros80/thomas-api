@@ -79,6 +79,7 @@ final class Body implements JsonSerializable
         $nodes = (array) $this->xml->xpath('//ns3:Affects//ns3:Operators//ns3:AffectedOperator//ns3:OperatorRef');
 
         $out = [];
+
         foreach ($nodes as $node) {
             $out[] = (string) $node;
         }

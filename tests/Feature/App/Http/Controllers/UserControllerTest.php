@@ -130,7 +130,7 @@ final class UserControllerTest extends TestCase
         $response = $this->post('api/users', [
             'email'  => $email,
             'name'   => $faker->name(),
-            'userId' => (string) UserId::generate()
+            'userId' => (string) UserId::generate(),
         ], $this->getHeaders());
 
         $response->assertStatus(200)->assertJson(['success' => true])->assertJson(['data' => 'Added.']);

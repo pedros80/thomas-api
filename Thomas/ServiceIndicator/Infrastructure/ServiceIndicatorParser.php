@@ -33,6 +33,7 @@ final class ServiceIndicatorParser
     private function getStatus(SimpleXMLElement $toc): Status
     {
         $status = (string) $toc->Status;
+
         if ($status === 'Custom') {
             $status = (string) $toc->StatusDescription;
         }

@@ -68,7 +68,7 @@ final class AddUserCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withAggregateId((string) $email)
             ->given([
                 new UserWasAdded($email, $name, $userId),
-                new UserWasRemoved($email, $userId, $removedAt)
+                new UserWasRemoved($email, $userId, $removedAt),
             ])
             ->when($command)
             ->then([new UserWasReinstated($email, $userId, $name, $userId)]);

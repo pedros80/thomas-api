@@ -18,7 +18,7 @@ final class IncidentTest extends AggregateRootScenarioTestCase
     private IncidentID $incidentID;
     private string $body;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->incidentID = new IncidentID('D85AA5FB1954428C84A2F636014C2A4A');

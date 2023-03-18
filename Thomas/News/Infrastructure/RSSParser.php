@@ -15,6 +15,7 @@ final class RSSParser
     public function parse(SimpleXMLElement $xml): array
     {
         $out = [];
+
         foreach ($xml->channel->item as $item) {
             $out[] = new News(
                 new Title((string) $item->title),

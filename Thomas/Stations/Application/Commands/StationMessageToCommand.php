@@ -27,6 +27,7 @@ final class StationMessageToCommand implements MessageToCommand
         $xml = new SimpleXMLElement($body);
 
         $stations = [];
+
         foreach ($xml->uR->OW->children('ns7', true)->Station as $station) {
             $stationCode = new StationCode((string) $station->attributes()?->crs ?: '');
             $stations[]  = new Station(

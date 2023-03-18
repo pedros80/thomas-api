@@ -18,7 +18,7 @@ return $config->setRules([
     'array_syntax'                => ['syntax' => 'short'],
     'ordered_imports'             => ['sort_algorithm' => 'alpha'],
     'single_line_after_imports'   => true,
-    'trailing_comma_in_multiline' => [],
+    'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['arrays', 'match']],
     'phpdoc_scalar'               => true,
     'unary_operator_spaces'       => true,
     'binary_operator_spaces'      => [
@@ -36,7 +36,11 @@ return $config->setRules([
             'declare',
             'return',
             'throw',
-            'try'
+            'try',
+            'if',
+            'foreach',
+            'while',
+            'yield',
         ],
     ],
     'phpdoc_single_line_var_spacing'  => true,
@@ -51,4 +55,10 @@ return $config->setRules([
     'constant_case'                => [
         'case' => 'lower'
     ],
+    'compact_nullable_typehint' => true,
+    'array_indentation' => true,
+    'simplified_null_return' => true,
+    'php_unit_method_casing' => ['case' => 'camel_case'],
+    'php_unit_set_up_tear_down_visibility' => true,
+    'new_with_braces' => ['named_class' => true, 'anonymous_class' => true],
 ])->setFinder($finder);

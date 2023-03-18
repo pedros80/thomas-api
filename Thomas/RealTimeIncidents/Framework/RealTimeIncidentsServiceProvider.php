@@ -123,6 +123,7 @@ final class RealTimeIncidentsServiceProvider extends ServiceProvider
 
         /** @var CommandBus $commandBus */
         $commandBus = $this->app->get(CommandBus::class);
+
         foreach ($handlers as $handler) {
             $this->app->bind(
                 $handler,

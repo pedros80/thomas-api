@@ -65,6 +65,7 @@ final class MessageWasUpdated extends Event
         $payload = json_decode($json);
 
         $stations = [];
+
         foreach ($payload->stations as $station) {
             $stations[] = new Station(new Code($station->code), new Name($station->name));
         }

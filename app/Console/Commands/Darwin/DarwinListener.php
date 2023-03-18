@@ -59,6 +59,7 @@ final class DarwinListener extends Command implements SignalableCommandInterface
     {
         while ($this->run) {
             $message = $this->broker->read();
+
             if ($message instanceof Frame) {
                 if ($message['type'] === 'terminate') {
                     $this->info('<comment>Received shutdown command</comment>');

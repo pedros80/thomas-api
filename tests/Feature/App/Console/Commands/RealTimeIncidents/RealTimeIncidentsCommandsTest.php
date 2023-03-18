@@ -39,8 +39,8 @@ final class RealTimeIncidentsCommandsTest extends TestCase
                     'D85AA5FB1954428C84A2F636014C2A4A',
                     'NEW',
                     'Delays between London St Pancras International and St Albans expected until 11:30',
-                    'TL'
-                ]
+                    'TL',
+                ],
             ])
             ->assertSuccessful();
     }

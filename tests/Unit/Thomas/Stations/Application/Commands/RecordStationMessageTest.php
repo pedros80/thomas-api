@@ -31,13 +31,13 @@ final class RecordStationMessageTest extends TestCase
         $this->assertInstanceOf(RecordStationMessage::class, $command);
         $this->assertEquals(
             [
-            'id'       => '12345',
-            'category' => 'Station',
-            'body'     => 'body body body',
-            'severity' => MessageSeverity::MAJOR,
-            'stations' => [
-                new Station(new Code('DAM'), new Name('Dalmeny')),
-            ],
+                'id'       => '12345',
+                'category' => 'Station',
+                'body'     => 'body body body',
+                'severity' => MessageSeverity::MAJOR,
+                'stations' => [
+                    new Station(new Code('DAM'), new Name('Dalmeny')),
+                ],
             ],
             $command->toArray()
         );

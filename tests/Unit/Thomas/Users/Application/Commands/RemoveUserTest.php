@@ -21,7 +21,7 @@ final class RemoveUserTest extends TestCase
 
         $this->assertEquals([
             'email'     => 'peterwsomerville@gmail.com',
-            'removedAt' => (string) $removedAt
+            'removedAt' => (string) $removedAt,
         ], $command->toArray());
     }
 }

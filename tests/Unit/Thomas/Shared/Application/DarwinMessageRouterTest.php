@@ -19,7 +19,7 @@ final class DarwinMessageRouterTest extends TestCase
     public function testStationMessageFrameDispatchesCommand(): void
     {
         $commandFactory = new DarwinCommandFactory([
-            'OW' => new StationMessageToCommand()
+            'OW' => new StationMessageToCommand(),
         ]);
 
         $message = MockDarwinMessageFactory::stationMessage();
@@ -30,7 +30,7 @@ final class DarwinMessageRouterTest extends TestCase
         $router = new DarwinMessageRouter(
             $commandBus->reveal(),
             new DarwinCommandFactory([
-                'OW' => new StationMessageToCommand()
+                'OW' => new StationMessageToCommand(),
             ])
         );
 

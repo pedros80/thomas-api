@@ -35,6 +35,7 @@ final class HttpBoardService implements BoardService
         }
 
         $platformServices = [];
+
         foreach ($data->GetStationBoardResult->trainServices->service as $service) {
             if (isset($service->platform) && $service->platform === $platform) {
                 $platformServices[] = $service;
@@ -94,6 +95,7 @@ final class HttpBoardService implements BoardService
         }
 
         $operators = [];
+
         foreach ($board->GetStationBoardResult->trainServices->service as $service) {
             $operators[] = $service->operatorCode;
         }

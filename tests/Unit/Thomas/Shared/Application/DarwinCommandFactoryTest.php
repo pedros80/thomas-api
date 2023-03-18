@@ -24,7 +24,7 @@ final class DarwinCommandFactoryTest extends TestCase
     public function testStationMessageReturnsRecordStationMessageCommand(): void
     {
         $factory = new DarwinCommandFactory([
-            'OW' => new StationMessageToCommand()
+            'OW' => new StationMessageToCommand(),
         ]);
         $message = MockDarwinMessageFactory::stationMessage();
         $command = $factory->make($message);

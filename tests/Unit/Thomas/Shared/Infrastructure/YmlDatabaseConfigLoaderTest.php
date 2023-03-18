@@ -11,7 +11,7 @@ class YmlDatabaseConfigLoaderTest extends TestCase
 {
     private YmlDatabaseConfigLoader $configLoader;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $definitions = [
             'Resources' => [
@@ -168,7 +168,7 @@ class YmlDatabaseConfigLoaderTest extends TestCase
         $this->configLoader = new YmlDatabaseConfigLoader($definitions, $tableNames);
     }
 
-    public function test_when_returns_correct_table_and_test_definitions(): void
+    public function testWhenReturnsCorrectTableAndTestDefinitions(): void
     {
         $response = $this->configLoader->getTableDefinitions();
 
@@ -181,7 +181,7 @@ class YmlDatabaseConfigLoaderTest extends TestCase
         $this->assertCount(3, $response[2]['AttributeDefinitions']);
     }
 
-    public function test_not_having_GlobalSecondaryIndexes(): void
+    public function testNotHavingGlobalSecondaryIndexes(): void
     {
         $response = $this->configLoader->getTableDefinitions();
 

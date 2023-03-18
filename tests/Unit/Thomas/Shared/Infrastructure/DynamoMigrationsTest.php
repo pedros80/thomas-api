@@ -18,7 +18,7 @@ final class DynamoMigrationsTest extends TestCase
     private ObjectProphecy $dynamoClient;
     private DynamoMigrations $migrations;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->dynamoClient = $this->prophesize(DynamoDbClient::class);
         $this->migrations   = new DynamoMigrations($this->dynamoClient->reveal());

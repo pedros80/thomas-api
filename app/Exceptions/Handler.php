@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
             UserNotFound::class     => 404,
             IncidentNotFound::class => 404,
             MessageNotFound::class  => 404,
-            default                 => 400
+            default                 => 400,
         };
 
         return new JsonResponse(

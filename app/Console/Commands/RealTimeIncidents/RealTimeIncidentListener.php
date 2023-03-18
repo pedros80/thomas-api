@@ -58,6 +58,7 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
     {
         while ($this->run) {
             $message = $this->broker->read();
+
             if ($message instanceof Frame) {
                 if ($message['type'] === 'terminate') {
                     $this->info('<comment>Received shutdown command</comment>');
@@ -85,6 +86,7 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
 
                     return;
                 }
+
                 if (
                     get_class($e) === HeartbeatException::class &&
                     str_contains($e->getMessage(), 'Could not send heartbeat')

@@ -24,7 +24,7 @@ final class RTIMessageRouterTest extends TestCase
         return [
             [IncidentMessageStatus::NEW],
             [IncidentMessageStatus::MODIFIED],
-            [IncidentMessageStatus::REMOVED]
+            [IncidentMessageStatus::REMOVED],
         ];
     }
 

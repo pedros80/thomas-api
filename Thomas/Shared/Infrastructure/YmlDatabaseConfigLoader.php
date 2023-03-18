@@ -42,11 +42,13 @@ final class YmlDatabaseConfigLoader
         ];
 
         $secondaryIndexes = $this->getGlobalSecondaryIndexes($tableDefinition);
+
         if ($secondaryIndexes) {
             $out['GlobalSecondaryIndexes'] = $secondaryIndexes;
         }
 
         $ttl = $this->getTTL($tableDefinition);
+
         if ($ttl) {
             $out['TimeToLiveSpecification'] = $ttl;
         }
