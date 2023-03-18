@@ -5,9 +5,9 @@ services:
         build: .
         depends_on:
             - composer
-        working_dir: /usr/src/app
+        working_dir: /var/task
         volumes:
-            - .:/usr/src/app
+            - .:/var/task
             - ./storage:/tmp/storage
         ports:
             - "89:80"
@@ -22,8 +22,8 @@ services:
             - "8009:8000"
     composer:
         image: composer:latest
-        working_dir: /usr/src/app
+        working_dir: /var/task
         volumes:
-            - .:/usr/src/app
+            - .:/var/task
             - ./tmp:/tmp
         command: install
