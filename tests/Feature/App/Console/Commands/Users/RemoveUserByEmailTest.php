@@ -8,7 +8,7 @@ use Faker\Factory;
 use Illuminate\Testing\PendingCommand;
 use Tests\TestCase;
 
-final class RemoveUserByEmaulTest extends TestCase
+final class RemoveUserByEmailTest extends TestCase
 {
     public function testCanRemoveAUser(): void
     {

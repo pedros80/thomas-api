@@ -1,45 +1,29 @@
 version: "3.5"
 
 services:
-    app:
-        image: bref/fpm-dev-gateway
-        ports:
-            - '89:80'
-        volumes:
-            - .:/var/task
-        depends_on:
-            - php
-        environment:
-            HANDLER: public/index.php
-            APP_STORAGE: '/tmp/storage'
-            DOCUMENT_ROOT: public
-
     php:
         build: .
         depends_on:
             - composer
-        environment:
-            APP_STORAGE: '/tmp/storage'
+        working_dir: /usr/src/app
         volumes:
-            - .:/var/task
+            - .:/usr/src/app
             - ./storage:/tmp/storage
-        image: thomas:latest
-
+        ports:
+            - "89:80"
     redis:
         image: redis
         ports:
             - "6382:6379"
-
     dynamo:
         image: amazon/dynamodb-local
         command: "-jar DynamoDBLocal.jar -sharedDb"
         ports:
             - "8009:8000"
-
     composer:
         image: composer:latest
-        working_dir: /var/task
+        working_dir: /usr/src/app
         volumes:
-            - .:/var/task
+            - .:/usr/src/app
             - ./tmp:/tmp
         command: install
