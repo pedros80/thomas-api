@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Thomas\LiftsAndEscalators\Domain;
 
+use PHPUnit\Framework\TestCase;
 use function Safe\json_decode;
 use function Safe\json_encode;
-use PHPUnit\Framework\TestCase;
 use Thomas\LiftsAndEscalators\Domain\Asset;
 
 final class AssetTest extends TestCase

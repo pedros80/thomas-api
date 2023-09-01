@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Thomas\Boards\Providers\RealTimeTrains\Framework;
 
 use Illuminate\Support\ServiceProvider;
+use Pedros80\RTTphp\Contracts\Locations;
 use Pedros80\RTTphp\Factories\ServicesFactory;
-use Pedros80\RTTphp\Services\LocationService;
-use Pedros80\RTTphp\Services\ServiceInformationService;
+use Tests\Mocks\Pedros80\RTTphp\Services\MockLocationService;
 use Thomas\Boards\Providers\RealTimeTrains\RealTimeTrainsService;
 use Thomas\Boards\Providers\RealTimeTrains\RTTBoardMapper;
 
@@ -19,7 +19,6 @@ final class RealTimeTrainsServiceProvider extends ServiceProvider
     {
         $this->factory = new ServicesFactory();
         $this->bindLocationService();
-        $this->bindServiceInformationService();
         $this->bindRealTimeTrainsService();
     }
 
@@ -28,8 +27,7 @@ final class RealTimeTrainsServiceProvider extends ServiceProvider
         $this->app->bind(
             RealTimeTrainsService::class,
             fn () => new RealTimeTrainsService(
-                $this->app->make(LocationService::class),
-                $this->app->make(ServiceInformationService::class),
+                $this->app->make(Locations::class),
                 new RTTBoardMapper(),
                 config('services.board.numRows'),
             )
@@ -38,23 +36,15 @@ final class RealTimeTrainsServiceProvider extends ServiceProvider
 
     private function bindLocationService(): void
     {
-        $this->app->bind(
-            LocationService::class,
-            fn () => $this->factory->makeLocationService(
+        $concrete = config('app.env') === 'testing' ? new MockLocationService() :
+            $this->factory->makeLocationService(
                 config('services.rtt.user'),
                 config('services.rtt.pass')
-            )
-        );
-    }
+            );
 
-    private function bindServiceInformationService(): void
-    {
         $this->app->bind(
-            ServiceInformationService::class,
-            fn () => $this->factory->makeServiceInformationService(
-                config('services.rtt.user'),
-                config('services.rtt.pass')
-            )
+            Locations::class,
+            fn () => $concrete
         );
     }
 }

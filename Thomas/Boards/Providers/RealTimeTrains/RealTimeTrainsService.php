@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Providers\RealTimeTrains;
 
-use Pedros80\RTTphp\Services\LocationService;
-use Pedros80\RTTphp\Services\ServiceInformationService;
+use Pedros80\RTTphp\Contracts\Locations;
 use stdClass;
 use Thomas\Boards\Domain\Board;
 use Thomas\Boards\Domain\BoardDataService;
-use Thomas\Boards\Providers\RealTimeTrains\ServiceUid;
 use Thomas\Shared\Domain\CRS;
 
 final class RealTimeTrainsService implements BoardDataService
 {
     public function __construct(
-        private LocationService $locations,
-        private ServiceInformationService $serviceInfo,
+        private Locations $locations,
         private RTTBoardMapper $mapper,
         private int $numRows
     ) {
@@ -54,24 +51,6 @@ final class RealTimeTrainsService implements BoardDataService
         $location->services = $this->parseServices($location->services ?? [], $platform);
 
         return $this->mapper->toPlatformBoard($location);
-    }
-
-    public function departuresWithTo(CRS $station, CRS $to, ?string $date=null, ?string $time=null): stdClass
-    {
-        return (object) $this->locations->search(
-            station: (string) $station,
-            toStation: (string) $to,
-            date: $date,
-            time: $time
-        );
-    }
-
-    public function getServiceInformation(ServiceUid $id, string $date): stdClass
-    {
-        return (object) $this->serviceInfo->search(
-            serviceId: (string) $id,
-            date: $date
-        );
     }
 
     private function parseServices(array $services, ?string $platform=null): array

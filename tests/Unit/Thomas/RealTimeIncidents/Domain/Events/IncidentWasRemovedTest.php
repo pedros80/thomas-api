@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Thomas\RealTimeIncidents\Domain\Events;
 
-use function Safe\json_encode;
 use PHPUnit\Framework\TestCase;
+use function Safe\json_encode;
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasRemoved;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;

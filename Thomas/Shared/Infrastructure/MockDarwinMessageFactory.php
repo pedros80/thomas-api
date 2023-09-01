@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\Shared\Infrastructure;
 
+use Pedros80\NREphp\Params\StationCode;
 use function Safe\gzencode;
 use function Safe\json_decode;
-use Pedros80\NREphp\Params\StationCode;
 use Stomp\Transport\Frame;
 
 final class MockDarwinMessageFactory

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Thomas\RealTimeIncidents\Application\Commands;
 
-use function Safe\json_encode;
 use PHPUnit\Framework\TestCase;
+use function Safe\json_encode;
 use Thomas\RealTimeIncidents\Application\Commands\AddIncident;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\IncidentID;

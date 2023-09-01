@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Thomas\Boards\Domain;
 
-use function Safe\json_encode;
 use PHPUnit\Framework\TestCase;
+use function Safe\json_encode;
 use Thomas\Boards\Domain\BoardTitle;
 
 final class BoardTitleTest extends TestCase

@@ -22,7 +22,7 @@ final class GetStationAssets
     {
         $assets = $this->cache->get("assets|{$station}");
 
-        if (!$assets || true) {
+        if (!$assets) {
             $assets = $this->client->getAssetsByStationCode($station);
             $this->cache->put("assets|{$station}", $assets, 10 * 60);
         }

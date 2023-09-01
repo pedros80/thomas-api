@@ -55,11 +55,6 @@ abstract class TypedCollection implements Countable, IteratorAggregate, JsonSeri
         return array_values(array_filter($this->items, $fn));
     }
 
-    public function reduce(Closure $fn, array $initial = []): array
-    {
-        return array_reduce($this->items, $fn, $initial);
-    }
-
     public function toArray(): array
     {
         return $this->getIterator()->getArrayCopy();

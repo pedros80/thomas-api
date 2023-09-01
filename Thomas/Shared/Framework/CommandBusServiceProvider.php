@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Thomas\Shared\Framework;
 
 use Broadway\CommandHandling\SimpleCommandBus;
-use function Safe\json_encode;
 use Illuminate\Log\Logger;
 use Illuminate\Support\ServiceProvider;
+use function Safe\json_encode;
 use Thomas\Shared\Application\Command;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Shared\Application\CommandHandler;

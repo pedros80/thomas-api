@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Mocks\Thomas\LiftsAndEscalators\Infrastructure;
+namespace Tests\Mocks\Pedros80\LANDEphp\Services;
 
-use function Safe\json_decode;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Pedros80\LANDEphp\Contracts\LiftsAndEscalators;
+use function Safe\json_decode;
 use stdClass;
 
 final class MockLiftAndEscalatorService implements LiftsAndEscalators

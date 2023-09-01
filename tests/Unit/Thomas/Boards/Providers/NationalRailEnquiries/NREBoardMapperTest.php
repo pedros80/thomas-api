@@ -6,7 +6,7 @@ namespace Tests\Unit\Thomas\Boards\Providers\NationalRailEnquiries;
 
 use Pedros80\NREphp\Contracts\Boards;
 use PHPUnit\Framework\TestCase;
-use Tests\Mocks\NationalRailEnquiries\MockService;
+use Tests\Mocks\Pedros80\NREphp\Services\MockLiveDepartureBoard;
 use Thomas\Boards\Domain\Board;
 use Thomas\Boards\Providers\NationalRailEnquiries\NREBoardMapper;
 
@@ -15,11 +15,11 @@ final class NREBoardMapperTest extends TestCase
     private NREBoardMapper $mapper;
     private Boards $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->mapper = new NREBoardMapper();
-        $this->service = new MockService();
+        $this->mapper  = new NREBoardMapper();
+        $this->service = new MockLiveDepartureBoard();
     }
 
     public function testToDepartureBoard(): void

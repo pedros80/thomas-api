@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Providers\NationalRailEnquiries;
 
-use Illuminate\Support\Facades\Log;
 use Pedros80\NREphp\Contracts\Boards;
 use stdClass;
 use Thomas\Boards\Domain\Board;
@@ -22,14 +21,18 @@ final class NationalRailEnquiriesService implements BoardDataService
 
     public function departures(CRS $station): Board
     {
-        $board = $this->getBoard($station, 'getDepBoardWithDetails');
-        Log::info(json_encode($board));
-        return $this->mapper->toDepartureBoard($board);
+        $data  = $this->getBoard($station, 'getDepBoardWithDetails');
+        $board = $this->mapper->toDepartureBoard($data);
+
+        return $board;
     }
 
     public function arrivals(CRS $station): Board
     {
-        return $this->mapper->toArrivalBoard($this->getBoard($station, 'getArrBoardWithDetails'));
+        $data  = $this->getBoard($station, 'getArrBoardWithDetails');
+        $board = $this->mapper->toArrivalBoard($data);
+
+        return $board;
     }
 
     public function departuresPlatform(CRS $station, string $platform): Board
@@ -47,7 +50,9 @@ final class NationalRailEnquiriesService implements BoardDataService
             $data->GetStationBoardResult->trainServices->service = $platformServices;
         }
 
-        return $this->mapper->toPlatformBoard($data);
+        $board = $this->mapper->toPlatformBoard($data);
+
+        return $board;
     }
 
     private function getBoard(CRS $station, string $method): stdClass

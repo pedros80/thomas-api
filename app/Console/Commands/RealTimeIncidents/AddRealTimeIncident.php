@@ -15,7 +15,7 @@ final class AddRealTimeIncident extends Command
 
     public function handle(RTIMessageRouter $router): void
     {
-        $message  = MockRTIMessageFactory::new();
+        $message = MockRTIMessageFactory::new();
         $router->route($message);
 
         $this->info('Command to add RTI dispatched.');

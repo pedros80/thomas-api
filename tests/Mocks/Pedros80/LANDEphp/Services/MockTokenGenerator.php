@@ -1,7 +1,11 @@
 <?php
 
-namespace Tests\Mocks\Thomas\LiftsAndEscalators\Infrastructure;
+declare(strict_types=1);
 
+namespace Tests\Mocks\Pedros80\LANDEphp\Services;
+
+use function Safe\date;
+use function Safe\strtotime;
 use Pedros80\LANDEphp\Contracts\Tokens;
 use Symfony\Component\Uid\Ulid;
 

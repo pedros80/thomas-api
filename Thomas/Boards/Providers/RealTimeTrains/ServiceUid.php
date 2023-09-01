@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Providers\RealTimeTrains;
 
-use function Safe\preg_match;
 use JsonSerializable;
+use function Safe\preg_match;
 use Thomas\Boards\Providers\RealTimeTrains\Exceptions\InvalidServiceUid;
 
 final class ServiceUid implements JsonSerializable
