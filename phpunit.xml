@@ -17,15 +17,16 @@
             <directory suffix=".php">./app</directory>
             <directory suffix=".php">./Thomas</directory>
         </include>
-            <exclude>
-                <directory suffix=".php">./app/Providers/</directory>
-                <directory suffix=".php">./app/Console/Commands/Dynamo/</directory>
-                <!-- <directory suffix=".php">./app/Http/Middleware/</directory> -->
-                <directory suffix=".php">./Thomas/*/Framework/</directory>
-                <file>./app/Console/Kernel.php</file>
-                <file>./app/Http/Middleware/Authenticate.php</file>
-                <file>./app/Http/Middleware/TrustHosts.php</file>
-            </exclude>
+        <exclude>
+            <directory suffix=".php">./app/Providers/</directory>
+            <directory suffix=".php">./app/Console/Commands/Dynamo/</directory>
+            <!-- <directory suffix=".php">./app/Http/Middleware/</directory> -->
+            <directory suffix=".php">./Thomas/*/Framework/</directory>
+            <directory suffix=".php">./Thomas/Boards/Providers/*/Framework/</directory>
+            <file>./app/Console/Kernel.php</file>
+            <file>./app/Http/Middleware/Authenticate.php</file>
+            <file>./app/Http/Middleware/TrustHosts.php</file>
+        </exclude>
     </coverage>
     <php>
         <env name="APP_ENV" value="testing"/>

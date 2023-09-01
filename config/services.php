@@ -31,10 +31,19 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'rtt' => [
+        'user' => env('RTT_USER'),
+        'pass' => env('RTT_PASS'),
+    ],
+
+    'board' => [
+        'provider' => env('BOARD_PROVIDER', 'nre'),
+        'numRows'  => env('BOARD_NUM_ROWS', 10),
+    ],
+
     'nre' => [
         'ldb' => [
-            'key'     => env('LDB_KEY'),
-            'numRows' => env('LDB_NUM_ROWS', 10),
+            'key' => env('LDB_KEY'),
         ],
         'kb' => [
             'user' => env('KB_USER'),
@@ -48,6 +57,10 @@ return [
             'user' => env('DARWIN_TOPIC_USER'),
             'pass' => env('DARWIN_TOPIC_PASS'),
         ],
+    ],
+
+    'lande' => [
+        'key' => env('LANDE_KEY'),
     ],
 
     'rss' => [

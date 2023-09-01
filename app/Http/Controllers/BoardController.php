@@ -10,6 +10,7 @@ use Thomas\Boards\Application\Queries\GetPlatformBoardDepartures;
 use Thomas\Boards\Application\Queries\GetStationBoardArrivals;
 use Thomas\Boards\Application\Queries\GetStationBoardDepartures;
 use Thomas\RealTimeIncidents\Application\Queries\GetIncidents;
+use Thomas\Shared\Domain\CRS;
 use Thomas\Stations\Application\Queries\GetStationMessages;
 
 final class BoardController extends Controller
@@ -20,14 +21,17 @@ final class BoardController extends Controller
         GetIncidents $incidents,
         string $station
     ): JsonResponse {
+
+        $station = CRS::fromString($station);
+
         $board = $departures->get($station);
 
         return new JsonResponse([
             'success' => true,
             'data'    => [
-                'board'     => $board->GetStationBoardResult,
+                'board'     => $board,
                 'messages'  => $messages->get($station),
-                'incidents' => $incidents->get($board->operators),
+                'incidents' => $incidents->get($board->toArray()['operators']),
             ],
         ]);
     }
@@ -39,14 +43,17 @@ final class BoardController extends Controller
         string $station,
         string $platform
     ): JsonResponse {
+
+        $station = CRS::fromString($station);
+
         $board = $departures->get($station, $platform);
 
         return new JsonResponse([
             'success' => true,
             'data'    => [
-                'board'     => $board->GetStationBoardResult,
+                'board'     => $board,
                 'messages'  => $messages->get($station),
-                'incidents' => $incidents->get($board->operators),
+                'incidents' => $incidents->get($board->toArray()['operators']),
             ],
         ]);
     }
@@ -57,14 +64,17 @@ final class BoardController extends Controller
         GetIncidents $incidents,
         string $station
     ): JsonResponse {
+
+        $station = CRS::fromString($station);
+
         $board = $arrivals->get($station);
 
         return new JsonResponse([
             'success' => true,
             'data'    => [
-                'board'     => $board->GetStationBoardResult,
+                'board'     => $board,
                 'message'   => $messages->get($station),
-                'incidents' => $incidents->get($board->operators),
+                'incidents' => $incidents->get($board->toArray()['operators']),
             ],
         ]);
     }

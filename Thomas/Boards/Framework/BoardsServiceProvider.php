@@ -5,68 +5,54 @@ declare(strict_types=1);
 namespace Thomas\Boards\Framework;
 
 use Illuminate\Support\ServiceProvider;
-use Pedros80\NREphp\Factories\ServicesFactory;
-use Pedros80\NREphp\Services\LiveDepartureBoard;
 use Thomas\Boards\Application\Queries\GetPlatformBoardDepartures;
 use Thomas\Boards\Application\Queries\GetStationBoardArrivals;
 use Thomas\Boards\Application\Queries\GetStationBoardDepartures;
-use Thomas\Boards\Domain\BoardClient;
-use Thomas\Boards\Domain\BoardService;
-use Thomas\Boards\Infrastructure\HttpBoardClient;
-use Thomas\Boards\Infrastructure\HttpBoardService;
+use Thomas\Boards\Domain\BoardDataService;
+use Thomas\Boards\Providers\NationalRailEnquiries\NationalRailEnquiriesService;
+use Thomas\Boards\Providers\RealTimeTrains\RealTimeTrainsService;
 
 final class BoardsServiceProvider extends ServiceProvider
 {
-    private ServicesFactory $factory;
-
     public function register(): void
     {
-        $this->factory = new ServicesFactory();
-        $this->bindLDB();
-        $this->bindBoardClient();
-        $this->bindBoardService();
+        $this->bindBoardDataService();
         $this->bindBoardQueries();
     }
 
-    private function bindLDB(): void
+    private function bindBoardDataService(): void
     {
-        $this->app->bind(
-            LiveDepartureBoard::class,
-            fn () => $this->factory->makeLiveDepartureBoard(config('services.nre.ldb.key'))
-        );
-    }
+        switch (config('services.board.provider')) {
+            case 'rtt':
+                $this->app->bind(
+                    BoardDataService::class,
+                    fn () => $this->app->make(RealTimeTrainsService::class)
+                );
 
-    private function bindBoardClient(): void
-    {
-        $this->app->bind(
-            BoardClient::class,
-            fn () => new HttpBoardClient($this->app->make(LiveDepartureBoard::class))
-        );
-    }
+                break;
 
-    private function bindBoardService(): void
-    {
-        $this->app->bind(
-            BoardService::class,
-            fn () => new HttpBoardService(
-                $this->app->make(BoardClient::class),
-                config('services.nre.ldb.numRows')
-            )
-        );
+            default:
+                $this->app->bind(
+                    BoardDataService::class,
+                    fn () => $this->app->make(NationalRailEnquiriesService::class)
+                );
+
+                break;
+        }
     }
 
     private function bindBoardQueries(): void
     {
         $queries = [
-            GetStationBoardArrivals::class,
-            GetStationBoardDepartures::class,
             GetPlatformBoardDepartures::class,
+            GetStationBoardDepartures::class,
+            GetStationBoardArrivals::class,
         ];
 
         foreach ($queries as $query) {
             $this->app->bind(
                 $query,
-                fn () => new $query($this->app->make(BoardService::class))
+                fn () => new $query($this->app->make(BoardDataService::class))
             );
         }
     }

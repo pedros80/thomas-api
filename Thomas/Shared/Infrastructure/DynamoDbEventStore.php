@@ -10,6 +10,8 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventStore\EventStore;
+use function Safe\json_decode;
+use function Safe\json_encode;
 use Thomas\Shared\Infrastructure\Exceptions\DuplicatePlayhead;
 use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 

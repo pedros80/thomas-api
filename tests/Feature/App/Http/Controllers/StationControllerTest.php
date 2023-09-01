@@ -28,4 +28,22 @@ final class StationControllerTest extends TestCase
 
         $response->assertStatus(400)->assertJson(['success' => false])->assertJson(['errors' => 'The search field is required.']);
     }
+
+    public function testGetStationAssetsReturnsSuccesfully(): void
+    {
+        $response = $this->get('api/stations/assets/EDB', $this->getAuthHeaders());
+        $response->assertStatus(200)->assertJson(['success' => true]);
+    }
+
+    public function testGetStationLiftsReturnsSuccesfully(): void
+    {
+        $response = $this->get('api/stations/lifts/EDB', $this->getAuthHeaders());
+        $response->assertStatus(200)->assertJson(['success' => true]);
+    }
+
+    public function testGetStationsEscalatorsReturnsSuccesfully(): void
+    {
+        $response = $this->get('api/stations/escalators/EDB', $this->getAuthHeaders());
+        $response->assertStatus(200)->assertJson(['success' => true]);
+    }
 }

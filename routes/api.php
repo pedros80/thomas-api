@@ -23,12 +23,15 @@ Route::middleware('auth:api')->group(function () {
     Route::controller(BoardController::class)->prefix('boards')->group(function () {
         Route::get('/departures/{station?}', 'departures');
         Route::get('/departures/{station}/platform/{platform}', 'departuresPlatform');
-        Route::get('/arrivals/{station?}', [BoardController::class, 'arrivals']);
+        Route::get('/arrivals/{station?}', 'arrivals');
     });
 
     Route::controller(StationController::class)->prefix('stations')->group(function () {
         Route::post('/search', 'search');
         Route::get('/messages/{station}', 'messages');
+        Route::get('/assets/{station}', 'assets');
+        Route::get('/lifts/{station}', 'lifts');
+        Route::get('/escalators/{station}', 'escalators');
     });
 
     Route::controller(NewsController::class)->prefix('news')->group(function () {

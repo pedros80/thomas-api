@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Infrastructure;
 
-use Pedros80\NREphp\Params\StationCode;
+use Thomas\Shared\Domain\CRS;
 use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
@@ -14,7 +14,7 @@ final class ArrayStationService implements StationService
 {
     public function search(string $search): array
     {
-        $stations = StationCode::list();
+        $stations = CRS::list();
 
         $filtered = array_filter(
             $stations,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Thomas\Users\Domain\Events;
 
+use function Safe\json_encode;
 use PHPUnit\Framework\TestCase;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Events\UserWasReinstated;

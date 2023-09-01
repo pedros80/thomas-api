@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Domain\Events;
 
+use function Safe\json_decode;
 use Thomas\Shared\Domain\Event;
 use Thomas\Stations\Domain\MessageID;
 

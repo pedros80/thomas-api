@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Application\Commands;
 
-use Pedros80\NREphp\Params\StationCode;
+use function Safe\gzdecode;
 use SimpleXMLElement;
 use Stomp\Transport\Frame;
 use Thomas\Shared\Application\Command;
 use Thomas\Shared\Application\MessageToCommand;
+use Thomas\Shared\Domain\CRS;
 use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
@@ -29,7 +30,7 @@ final class StationMessageToCommand implements MessageToCommand
         $stations = [];
 
         foreach ($xml->uR->OW->children('ns7', true)->Station as $station) {
-            $stationCode = new StationCode((string) $station->attributes()?->crs ?: '');
+            $stationCode = CRS::fromString((string) $station->attributes()?->crs ?: '');
             $stations[]  = new Station(
                 new Code((string) $stationCode),
                 new Name($stationCode->name())

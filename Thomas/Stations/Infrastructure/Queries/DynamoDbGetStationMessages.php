@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Infrastructure\Queries;
 
-use Pedros80\NREphp\Params\StationCode;
+use Thomas\Shared\Domain\CRS;
 use Thomas\Shared\Infrastructure\InteractsWithDynamoDb;
 use Thomas\Stations\Application\Queries\GetStationMessages;
 use Thomas\Stations\Domain\Code;
@@ -18,7 +18,7 @@ use Thomas\Stations\Domain\Station;
 
 final class DynamoDbGetStationMessages extends InteractsWithDynamoDb implements GetStationMessages
 {
-    public function get(string $code): array
+    public function get(CRS $code): array
     {
         return array_map(
             fn (array $item) => $this->itemToMessage($item, $code),
@@ -32,11 +32,10 @@ final class DynamoDbGetStationMessages extends InteractsWithDynamoDb implements 
         );
     }
 
-    private function itemToMessage(array $item, string $code): Message
+    private function itemToMessage(array $item, CRS $code): Message
     {
         /** @var array $data */
         $data = $this->marshaler->unmarshalItem($item);
-        $code = new StationCode($code);
 
         return new Message(
             new MessageID($data['PK']),

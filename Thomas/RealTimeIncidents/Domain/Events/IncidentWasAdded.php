@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomas\RealTimeIncidents\Domain\Events;
 
+use function Safe\json_decode;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;

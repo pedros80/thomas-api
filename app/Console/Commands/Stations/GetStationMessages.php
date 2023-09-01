@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands\Stations;
 
 use Illuminate\Console\Command;
-use Pedros80\NREphp\Params\StationCode;
+use Thomas\Shared\Domain\CRS;
 use Thomas\Stations\Application\Queries\GetStationMessages as QueriesGetStationMessages;
 use Thomas\Stations\Domain\Message;
 use Thomas\Stations\Domain\Station;
@@ -18,7 +18,7 @@ final class GetStationMessages extends Command
     public function handle(QueriesGetStationMessages $query): void
     {
         $code = $this->getCode();
-        $msgs = $query->get((string) $code);
+        $msgs = $query->get($code);
 
         if (!$msgs) {
             $this->info("No messages found for {$code->name()}");
@@ -31,13 +31,13 @@ final class GetStationMessages extends Command
         ], array_map(fn (Message $message) => $this->parseMessage($message), $msgs));
     }
 
-    private function getCode(): StationCode
+    private function getCode(): CRS
     {
         $code = $this->argument('station') ?: $this->ask('Which Station Code?');
 
         $code = is_array($code) ? $code[0] : $code;
 
-        return new StationCode(strtoupper($code));
+        return CRS::fromString($code);
     }
 
     private function parseMessage(Message $message): array

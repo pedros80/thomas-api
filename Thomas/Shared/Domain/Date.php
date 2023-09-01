@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Thomas\Shared\Domain;
 
-use DateTimeImmutable;
+use function Safe\date;
+use Safe\DateTimeImmutable;
 
 abstract class Date
 {

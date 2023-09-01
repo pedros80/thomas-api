@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Thomas\Stations\Domain\Events;
 
+use function Safe\json_encode;
 use PHPUnit\Framework\TestCase;
 use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\Events\MessageWasAdded;

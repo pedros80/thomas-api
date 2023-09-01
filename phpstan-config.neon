@@ -1,6 +1,7 @@
 includes:
   - ./vendor/nunomaduro/larastan/extension.neon
   - ./vendor/jangregor/phpstan-prophecy/extension.neon
+  - ./vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 parameters:
   paths:
     - app
@@ -9,6 +10,7 @@ parameters:
   level: 8
   checkMissingIterableValueType: false
   checkGenericClassInNonGenericObjectType: false
+  treatPhpDocTypesAsCertain: false
   ignoreErrors:
     - '/Property [A-Za-z\\]+::\$[A-Za-z]+ is never read, only written./'
     - '/Parameter #1 \$callback of function call_user_func expects callable\(\)/'

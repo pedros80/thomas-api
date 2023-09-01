@@ -37,7 +37,7 @@ final class DarwinListener extends Command implements SignalableCommandInterface
         return [SIGINT, SIGTERM];
     }
 
-    public function handleSignal(int $signal): void
+    public function handleSignal(int $signal): int
     {
         switch ($signal) {
             case SIGINT:
@@ -46,6 +46,8 @@ final class DarwinListener extends Command implements SignalableCommandInterface
 
                 break;
         }
+
+        return 0;
     }
 
     private function shutdown(): void

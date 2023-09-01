@@ -36,7 +36,7 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
         return [SIGINT, SIGTERM];
     }
 
-    public function handleSignal(int $signal): void
+    public function handleSignal(int $signal): int
     {
         switch ($signal) {
             case SIGINT:
@@ -45,6 +45,8 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
 
                 break;
         }
+
+        return 0;
     }
 
     private function shutdown(): void

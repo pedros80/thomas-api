@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\App\Console\Commands\Stations;
 
 use Illuminate\Testing\PendingCommand;
-use Pedros80\NREphp\Params\StationCode;
 use Tests\TestCase;
+use Thomas\Shared\Domain\CRS;
 
 final class StationMessagesCommandsTest extends TestCase
 {
@@ -22,8 +22,8 @@ final class StationMessagesCommandsTest extends TestCase
 
     public function testGetMessagesReturnsSuccess(): void
     {
-        $code = array_keys(StationCode::list())[0];
-        $name = (new StationCode($code))->name();
+        $code = array_keys(CRS::list())[0];
+        $name = CRS::fromString($code)->name();
 
         /** @var PendingCommand $command */
         $command = $this->artisan('stations:get-messages');

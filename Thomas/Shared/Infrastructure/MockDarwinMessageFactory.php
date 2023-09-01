@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Thomas\Shared\Infrastructure;
 
+use function Safe\gzencode;
+use function Safe\json_decode;
 use Pedros80\NREphp\Params\StationCode;
 use Stomp\Transport\Frame;
 
@@ -51,7 +53,6 @@ final class MockDarwinMessageFactory
         $content = str_replace('{{SEVERITY}}', (string) $severity, $content);
 
         $body = gzencode($content);
-        $body = $body !== false ? $body : $content;
 
         return new Frame('MESSAGE', json_decode(self::STATION_HEADERS, true), $body);
     }
