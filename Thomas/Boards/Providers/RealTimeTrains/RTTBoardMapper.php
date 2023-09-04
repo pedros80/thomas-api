@@ -65,10 +65,40 @@ final class RTTBoardMapper
             $service->locationDetail?->platform ?? '...',
             $this->getExpectedTime($service->locationDetail, $type),
             $service->atocName,
-            '',
+            isset($service->callingPoints) ? $this->getCallingPoints($service->callingPoints) : '',
             isset($service->locationDetail->cancelReasonShortText),
             isset($service->locationDetail->cancelReasonShortText) ? $service->locationDetail->cancelReasonShortText : null
         );
+    }
+
+    private function getCallingPoints(array $points): string
+    {
+        if (!count($points)) {
+            return '';
+        }
+
+        $points = $this->parseCallingPoints($points);
+
+        if (count($points) === 1) {
+            return $points[0];
+        }
+
+        $last = array_pop($points);
+
+        return implode(' and ', [implode(', ', $points), $last]);
+
+    }
+
+    private function parseCallingPoints(array $points): array
+    {
+        return array_map(fn (stdClass $point) => $this->parsePoint($point), $points);
+    }
+
+    private function parsePoint(stdClass $point): string
+    {
+        $name = CRS::fromString($point->crs)->name();
+
+        return "{$name} {$point->realtimeArrival}";
     }
 
     private function getScheduledTime(stdClass $locationDetail, string $type): string

@@ -28,6 +28,10 @@ final class RealTimeTrainsServiceProvider extends ServiceProvider
             RealTimeTrainsService::class,
             fn () => new RealTimeTrainsService(
                 $this->app->make(Locations::class),
+                $this->factory->makeServiceInformationService(
+                    config('services.rtt.user'),
+                    config('services.rtt.pass')
+                ),
                 new RTTBoardMapper(),
                 config('services.board.numRows'),
             )
