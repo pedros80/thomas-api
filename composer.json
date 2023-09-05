@@ -17,7 +17,7 @@
         "laravel/tinker": "^2.7",
         "pedros80/landephp": "^0.3",
         "pedros80/nrephp": "^0.3",
-        "pedros80/rttphp": "^0.4",
+        "pedros80/rttphp": "^0.5",
         "thecodingmachine/safe": "^2.5"
     },
     "require-dev": {

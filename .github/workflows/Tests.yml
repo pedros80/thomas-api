@@ -21,6 +21,6 @@ jobs:
       - name: Setup DynamoDb
         run: docker-compose exec -T php php artisan dynamo:setup --confirm
       - name: Seed Users
-        run: docker-compose exect -T php php artisan db:seed
+        run: docker-compose exec -T php php artisan db:seed
       - name: Run Tests
         run: docker-compose exec -T php ./vendor/bin/phpunit

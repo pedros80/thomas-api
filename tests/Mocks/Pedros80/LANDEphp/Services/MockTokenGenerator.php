@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Mocks\Pedros80\LANDEphp\Services;
 
+use Pedros80\LANDEphp\Contracts\Tokens;
 use function Safe\date;
 use function Safe\strtotime;
-use Pedros80\LANDEphp\Contracts\Tokens;
 use Symfony\Component\Uid\Ulid;
 
 final class MockTokenGenerator implements Tokens

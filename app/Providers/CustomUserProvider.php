@@ -22,7 +22,7 @@ final class CustomUserProvider implements UserProvider
 
     public function retrieveByToken($identifier, $token)
     {
-        return null;
+        //
     }
 
     public function updateRememberToken(Authenticatable $user, $token)

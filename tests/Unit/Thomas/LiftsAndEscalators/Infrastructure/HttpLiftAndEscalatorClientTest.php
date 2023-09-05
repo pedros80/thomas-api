@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Thomas\LiftsAndEscalators\Infrastructure;
+namespace Tests\Unit\Thomas\LiftsAndEscalators\Infrastructure;
 
+use Tests\Mocks\Pedros80\LANDEphp\Services\MockLiftAndEscalatorService;
+use Tests\Mocks\Pedros80\LANDEphp\Services\MockTokenGenerator;
 use Tests\TestCase;
 use Thomas\LiftsAndEscalators\Domain\Asset;
 use Thomas\LiftsAndEscalators\Domain\AssetId;
@@ -15,6 +17,7 @@ use Thomas\LiftsAndEscalators\Domain\Exceptions\NoSensorsFound;
 use Thomas\LiftsAndEscalators\Domain\Exceptions\SensorNotFound;
 use Thomas\LiftsAndEscalators\Domain\SensorId;
 use Thomas\LiftsAndEscalators\Infrastructure\HttpLiftAndEscalatorClient;
+use Thomas\LiftsAndEscalators\Infrastructure\HttpTokenService;
 use Thomas\Shared\Domain\CRS;
 use Thomas\Shared\Domain\Exceptions\ExternalDataConnectionFailure;
 
@@ -25,7 +28,10 @@ final class HttpLiftAndEscalatorClientTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = app(HttpLiftAndEscalatorClient::class);
+        $this->client = new HttpLiftAndEscalatorClient(
+            new MockLiftAndEscalatorService(),
+            new HttpTokenService(new MockTokenGenerator())
+        );
     }
 
     public function testGetAssetsByStationCodeWithAssetsReturnsAssets(): void
