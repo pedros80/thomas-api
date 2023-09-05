@@ -8,6 +8,8 @@ use Illuminate\Support\ServiceProvider;
 use Pedros80\LANDEphp\Contracts\LiftsAndEscalators;
 use Pedros80\LANDEphp\Contracts\Tokens;
 use Pedros80\LANDEphp\Factories\ServicesFactory;
+use Tests\Mocks\Pedros80\LANDEphp\Services\MockLiftAndEscalatorService;
+use Tests\Mocks\Pedros80\LANDEphp\Services\MockTokenGenerator;
 use Thomas\LiftsAndEscalators\Domain\LiftAndEscalatorClient;
 use Thomas\LiftsAndEscalators\Domain\TokenService;
 use Thomas\LiftsAndEscalators\Infrastructure\HttpLiftAndEscalatorClient;
@@ -28,17 +30,23 @@ final class LiftAndEscalatorServiceProvider extends ServiceProvider
 
     private function bindLiftsAndEscalators(): void
     {
+        $concrete = config('app.env') === 'testing' ? new MockLiftAndEscalatorService() :
+            $this->factory->makeLiftAndEscalatorService(config('services.lande.key'));
+
         $this->app->bind(
             LiftsAndEscalators::class,
-            fn () => $this->factory->makeLiftAndEscalatorService(config('services.lande.key'))
+            fn () => $concrete
         );
     }
 
     private function bindTokenGenerator(): void
     {
+        $concrete = config('app.env') === 'testing' ? new MockTokenGenerator() :
+            $this->factory->makeTokenGenerator(config('services.lande.key'));
+
         $this->app->bind(
             Tokens::class,
-            fn () => $this->factory->makeTokenGenerator(config('services.lande.key'))
+            fn () => $concrete
         );
     }
 
