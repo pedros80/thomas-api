@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Thomas\Boards\Providers\RealTimeTrains;
 
 use Pedros80\RTTphp\Contracts\Locations;
-use Pedros80\RTTphp\Services\ServiceInformationService;
+use Pedros80\RTTphp\Contracts\ServiceInformation;
 use stdClass;
 use Thomas\Boards\Domain\Board;
 use Thomas\Boards\Domain\BoardDataService;
@@ -16,7 +16,7 @@ final class RealTimeTrainsService implements BoardDataService
 {
     public function __construct(
         private Locations $locations,
-        private ServiceInformationService $services,
+        private ServiceInformation $services,
         private RTTBoardMapper $mapper,
         private int $numRows
     ) {
@@ -72,9 +72,11 @@ final class RealTimeTrainsService implements BoardDataService
         $locations = $info->locations;
 
         $here = 0;
+
         foreach ($locations as $idx => $calling) {
             if ($calling->crs === (string) $station) {
                 $here = $idx;
+
                 break;
             }
         }

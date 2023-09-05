@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d6fbf378f78016414ac0ef6ece6818e",
+    "content-hash": "1a707475267f93b4beb20f2abf903bcf",
     "packages": [
         {
             "name": "async-aws/core",
@@ -3411,16 +3411,16 @@
         },
         {
             "name": "pedros80/rttphp",
-            "version": "v0.4.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pedros80/rttphp.git",
-                "reference": "1e5583cf037dd360af8ed1e64e44fb17512c6867"
+                "reference": "a70f8d9536fa581344d86aaac393159622ed61c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pedros80/rttphp/zipball/1e5583cf037dd360af8ed1e64e44fb17512c6867",
-                "reference": "1e5583cf037dd360af8ed1e64e44fb17512c6867",
+                "url": "https://api.github.com/repos/pedros80/rttphp/zipball/a70f8d9536fa581344d86aaac393159622ed61c5",
+                "reference": "a70f8d9536fa581344d86aaac393159622ed61c5",
                 "shasum": ""
             },
             "require": {
@@ -3450,9 +3450,9 @@
             "description": "php wrapper for RealTimeTrains API",
             "support": {
                 "issues": "https://github.com/pedros80/rttphp/issues",
-                "source": "https://github.com/pedros80/rttphp/tree/v0.4.0"
+                "source": "https://github.com/pedros80/rttphp/tree/v0.5.0"
             },
-            "time": "2023-09-01T21:36:05+00:00"
+            "time": "2023-09-04T23:17:02+00:00"
         },
         {
             "name": "phpoption/phpoption",

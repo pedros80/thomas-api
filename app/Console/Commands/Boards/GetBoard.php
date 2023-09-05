@@ -21,7 +21,7 @@ final class GetBoard extends Command
         $data   = [];
         $data[] = $boards->departures($station)->toArray();
         $data[] = $boards->arrivals($station)->toArray();
-        $data[] = $boards->departuresPlatform($station, '2')->toArray();
+        $data[] = $boards->departuresPlatform($station, '1')->toArray();
 
         foreach ($data as $board) {
             $this->info("{$board['type']} Board for {$board['title']}");

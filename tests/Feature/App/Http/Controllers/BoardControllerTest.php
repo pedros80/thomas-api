@@ -24,7 +24,7 @@ final class BoardControllerTest extends TestCase
 
     public function testDeparturesPlatformValidStationCodeReturnsSuccessfully(): void
     {
-        $response = $this->get('api/boards/departures/dam/platform/2', $this->getAuthHeaders());
+        $response = $this->get('api/boards/departures/dam/platform/1', $this->getAuthHeaders());
 
         $response->assertStatus(200)->assertJson(['success' => true]);
     }
