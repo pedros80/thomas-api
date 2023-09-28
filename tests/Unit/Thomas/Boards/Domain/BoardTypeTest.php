@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Boards\Domain;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\Boards\Domain\BoardType;
 use Thomas\Boards\Domain\Exceptions\InvalidBoardType;
+
+use function Safe\json_encode;
 
 final class BoardTypeTest extends TestCase
 {

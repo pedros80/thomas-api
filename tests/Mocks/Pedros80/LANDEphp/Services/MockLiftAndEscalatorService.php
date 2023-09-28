@@ -8,8 +8,9 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Pedros80\LANDEphp\Contracts\LiftsAndEscalators;
-use function Safe\json_decode;
 use stdClass;
+
+use function Safe\json_decode;
 
 final class MockLiftAndEscalatorService implements LiftsAndEscalators
 {

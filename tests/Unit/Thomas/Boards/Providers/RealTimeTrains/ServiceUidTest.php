@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Boards\Providers\RealTimeTrains;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\Boards\Providers\RealTimeTrains\Exceptions\InvalidServiceUid;
 use Thomas\Boards\Providers\RealTimeTrains\ServiceUid;
+
+use function Safe\json_encode;
 
 final class ServiceUidTest extends TestCase
 {

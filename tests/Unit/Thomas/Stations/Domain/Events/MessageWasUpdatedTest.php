@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Stations\Domain\Events;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\Events\MessageWasUpdated;
 use Thomas\Stations\Domain\MessageBody;
@@ -14,6 +13,8 @@ use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+
+use function Safe\json_encode;
 
 final class MessageWasUpdatedTest extends TestCase
 {

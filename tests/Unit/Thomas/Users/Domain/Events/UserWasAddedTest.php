@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Users\Domain\Events;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Events\UserWasAdded;
 use Thomas\Users\Domain\Name;
 use Thomas\Users\Domain\UserId;
+
+use function Safe\json_encode;
 
 final class UserWasAddedTest extends TestCase
 {

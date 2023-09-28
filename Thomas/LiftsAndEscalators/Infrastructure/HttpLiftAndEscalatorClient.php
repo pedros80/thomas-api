@@ -6,8 +6,6 @@ namespace Thomas\LiftsAndEscalators\Infrastructure;
 
 use GuzzleHttp\Exception\ClientException;
 use Pedros80\LANDEphp\Contracts\LiftsAndEscalators;
-use function Safe\json_decode;
-use function Safe\json_encode;
 use stdClass;
 use Thomas\LiftsAndEscalators\Domain\Asset;
 use Thomas\LiftsAndEscalators\Domain\AssetId;
@@ -22,6 +20,9 @@ use Thomas\LiftsAndEscalators\Domain\SensorId;
 use Thomas\LiftsAndEscalators\Domain\TokenService;
 use Thomas\Shared\Domain\CRS;
 use Thomas\Shared\Domain\Exceptions\ExternalDataConnectionFailure;
+
+use function Safe\json_decode;
+use function Safe\json_encode;
 
 final class HttpLiftAndEscalatorClient implements LiftAndEscalatorClient
 {

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Stations\Domain\Events;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\Stations\Domain\Events\MessageWasRemoved;
 use Thomas\Stations\Domain\MessageID;
+
+use function Safe\json_encode;
 
 final class MessageWasRemovedTest extends TestCase
 {

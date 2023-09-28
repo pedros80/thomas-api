@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\RealTimeIncidents\Infrastructure;
 
-use function Safe\json_decode;
 use Stomp\Transport\Frame;
+
+use function Safe\json_decode;
 
 final class MockRTIMessageFactory
 {

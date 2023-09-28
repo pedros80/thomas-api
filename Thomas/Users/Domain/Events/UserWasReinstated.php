@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Thomas\Users\Domain\Events;
 
-use function Safe\json_decode;
 use Thomas\Shared\Domain\Event;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Name;
 use Thomas\Users\Domain\UserId;
+
+use function Safe\json_decode;
 
 final class UserWasReinstated extends Event
 {

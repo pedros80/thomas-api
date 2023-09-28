@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Providers\NationalRailEnquiries;
 
-use function Safe\preg_match;
 use stdClass;
 use Thomas\Boards\Domain\Board;
 use Thomas\Boards\Domain\BoardTitle;
@@ -12,6 +11,8 @@ use Thomas\Boards\Domain\BoardType;
 use Thomas\Boards\Domain\Exceptions\InvalidBoardType;
 use Thomas\Boards\Domain\Service;
 use Thomas\Shared\Domain\CRS;
+
+use function Safe\preg_match;
 
 final class NREBoardMapper
 {

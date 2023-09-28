@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Thomas\RealTimeIncidents\Domain\Events;
 
-use function Safe\json_decode;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 use Thomas\Shared\Domain\Event;
+
+use function Safe\json_decode;
 
 final class IncidentWasRemoved extends Event
 {

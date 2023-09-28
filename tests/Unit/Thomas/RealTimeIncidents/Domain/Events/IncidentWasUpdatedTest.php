@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\RealTimeIncidents\Domain\Events;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasUpdated;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
+
+use function Safe\json_encode;
 
 final class IncidentWasUpdatedTest extends TestCase
 {

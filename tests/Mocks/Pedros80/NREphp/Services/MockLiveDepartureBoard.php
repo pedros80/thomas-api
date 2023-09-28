@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Tests\Mocks\Pedros80\NREphp\Services;
 
 use Pedros80\NREphp\Contracts\Boards;
-use function Safe\json_decode;
 use stdClass;
+
+use function Safe\json_decode;
 
 final class MockLiveDepartureBoard implements Boards
 {

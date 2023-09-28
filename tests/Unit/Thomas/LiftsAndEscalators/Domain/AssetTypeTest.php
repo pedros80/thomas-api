@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\LiftsAndEscalators\Domain;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\LiftsAndEscalators\Domain\AssetType;
 use Thomas\LiftsAndEscalators\Domain\Exceptions\InvalidAssetType;
+
+use function Safe\json_encode;
 
 final class AssetTypeTest extends TestCase
 {

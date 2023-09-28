@@ -7,10 +7,11 @@ namespace Thomas\Shared\Framework;
 use Broadway\CommandHandling\SimpleCommandBus;
 use Illuminate\Log\Logger;
 use Illuminate\Support\ServiceProvider;
-use function Safe\json_encode;
 use Thomas\Shared\Application\Command;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Shared\Application\CommandHandler;
+
+use function Safe\json_encode;
 
 final class CommandBusServiceProvider extends ServiceProvider
 {

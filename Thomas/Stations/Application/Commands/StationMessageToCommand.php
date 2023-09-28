@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Application\Commands;
 
-use function Safe\gzdecode;
 use SimpleXMLElement;
 use Stomp\Transport\Frame;
 use Thomas\Shared\Application\Command;
@@ -17,6 +16,8 @@ use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+
+use function Safe\gzdecode;
 
 final class StationMessageToCommand implements MessageToCommand
 {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Domain\Events;
 
-use function Safe\json_decode;
 use Thomas\Shared\Domain\Event;
 use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\MessageBody;
@@ -13,6 +12,8 @@ use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+
+use function Safe\json_decode;
 
 final class MessageWasUpdated extends Event
 {
