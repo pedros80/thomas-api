@@ -10,19 +10,14 @@ use Thomas\Stations\Domain\MessageID;
 final class RemoveStationMessage extends Command
 {
     public function __construct(
-        private MessageID $id
+        public readonly MessageID $id,
     ) {
-    }
-
-    public function id(): MessageID
-    {
-        return $this->id;
     }
 
     public function toArray(): array
     {
         return [
-            'id' => (string) $this->id,
+            'id' => $this->id,
         ];
     }
 }

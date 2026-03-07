@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\ServiceIndicator\Domain;
 
-final class TocCode
-{
-    public function __construct(
-        private string $code
-    ) {
-        // @todo - validation
-    }
+use Thomas\Shared\Domain\StringValue;
 
-    public function __toString(): string
-    {
-        return $this->code;
-    }
+final class TocCode extends StringValue
+{
+    //
 }

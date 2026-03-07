@@ -6,11 +6,10 @@ namespace Thomas\News\Framework;
 
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
-use Thomas\News\Application\Queries\GetNewsHeadlines;
 use Thomas\News\Domain\NewsService;
-use Thomas\News\Infrastructure\HttpNewsService;
-use Thomas\News\Infrastructure\RSSParser;
+use Thomas\News\Domain\RSSParser;
 
 final class NewsServiceProvider extends ServiceProvider
 {
@@ -23,22 +22,17 @@ final class NewsServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             NewsService::class,
-            fn () => new HttpNewsService(
+            fn (): NewsService => new NewsService(
                 new Client([
                     'headers' => [
                         'User-Agent' => 'Thomas Rss Reader',
                         'Accept'     => 'application/xml',
                     ],
-                    'base_uri' => config('services.rss.bbc.url'),
+                    'base_uri' => Config::get('services.rss.bbc.url'),
                 ]),
                 new RSSParser(),
-                $this->app->make(Repository::class)
+                $this->app->make(Repository::class),
             )
-        );
-
-        $this->app->bind(
-            GetNewsHeadlines::class,
-            fn () => new GetNewsHeadlines($this->app->make(NewsService::class))
         );
     }
 }

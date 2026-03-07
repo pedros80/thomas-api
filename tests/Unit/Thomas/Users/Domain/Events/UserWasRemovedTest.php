@@ -10,8 +10,6 @@ use Thomas\Users\Domain\Events\UserWasRemoved;
 use Thomas\Users\Domain\RemovedAt;
 use Thomas\Users\Domain\UserId;
 
-use function Safe\json_encode;
-
 final class UserWasRemovedTest extends TestCase
 {
     public function testSerialises(): void
@@ -23,7 +21,7 @@ final class UserWasRemovedTest extends TestCase
         );
 
         /** @var string $serialised */
-        $serialised = json_encode($event);
+        $serialised = json_encode($event, JSON_THROW_ON_ERROR);
 
         $this->assertEquals($event, UserWasRemoved::deserialize($serialised));
     }

@@ -13,6 +13,7 @@ use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 
 final class MessageTest extends TestCase
 {
@@ -20,10 +21,10 @@ final class MessageTest extends TestCase
     {
         $message = new Message(
             new MessageID('1234'),
-            new MessageCategory(MessageCategory::MISC),
+            MessageCategory::MISC,
             new MessageBody('Some spiel...'),
-            new MessageSeverity(2),
-            [
+            MessageSeverity::MAJOR,
+            new Stations([
                 new Station(
                     new Code('DAM'),
                     new Name('Dalmeny')
@@ -32,15 +33,15 @@ final class MessageTest extends TestCase
                     new Code('KDY'),
                     new Name('Kirkcaldy')
                 ),
-            ]
+            ])
         );
 
         $array = [
             'id'       => '1234',
-            'category' => 'Misc',
+            'category' => MessageCategory::MISC,
             'body'     => 'Some spiel...',
-            'severity' => 'major',
-            'stations' => [
+            'severity' => MessageSeverity::MAJOR,
+            'stations' => new Stations([
                 new Station(
                     new Code('DAM'),
                     new Name('Dalmeny')
@@ -49,7 +50,7 @@ final class MessageTest extends TestCase
                     new Code('KDY'),
                     new Name('Kirkcaldy')
                 ),
-            ],
+            ]),
         ];
 
         $this->assertEquals($array, $message->toArray());

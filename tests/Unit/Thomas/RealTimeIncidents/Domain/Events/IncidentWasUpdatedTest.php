@@ -10,8 +10,6 @@ use Thomas\RealTimeIncidents\Domain\Events\IncidentWasUpdated;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
-use function Safe\json_encode;
-
 final class IncidentWasUpdatedTest extends TestCase
 {
     public function testSerializes(): void
@@ -24,16 +22,16 @@ final class IncidentWasUpdatedTest extends TestCase
 
         $event = new IncidentWasUpdated(
             new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'),
-            IncidentMessageStatus::new(),
+            IncidentMessageStatus::NEW,
             $body
         );
 
         /** @var string $json */
-        $json     = json_encode($event);
+        $json     = json_encode($event, JSON_THROW_ON_ERROR);
         $newEvent = IncidentWasUpdated::deserialize($json);
 
         $this->assertInstanceOf(IncidentWasUpdated::class, $newEvent);
-        $this->assertEquals(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), $event->id());
+        $this->assertEquals(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), $event->id);
         $this->assertEquals($event, $newEvent);
     }
 }

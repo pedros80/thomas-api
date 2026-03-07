@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace Thomas\RealTimeIncidents\Domain;
 
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use SimpleXMLElement;
+use Thomas\RealTimeIncidents\Domain\CreationTime;
+use Thomas\RealTimeIncidents\Domain\EndTime;
+use Thomas\RealTimeIncidents\Domain\LastChangedDate;
+use Thomas\RealTimeIncidents\Domain\StartTime;
 
-final class Body implements JsonSerializable
+final class Body implements Arrayable, JsonSerializable
 {
-    private SimpleXMLElement $xml;
+    private readonly SimpleXMLElement $xml;
 
     public function __construct(
-        private string $body
+        private readonly string $body
     ) {
         $this->xml = new SimpleXMLElement($this->body);
     }

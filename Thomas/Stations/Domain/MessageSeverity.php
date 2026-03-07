@@ -4,37 +4,21 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Domain;
 
-use Thomas\Stations\Domain\Exceptions\InvalidSeverity;
-
-final class MessageSeverity
+enum MessageSeverity: int
 {
-    public const NORMAL = 0;
-    public const MINOR  = 1;
-    public const MAJOR  = 2;
-    public const SEVERE = 3;
+    case NORMAL = 0;
+    case MINOR  = 1;
+    case MAJOR  = 2;
+    case SEVERE = 3;
 
-    public const LABELS = [
-        'normal',
-        'minor',
-        'major',
-        'severe',
-    ];
-
-    public function __construct(
-        private int $severity
-    ) {
-        if ($severity < 0 || $severity > 3) {
-            throw InvalidSeverity::fromInt($severity);
-        }
-    }
-
-    public function __toString(): string
+    public function label(): string
     {
-        return self::LABELS[$this->severity];
-    }
+        return match($this) {
+            self::NORMAL => 'normal',
+            self::MINOR  => 'minor',
+            self::MAJOR  => 'major',
+            self::SEVERE => 'severe',
+        };
 
-    public function toInt(): int
-    {
-        return $this->severity;
     }
 }

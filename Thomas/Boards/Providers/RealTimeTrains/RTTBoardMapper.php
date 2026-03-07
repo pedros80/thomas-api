@@ -8,8 +8,11 @@ use stdClass;
 use Thomas\Boards\Domain\Board;
 use Thomas\Boards\Domain\BoardTitle;
 use Thomas\Boards\Domain\BoardType;
-use Thomas\Boards\Domain\Exceptions\InvalidBoardType;
+use Thomas\Boards\Domain\Messages;
+use Thomas\Boards\Domain\OperatorCode;
+use Thomas\Boards\Domain\OperatorCodes;
 use Thomas\Boards\Domain\Service;
+use Thomas\Boards\Domain\Services;
 use Thomas\Shared\Domain\CRS;
 
 final class RTTBoardMapper
@@ -18,9 +21,9 @@ final class RTTBoardMapper
     {
         return new Board(
             new BoardTitle(CRS::fromString($data->location->crs)->name()),
-            new BoardType(BoardType::DEPARTURES),
+            BoardType::DEPARTURES,
             $this->parseServices($data->services, BoardType::DEPARTURES),
-            [],
+            new Messages([]),
             $this->getOperators($data->services)
         );
     }
@@ -29,9 +32,9 @@ final class RTTBoardMapper
     {
         return new Board(
             new BoardTitle(CRS::fromString($data->location->crs)->name()),
-            new BoardType(BoardType::ARRIVALS),
+            BoardType::ARRIVALS,
             $this->parseServices($data->services, BoardType::ARRIVALS),
-            [],
+            new Messages([]),
             $this->getOperators($data->services)
         );
     }
@@ -40,23 +43,25 @@ final class RTTBoardMapper
     {
         return new Board(
             new BoardTitle(CRS::fromString($data->location->crs)->name()),
-            new BoardType(BoardType::PLATFORM),
+            BoardType::PLATFORM,
             $this->parseServices($data->services, BoardType::PLATFORM),
-            [],
+            new Messages([]),
             $this->getOperators($data->services)
         );
 
     }
 
-    private function parseServices(array $services, string $type): array
+    private function parseServices(array $services, BoardType $type): Services
     {
-        return array_map(
-            fn (stdClass $service) => $this->parseService($service, $type),
-            $services
+        return new Services(
+            array_map(
+                fn (stdClass $service) => $this->parseService($service, $type),
+                $services
+            )
         );
     }
 
-    private function parseService(stdClass $service, string $type): Service
+    private function parseService(stdClass $service, BoardType $type): Service
     {
         return new Service(
             $this->getScheduledTime($service->locationDetail, $type),
@@ -101,25 +106,23 @@ final class RTTBoardMapper
         return "{$name} {$point->realtimeArrival}";
     }
 
-    private function getScheduledTime(stdClass $locationDetail, string $type): string
+    private function getScheduledTime(stdClass $locationDetail, BoardType $type): string
     {
         return match($type) {
             BoardType::DEPARTURES, BoardType::PLATFORM => $locationDetail->gbttBookedDeparture,
             BoardType::ARRIVALS => $locationDetail->gbttBookedArrival,
-            default             => throw InvalidBoardType::fromString($type),
         };
     }
 
-    private function getDestinationOrOrigin(stdClass $locationDetail, string $type): string
+    private function getDestinationOrOrigin(stdClass $locationDetail, BoardType $type): string
     {
         return match($type) {
             BoardType::DEPARTURES, BoardType::PLATFORM => $locationDetail->destination[0]->description,
             BoardType::ARRIVALS => $locationDetail->origin[0]->description,
-            default             => throw InvalidBoardType::fromString($type),
         };
     }
 
-    private function getExpectedTime(stdClass $locationDetail, string $type): string
+    private function getExpectedTime(stdClass $locationDetail, BoardType $type): string
     {
         if (in_array($locationDetail->displayAs, ['CANCELLED_CALL', 'CANCELLED_PASS'])) {
             return 'Cancelled';
@@ -128,7 +131,6 @@ final class RTTBoardMapper
         $expectedTime = match($type) {
             BoardType::DEPARTURES, BoardType::PLATFORM => $locationDetail->realtimeDeparture,
             BoardType::ARRIVALS => $locationDetail->realtimeArrival,
-            default             => throw InvalidBoardType::fromString($type),
         };
 
         $scheduledTime = $this->getScheduledTime($locationDetail, $type);
@@ -140,11 +142,17 @@ final class RTTBoardMapper
         return $expectedTime;
     }
 
-    private function getOperators(array $services): array
+    private function getOperators(array $services): OperatorCodes
     {
-        return array_values(array_unique(array_map(
-            fn (stdClass $service) => $service->atocCode,
-            $services
-        )));
+        return new OperatorCodes(
+            array_values(
+                array_unique(
+                    array_map(
+                        fn (stdClass $service) => new OperatorCode($service->atocCode),
+                        $services
+                    )
+                )
+            )
+        );
     }
 }

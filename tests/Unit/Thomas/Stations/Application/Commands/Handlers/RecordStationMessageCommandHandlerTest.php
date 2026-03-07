@@ -19,6 +19,7 @@ use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 use Thomas\Stations\Infrastructure\BroadwayRepository;
 
 final class RecordStationMessageCommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -35,29 +36,29 @@ final class RecordStationMessageCommandHandlerTest extends CommandHandlerScenari
             ->given([
                 new MessageWasAdded(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    [
+                    MessageSeverity::MAJOR,
+                    new Stations([
                         new Station(new Code('DAM'), new Name('Dalmeny')),
-                    ]
+                    ])
                 ),
             ])
             ->when(
                 new RecordStationMessage(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
+                    MessageSeverity::MAJOR,
+                    new Stations()
                 )
             )->then([
                 new MessageWasUpdated(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
+                    MessageSeverity::MAJOR,
+                    new Stations()
                 ),
             ]);
     }
@@ -69,18 +70,18 @@ final class RecordStationMessageCommandHandlerTest extends CommandHandlerScenari
             ->when(
                 new RecordStationMessage(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
+                    MessageSeverity::MAJOR,
+                    new Stations()
                 )
             )->then([
                 new MessageWasAdded(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
+                    MessageSeverity::MAJOR,
+                    new Stations()
                 ),
             ]);
     }

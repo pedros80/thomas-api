@@ -26,7 +26,15 @@ class SearchStationRequest extends FormRequest
     public function rules()
     {
         return [
-            'search' => 'required',
+            'search' => 'required|string',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'search.required' => 'Search term is required.',
+            'search.string'   => 'Search term must be a string.',
         ];
     }
 }

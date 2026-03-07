@@ -64,20 +64,20 @@ final class Incident extends EventSourcedAggregateRoot
 
     public function applyIncidentWasAdded(IncidentWasAdded $event): void
     {
-        $this->id     = $event->id();
-        $this->status = $event->status();
-        $this->body   = $event->body();
+        $this->id     = $event->id;
+        $this->status = $event->status;
+        $this->body   = $event->body;
     }
 
     public function applyIncidentWasUpdated(IncidentWasUpdated $event): void
     {
-        $this->status = $event->status();
-        $this->body   = $event->body();
+        $this->status = $event->status;
+        $this->body   = $event->body;
     }
 
     public function applyIncidentWasRemoved(IncidentWasRemoved $event): void
     {
-        $this->status = $event->status();
+        $this->status = $event->status;
     }
 
     public function getAggregateRootId(): string

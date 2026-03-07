@@ -7,13 +7,12 @@ namespace Thomas\Stations\Framework;
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Marshaler;
 use Broadway\EventHandling\EventBus;
-use Broadway\EventStore\EventStore;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Stations\Application\Commands\Handlers\RecordStationMessageCommandHandler;
 use Thomas\Stations\Application\Commands\Handlers\RemoveStationMessageCommandHandler;
 use Thomas\Stations\Application\Queries\GetStationMessages;
-use Thomas\Stations\Application\Queries\SearchStations;
 use Thomas\Stations\Domain\MessagesRepository;
 use Thomas\Stations\Domain\StationService;
 use Thomas\Stations\Infrastructure\ArrayStationService;
@@ -28,7 +27,6 @@ final class StationsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->bindStationService();
-        $this->bindStationQueries();
         $this->bindMessagesRepository();
         $this->bindAndSubscribeCommandHandlers();
         $this->subscribeEventListeners();
@@ -37,12 +35,15 @@ final class StationsServiceProvider extends ServiceProvider
 
     private function bindQueries(): void
     {
+        /** @var string $table */
+        $table = Config::get('nosql.tables.thomas_table');
+
         $this->app->bind(
             GetStationMessages::class,
-            fn () => new DynamoDbGetStationMessages(
+            fn (): GetStationMessages => new DynamoDbGetStationMessages(
                 $this->app->make(DynamoDbClient::class),
                 $this->app->make(Marshaler::class),
-                config('nosql.tables.thomas_table')
+                $table
             )
         );
     }
@@ -51,10 +52,7 @@ final class StationsServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             MessagesRepository::class,
-            fn () => new BroadwayRepository(
-                $this->app->make(EventStore::class),
-                $this->app->make(EventBus::class)
-            )
+            fn (): MessagesRepository => $this->app->make(BroadwayRepository::class)
         );
     }
 
@@ -62,15 +60,7 @@ final class StationsServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             StationService::class,
-            fn () => new ArrayStationService()
-        );
-    }
-
-    private function bindStationQueries(): void
-    {
-        $this->app->bind(
-            SearchStations::class,
-            fn () => new SearchStations($this->app->make(StationService::class))
+            fn (): StationService => new ArrayStationService()
         );
     }
 
@@ -101,14 +91,18 @@ final class StationsServiceProvider extends ServiceProvider
             MessageWasRemovedProjection::class,
         ];
 
+        /** @var string $table */
+        $table = Config::get('nosql.tables.thomas_table');
+
+        /** @var EventBus $eventBus */
         $eventBus = $this->app->get(EventBus::class);
-        array_map(function (string $listener) use ($eventBus) {
+        array_map(function (string $listener) use ($eventBus, $table) {
             $this->app->bind(
                 $listener,
                 fn () => new $listener(
                     $this->app->make(DynamoDbClient::class),
                     $this->app->make(Marshaler::class),
-                    config('nosql.tables.thomas_table')
+                    $table
                 )
             );
             $eventBus->subscribe($this->app->make($listener));

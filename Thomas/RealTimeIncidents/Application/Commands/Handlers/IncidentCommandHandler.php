@@ -11,7 +11,7 @@ use Thomas\Shared\Application\CommandHandler;
 abstract class IncidentCommandHandler extends SimpleCommandHandler implements CommandHandler
 {
     public function __construct(
-        protected IncidentsRepository $incidents
+        protected readonly IncidentsRepository $incidents,
     ) {
     }
 }

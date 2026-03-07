@@ -12,7 +12,7 @@ use Thomas\Shared\Domain\Exceptions\InvalidCRS;
 final class CRS implements JsonSerializable
 {
     private function __construct(
-        private StationCode $stationCode
+        private readonly StationCode $stationCode,
     ) {
     }
 

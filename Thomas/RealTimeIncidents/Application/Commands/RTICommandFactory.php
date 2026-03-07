@@ -11,7 +11,7 @@ use Thomas\Shared\Application\MessageToCommand;
 final class RTICommandFactory
 {
     public function __construct(
-        private array $converters
+        private readonly array $converters
     ) {
     }
 

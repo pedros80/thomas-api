@@ -14,13 +14,13 @@ final class IncidentWasUpdatedProjection extends InteractsWithDynamoDb
         $this->db->updateItem([
             'TableName' => $this->tableName,
             'Key'       => $this->marshaler->marshalItem([
-                'PK'  => (string) $event->id(),
+                'PK'  => (string) $event->id,
                 'SKe' => 'RTI',
             ]),
             'UpdateExpression'          => 'set istatus=:Status, body=:Body',
             'ExpressionAttributeValues' => $this->marshaler->marshalItem([
-                ':Status' => (string) $event->status(),
-                ':Body'   => (string) $event->body(),
+                ':Status' => $event->status->value,
+                ':Body'   => (string) $event->body,
             ]),
         ]);
     }

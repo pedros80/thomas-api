@@ -6,6 +6,7 @@ namespace Thomas\Shared\Framework;
 
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\Sdk;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Yaml\Yaml;
@@ -50,11 +51,18 @@ class DatabaseServiceProvider extends ServiceProvider
 
     private function bindDatabaseConfigLoader(): void
     {
-        $this->app->bind(YmlDatabaseConfigLoader::class, function () {
-            return new YmlDatabaseConfigLoader(
-                Yaml::parse(File::get('./serverless/Tables.yml')),
-                config('nosql.tables'),
-            );
-        });
+        /** @var array $tables */
+        $tables = Config::get('nosql.tables');
+
+        /** @var array $defs */
+        $defs = Yaml::parse(File::get('./serverless/Tables.yml'));
+
+        $this->app->bind(
+            YmlDatabaseConfigLoader::class,
+            fn (): YmlDatabaseConfigLoader => new YmlDatabaseConfigLoader(
+                $defs,
+                $tables,
+            )
+        );
     }
 }

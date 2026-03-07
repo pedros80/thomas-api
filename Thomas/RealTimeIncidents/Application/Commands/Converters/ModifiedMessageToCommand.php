@@ -21,8 +21,8 @@ final class ModifiedMessageToCommand implements MessageToCommand
 
         $command = new UpdateIncident(
             new IncidentID($headers['INCIDENT_ID']),
-            IncidentMessageStatus::modified(),
-            new Body($body)
+            IncidentMessageStatus::MODIFIED,
+            new Body($body),
         );
 
         return $command;

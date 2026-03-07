@@ -8,8 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Thomas\Boards\Providers\RealTimeTrains\Exceptions\InvalidServiceUid;
 use Thomas\Boards\Providers\RealTimeTrains\ServiceUid;
 
-use function Safe\json_encode;
-
 final class ServiceUidTest extends TestCase
 {
     public function testInstantiates(): void
@@ -18,7 +16,7 @@ final class ServiceUidTest extends TestCase
 
         $this->assertInstanceOf(ServiceUid::class, $id);
         $this->assertEquals('Y29984', (string) $id);
-        $this->assertEquals('"Y29984"', json_encode($id));
+        $this->assertEquals('"Y29984"', json_encode($id, JSON_THROW_ON_ERROR));
     }
 
     public function testInvalidServiceUidThrowsException(): void

@@ -23,7 +23,7 @@ final class ServiceIndicatorServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             GetServiceIndicators::class,
-            fn () => new GetServiceIndicators(
+            fn (): GetServiceIndicators => new GetServiceIndicators(
                 $this->app->make(ServiceIndicatorService::class)
             )
         );
@@ -33,7 +33,7 @@ final class ServiceIndicatorServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             ServiceIndicatorService::class,
-            fn () => new HttpServiceIndicatorService(
+            fn (): ServiceIndicatorService => new HttpServiceIndicatorService(
                 $this->app->make(KBService::class),
                 new ServiceIndicatorParser()
             )

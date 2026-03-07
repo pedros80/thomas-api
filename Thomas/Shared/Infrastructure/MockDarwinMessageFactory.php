@@ -55,6 +55,9 @@ final class MockDarwinMessageFactory
 
         $body = gzencode($content);
 
-        return new Frame('MESSAGE', json_decode(self::STATION_HEADERS, true), $body);
+        /** @var array $headers */
+        $headers = json_decode(self::STATION_HEADERS, true);
+
+        return new Frame('MESSAGE', $headers, $body);
     }
 }

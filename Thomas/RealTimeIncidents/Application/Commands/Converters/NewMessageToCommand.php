@@ -21,8 +21,8 @@ final class NewMessageToCommand implements MessageToCommand
 
         $command = new  AddIncident(
             new IncidentID($headers['INCIDENT_ID']),
-            IncidentMessageStatus::new(),
-            new Body($body)
+            IncidentMessageStatus::NEW,
+            new Body($body),
         );
 
         return $command;

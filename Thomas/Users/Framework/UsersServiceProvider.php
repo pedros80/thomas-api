@@ -7,7 +7,7 @@ namespace Thomas\Users\Framework;
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Marshaler;
 use Broadway\EventHandling\EventBus;
-use Broadway\EventStore\EventStore;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Users\Application\Commands\Handlers\AddUserCommandHandler;
@@ -31,12 +31,17 @@ final class UsersServiceProvider extends ServiceProvider
 
     private function bindUserResolver(): void
     {
+        /** @var string $secret */
+        $secret = Config::get('jwt.secret');
+        /** @var string $algo */
+        $algo = Config::get('jwt.algo');
+
         $this->app->bind(
             UserResolver::class,
-            fn () => new UserResolver(
+            fn (): UserResolver => new UserResolver(
                 $this->app->make(UsersRepository::class),
-                config('jwt.secret'),
-                config('jwt.algo')
+                $secret,
+                $algo,
             )
         );
     }
@@ -45,10 +50,7 @@ final class UsersServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             UsersRepository::class,
-            fn () => new BroadwayRepository(
-                $this->app->make(EventStore::class),
-                $this->app->make(EventBus::class)
-            )
+            fn (): UsersRepository => $this->app->make(BroadwayRepository::class)
         );
     }
 
@@ -79,14 +81,18 @@ final class UsersServiceProvider extends ServiceProvider
             UserWasReinstatedProjection::class,
         ];
 
+        /** @var string $table */
+        $table = Config::get('nosql.tables.thomas_table');
+
+        /** @var EventBus $eventBus */
         $eventBus = $this->app->get(EventBus::class);
-        array_map(function (string $listener) use ($eventBus) {
+        array_map(function (string $listener) use ($eventBus, $table) {
             $this->app->bind(
                 $listener,
                 fn () => new $listener(
                     $this->app->make(DynamoDbClient::class),
                     $this->app->make(Marshaler::class),
-                    config('nosql.tables.thomas_table')
+                    $table
                 )
             );
             $eventBus->subscribe($this->app->make($listener));

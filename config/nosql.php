@@ -4,6 +4,7 @@ $details = [
     'tables' => [
         'event_store_table' => env('EVENT_STORE_TABLE', 'EventStore'),
         'thomas_table'      => env('THOMAS_TABLE', 'Thomas'),
+        'tfl_table'         => env('TFL_TABLE', 'TfL'),
     ],
     'dynamo'  => [
         'host'    => env('DYNAMO_HOST'),

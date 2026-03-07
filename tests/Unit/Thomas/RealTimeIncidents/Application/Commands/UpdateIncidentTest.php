@@ -22,7 +22,7 @@ final class UpdateIncidentTest extends TestCase
 
         $command = new UpdateIncident(
             $incidentID,
-            IncidentMessageStatus::modified(),
+            IncidentMessageStatus::MODIFIED,
             new Body($content)
         );
 
@@ -30,7 +30,7 @@ final class UpdateIncidentTest extends TestCase
 
         $this->assertEquals([
             'id'     => (string) $incidentID,
-            'status' => 'MODIFIED',
+            'status' => IncidentMessageStatus::MODIFIED,
             'body'   => $content,
         ], $command->toArray());
     }

@@ -19,7 +19,7 @@ final class RemovedMessageToCommand implements MessageToCommand
 
         $command = new  RemoveIncident(
             new IncidentID($headers['INCIDENT_ID']),
-            IncidentMessageStatus::removed(),
+            IncidentMessageStatus::REMOVED,
         );
 
         return $command;

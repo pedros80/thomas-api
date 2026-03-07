@@ -9,23 +9,21 @@ use Thomas\RealTimeIncidents\Domain\Events\IncidentWasRemoved;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
-use function Safe\json_encode;
-
 final class IncidentWasRemovedTest extends TestCase
 {
     public function testSerializes(): void
     {
         $event = new IncidentWasRemoved(
             new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'),
-            IncidentMessageStatus::removed()
+            IncidentMessageStatus::REMOVED
         );
 
         /** @var string $json */
-        $json     = json_encode($event);
+        $json     = json_encode($event, JSON_THROW_ON_ERROR);
         $newEvent = IncidentWasRemoved::deserialize($json);
 
         $this->assertInstanceOf(IncidentWasRemoved::class, $newEvent);
-        $this->assertEquals(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), $event->id());
+        $this->assertEquals(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), $event->id);
         $this->assertEquals($event, $newEvent);
     }
 }

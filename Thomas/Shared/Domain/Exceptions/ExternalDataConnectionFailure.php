@@ -8,10 +8,8 @@ use Exception;
 
 final class ExternalDataConnectionFailure extends Exception
 {
-    private function __construct(
-        string $message,
-        int $code
-    ) {
+    private function __construct(string $message, int $code)
+    {
         parent::__construct($message, $code);
     }
 

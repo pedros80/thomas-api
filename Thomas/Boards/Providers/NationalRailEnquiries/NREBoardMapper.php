@@ -8,8 +8,12 @@ use stdClass;
 use Thomas\Boards\Domain\Board;
 use Thomas\Boards\Domain\BoardTitle;
 use Thomas\Boards\Domain\BoardType;
-use Thomas\Boards\Domain\Exceptions\InvalidBoardType;
+use Thomas\Boards\Domain\Message;
+use Thomas\Boards\Domain\Messages;
+use Thomas\Boards\Domain\OperatorCode;
+use Thomas\Boards\Domain\OperatorCodes;
 use Thomas\Boards\Domain\Service;
+use Thomas\Boards\Domain\Services;
 use Thomas\Shared\Domain\CRS;
 
 use function Safe\preg_match;
@@ -31,15 +35,15 @@ final class NREBoardMapper
         return $this->toBoard($data, BoardType::PLATFORM);
     }
 
-    private function toBoard(stdClass $data, string $type): Board
+    private function toBoard(stdClass $data, BoardType $type): Board
     {
         $board = $data->GetStationBoardResult;
 
         return new Board(
             new BoardTitle(CRS::fromString($board->crs)->name()),
-            new BoardType($type),
+            $type,
             $this->parseServices($board->trainServices?->service ?? [], $type),
-            $this->getMessages($board->nrcMessages?->message ?? []),
+            $this->parseMessages($board->nrcMessages?->message ?? []),
             $this->getOperators($board->trainServices?->service ?? [])
         );
     }
@@ -54,15 +58,17 @@ final class NREBoardMapper
         return $message;
     }
 
-    private function parseServices(array $services, string $type): array
+    private function parseServices(array $services, BoardType $type): Services
     {
-        return array_map(
-            fn (stdClass $service) => $this->parseService($service, $type),
-            $services
+        return new Services(
+            array_map(
+                fn (stdClass $service) => $this->parseService($service, $type),
+                $services
+            )
         );
     }
 
-    private function parseService(stdClass $service, string $type): Service
+    private function parseService(stdClass $service, BoardType $type): Service
     {
         return new Service(
             $this->getScheduledTime($service, $type),
@@ -118,12 +124,11 @@ final class NREBoardMapper
         return $time;
     }
 
-    private function getScheduledTime(stdClass $service, string $type): string
+    private function getScheduledTime(stdClass $service, BoardType $type): string
     {
         $time = match($type) {
             BoardType::DEPARTURES, BoardType::PLATFORM => $service->std,
             BoardType::ARRIVALS => $service->sta,
-            default             => throw InvalidBoardType::fromString($type),
         };
 
         return $this->cleanTimeString($time);
@@ -134,23 +139,21 @@ final class NREBoardMapper
         return isset($service->platform) ? $service->platform : '...';
     }
 
-    private function getEstimatedTime(stdClass $service, string $type): string
+    private function getEstimatedTime(stdClass $service, BoardType $type): string
     {
         $time = match($type) {
             BoardType::DEPARTURES, BoardType::PLATFORM => $service->etd,
             BoardType::ARRIVALS => $service->eta,
-            default             => throw InvalidBoardType::fromString($type),
         };
 
         return $this->cleanTimeString($time);
     }
 
-    private function getDestinationOrOriginFromLocations(stdClass $service, string $type): string
+    private function getDestinationOrOriginFromLocations(stdClass $service, BoardType $type): string
     {
         $locations = match ($type) {
             BoardType::DEPARTURES, BoardType::PLATFORM => $service->destination->location,
             BoardType::ARRIVALS => $service->origin->location,
-            default             => throw InvalidBoardType::fromString($type),
         };
 
         return implode(
@@ -162,21 +165,25 @@ final class NREBoardMapper
         );
     }
 
-    private function getMessages(array $messages): array
+    private function parseMessages(array $messages): Messages
     {
-        return array_map(
-            fn (stdClass $message) => $this->cleanMessage($message->_),
-            $messages
+        return new Messages(
+            array_map(
+                fn (stdClass $message) => new Message($this->cleanMessage($message->_)),
+                $messages
+            )
         );
     }
 
-    private function getOperators(array $services): array
+    private function getOperators(array $services): OperatorCodes
     {
-        return array_values(
-            array_unique(
-                array_map(
-                    fn (stdClass $service) => $service->operatorCode,
-                    $services
+        return new OperatorCodes(
+            array_values(
+                array_unique(
+                    array_map(
+                        fn (stdClass $service) => new OperatorCode($service->operatorCode),
+                        $services
+                    )
                 )
             )
         );

@@ -33,16 +33,16 @@ final class RemoveIncidentCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $this->scenario
             ->withAggregateId((string) $incidentID)
-            ->given([new IncidentWasAdded($incidentID, IncidentMessageStatus::new(), new Body($content))])
-            ->when(new RemoveIncident($incidentID, IncidentMessageStatus::removed()))
-            ->then([new IncidentWasRemoved($incidentID, IncidentMessageStatus::removed())]);
+            ->given([new IncidentWasAdded($incidentID, IncidentMessageStatus::NEW, new Body($content))])
+            ->when(new RemoveIncident($incidentID, IncidentMessageStatus::REMOVED))
+            ->then([new IncidentWasRemoved($incidentID, IncidentMessageStatus::REMOVED)]);
     }
 
     public function testHandleRemovingUnfoundIncident(): void
     {
         $this->scenario
             ->given([])
-            ->when(new RemoveIncident(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), IncidentMessageStatus::removed()))
+            ->when(new RemoveIncident(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), IncidentMessageStatus::REMOVED))
             ->then([]);
     }
 }

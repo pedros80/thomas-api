@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\ServiceIndicator\Domain;
 
-final class Icon
-{
-    public function __construct(
-        private string $icon
-    ) {
-        // @todo - validation
-    }
+use Thomas\Shared\Domain\StringValue;
 
-    public function __toString(): string
-    {
-        return $this->icon;
-    }
+final class Icon extends StringValue
+{
+    //
 }

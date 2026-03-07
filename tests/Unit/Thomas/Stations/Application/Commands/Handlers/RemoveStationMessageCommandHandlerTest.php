@@ -19,6 +19,7 @@ use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 use Thomas\Stations\Infrastructure\BroadwayRepository;
 
 final class RemoveStationMessageCommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -35,12 +36,12 @@ final class RemoveStationMessageCommandHandlerTest extends CommandHandlerScenari
             ->given([
                 new MessageWasAdded(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    [
+                    MessageSeverity::MAJOR,
+                    new Stations([
                         new Station(new Code('DAM'), new Name('Dalmeny')),
-                    ]
+                    ])
                 ),
             ])
             ->when(new RemoveStationMessage(new MessageID('12345')))

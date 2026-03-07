@@ -33,7 +33,7 @@ final class AddIncidentCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId((string) $incidentID)
             ->given([])
-            ->when(new AddIncident($incidentID, IncidentMessageStatus::new(), new Body($content)))
-            ->then([new IncidentWasAdded($incidentID, IncidentMessageStatus::new(), new Body($content))]);
+            ->when(new AddIncident($incidentID, IncidentMessageStatus::NEW, new Body($content)))
+            ->then([new IncidentWasAdded($incidentID, IncidentMessageStatus::NEW, new Body($content))]);
     }
 }

@@ -12,23 +12,27 @@ use Thomas\Stations\Domain\Message;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
 use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\Messages;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 
 final class DynamoDbGetStationMessages extends InteractsWithDynamoDb implements GetStationMessages
 {
-    public function get(CRS $code): array
+    public function get(CRS $code): Messages
     {
-        return array_map(
-            fn (array $item) => $this->itemToMessage($item, $code),
-            $this->getItemsRecursively([
-                'TableName'                 => $this->tableName,
-                'IndexName'                 => 'SKe',
-                'KeyConditionExpression'    => "#SKe = :SKe",
-                'ExpressionAttributeNames'  => ['#SKe' => 'SKe'],
-                'ExpressionAttributeValues' => [':SKe' => ['S' => "SM:{$code}"]],
-            ])
+        return new Messages(
+            array_map(
+                fn (array $item) => $this->itemToMessage($item, $code),
+                $this->getItemsRecursively([
+                    'TableName'                 => $this->tableName,
+                    'IndexName'                 => 'SKe',
+                    'KeyConditionExpression'    => "#SKe = :SKe",
+                    'ExpressionAttributeNames'  => ['#SKe' => 'SKe'],
+                    'ExpressionAttributeValues' => [':SKe' => ['S' => "SM:{$code}"]],
+                ])
+            )
         );
     }
 
@@ -39,12 +43,12 @@ final class DynamoDbGetStationMessages extends InteractsWithDynamoDb implements 
 
         return new Message(
             new MessageID($data['PK']),
-            new MessageCategory($data['category']),
+            MessageCategory::from($data['category']),
             new MessageBody($data['body']),
-            new MessageSeverity($data['severity']),
-            [
+            MessageSeverity::from($data['severity']),
+            new Stations([
                 new Station(new Code((string) $code), new Name($code->name())),
-            ]
+            ])
         );
     }
 }

@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Thomas\RealTimeIncidents\Application\Queries\GetIncidents;
+use Thomas\Shared\Framework\SuccessResponse;
 
 final class RealTimeIncidentsController extends Controller
 {
-    public function get(GetIncidents $query): JsonResponse
+    public function get(GetIncidents $query): SuccessResponse
     {
-        return new JsonResponse([
-            'success' => true,
-            'data'    => $query->get(),
-        ]);
+        return new SuccessResponse($query->get());
     }
 }

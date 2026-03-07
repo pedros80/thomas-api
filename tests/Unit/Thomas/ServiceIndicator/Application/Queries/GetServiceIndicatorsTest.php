@@ -8,10 +8,15 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Thomas\ServiceIndicator\Application\Queries\GetServiceIndicators;
 use Thomas\ServiceIndicator\Domain\ServiceIndicator;
+use Thomas\ServiceIndicator\Domain\ServiceIndicatorOptions;
 use Thomas\ServiceIndicator\Infrastructure\HttpServiceIndicatorService;
 use Thomas\ServiceIndicator\Infrastructure\MockServiceIndicatorFactory;
 use Thomas\ServiceIndicator\Infrastructure\ServiceIndicatorParser;
 use Thomas\Shared\Domain\KBService;
+use Thomas\Shared\Domain\Params\OrderBy;
+use Thomas\Shared\Domain\Params\PageNumber;
+use Thomas\Shared\Domain\Params\PerPage;
+use Thomas\Shared\Domain\Params\Sort;
 
 final class GetServiceIndicatorsTest extends TestCase
 {
@@ -30,8 +35,15 @@ final class GetServiceIndicatorsTest extends TestCase
             )
         );
 
-        $result = $query->get();
+        $options = new ServiceIndicatorOptions(
+            new PageNumber(2),
+            new PerPage(1),
+            Sort::ASC,
+            new OrderBy('tocName')
+        );
 
-        $this->assertInstanceOf(ServiceIndicator::class, $result[0]);
+        $result = $query->page($options);
+
+        $this->assertInstanceOf(ServiceIndicator::class, $result->toArray()[0]);
     }
 }

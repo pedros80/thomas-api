@@ -6,6 +6,7 @@ namespace Tests\Unit\App\Http\Middleware;
 
 use App\Http\Middleware\FatController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Thomas\Shared\Domain\Exceptions\InvalidFatControllerRequest;
@@ -16,8 +17,9 @@ final class FatControllerTest extends TestCase
     {
         $middleware = new FatController();
 
-        $time      = time();
-        $secret    = config('services.admin.secret');
+        $time = time();
+        /** @var string $secret */
+        $secret    = Config::get('services.admin.secret');
         $signature = Hash::make("{$secret}{$time}");
 
         $request = Request::create('/', 'POST');

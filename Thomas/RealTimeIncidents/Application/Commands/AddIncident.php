@@ -12,33 +12,18 @@ use Thomas\Shared\Application\Command;
 final class AddIncident extends Command
 {
     public function __construct(
-        private IncidentID $id,
-        private IncidentMessageStatus $status,
-        private Body $body
+        public readonly IncidentID $id,
+        public readonly IncidentMessageStatus $status,
+        public readonly Body $body,
     ) {
-    }
-
-    public function id(): IncidentID
-    {
-        return $this->id;
-    }
-
-    public function status(): IncidentMessageStatus
-    {
-        return $this->status;
-    }
-
-    public function body(): Body
-    {
-        return $this->body;
     }
 
     public function toArray(): array
     {
         return [
-            'id'     => (string) $this->id,
-            'status' => (string) $this->status,
-            'body'   => (string) $this->body,
+            'id'     => $this->id,
+            'status' => $this->status,
+            'body'   => $this->body,
         ];
     }
 }

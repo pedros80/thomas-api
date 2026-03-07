@@ -6,6 +6,7 @@ namespace Thomas\Stations\Infrastructure\Projections;
 
 use Thomas\Shared\Infrastructure\InteractsWithDynamoDb;
 use Thomas\Stations\Domain\Events\MessageWasUpdated;
+use Thomas\Stations\Domain\Station;
 
 final class MessageWasUpdatedProjection extends InteractsWithDynamoDb
 {
@@ -23,7 +24,7 @@ final class MessageWasUpdatedProjection extends InteractsWithDynamoDb
             'KeyConditionExpression'    => '#PK = :pk AND begins_with(#SKe, :SKe)',
             'ExpressionAttributeNames'  => ['#PK'  => 'PK', '#SKe' => 'SKe'],
             'ExpressionAttributeValues' => [
-                ':pk'  => ['S' => (string) $event->id()],
+                ':pk'  => ['S' => (string) $event->id],
                 ':SKe' => ['S' => 'SM:'],
             ],
         ]);
@@ -44,14 +45,15 @@ final class MessageWasUpdatedProjection extends InteractsWithDynamoDb
 
     private function addRecordPerStation(MessageWasUpdated $event): void
     {
-        foreach ($event->stations() as $station) {
-            if ($event->severity()->toInt() > 0 && (string) $event->body()) {
+        /** @var Station $station */
+        foreach ($event->stations as $station) {
+            if ($event->severity->value > 0 && (string) $event->body) {
                 $item = [
-                    'PK'       => (string) $event->id(),
-                    'SKe'      => "SM:{$station->toArray()['code']}",
-                    'body'     => (string) $event->body(),
-                    'severity' => $event->severity()->toInt(),
-                    'category' => (string) $event->category(),
+                    'PK'       => (string) $event->id,
+                    'SKe'      => "SM:{$station->code}",
+                    'body'     => (string) $event->body,
+                    'severity' => $event->severity->value,
+                    'category' => $event->category->value,
                 ];
 
                 $this->db->putItem([

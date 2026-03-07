@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Providers\RealTimeTrains\Framework;
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\RTTphp\Contracts\Locations;
 use Pedros80\RTTphp\Contracts\ServiceInformation;
@@ -27,36 +29,49 @@ final class RealTimeTrainsServiceProvider extends ServiceProvider
 
     private function bindRealTimeTrainsService(): void
     {
+        /** @var int $numRows */
+        $numRows = Config::get('services.board.numRows');
+
         $this->app->bind(
             RealTimeTrainsService::class,
-            fn () => new RealTimeTrainsService(
+            fn (): RealTimeTrainsService => new RealTimeTrainsService(
                 $this->app->make(Locations::class),
                 $this->app->make(ServiceInformation::class),
                 new RTTBoardMapper(),
-                config('services.board.numRows'),
+                $numRows,
             )
         );
     }
 
     private function bindServiceInformationService(): void
     {
-        $concrete = config('app.env') === 'testing' ? new MockServiceInformationService() :
-            $this->factory->makeServiceInformationService(
-                config('services.rtt.user'),
-                config('services.rtt.pass')
-            );
+        if (App::environment('testing')) {
+            $concrete = new MockServiceInformationService();
+        } else {
+            /** @var string $user */
+            $user = Config::get('services.rtt.user');
+            /** @var string $pass */
+            $pass = Config::get('services.rtt.pass');
 
-        $this->app->bind(ServiceInformation::class, fn () => $concrete);
+            $concrete = $this->factory->makeServiceInformationService($user, $pass);
+        }
+
+        $this->app->bind(ServiceInformation::class, fn (): ServiceInformation => $concrete);
     }
 
     private function bindLocationService(): void
     {
-        $concrete = config('app.env') === 'testing' ? new MockLocationService() :
-            $this->factory->makeLocationService(
-                config('services.rtt.user'),
-                config('services.rtt.pass')
-            );
+        if (App::environment('testing')) {
+            $concrete = new MockLocationService();
+        } else {
+            /** @var string $user */
+            $user = Config::get('services.rtt.user');
+            /** @var string $pass */
+            $pass = Config::get('services.rtt.pass');
 
-        $this->app->bind(Locations::class, fn () => $concrete);
+            $concrete = $this->factory->makeLocationService($user, $pass);
+        }
+
+        $this->app->bind(Locations::class, fn (): Locations => $concrete);
     }
 }

@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Domain;
 
-final class MessageBody
-{
-    public function __construct(
-        private string $body
-    ) {
-    }
+use Thomas\Shared\Domain\StringValue;
 
-    public function __toString(): string
-    {
-        return $this->body;
-    }
+final class MessageBody extends StringValue
+{
+    //
 }

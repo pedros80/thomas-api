@@ -26,7 +26,7 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
     private RealTimeIncidentsBroker $broker;
 
     public function __construct(
-        private RTIMessageRouter $router
+        private readonly RTIMessageRouter $router,
     ) {
         parent::__construct();
     }
@@ -36,7 +36,7 @@ final class RealTimeIncidentListener extends Command implements SignalableComman
         return [SIGINT, SIGTERM];
     }
 
-    public function handleSignal(int $signal): int
+    public function handleSignal(int $signal, int|false $previousExitCode=0): int
     {
         switch ($signal) {
             case SIGINT:

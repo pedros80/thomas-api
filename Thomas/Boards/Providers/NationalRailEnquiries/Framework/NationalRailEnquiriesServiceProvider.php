@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Providers\NationalRailEnquiries\Framework;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\NREphp\Contracts\Boards;
 use Pedros80\NREphp\Factories\ServicesFactory;
@@ -24,23 +25,29 @@ final class NationalRailEnquiriesServiceProvider extends ServiceProvider
 
     private function bindBoards(): void
     {
-        $concrete = config('app.env') === 'testing' ? new MockLiveDepartureBoard() :
-            $this->factory->makeLiveDepartureBoard(config('services.nre.ldb.key'));
+        /** @var string $key */
+        $key = Config::get('services.nre.ldb.key');
+
+        $concrete = Config::get('app.env') === 'testing' ? new MockLiveDepartureBoard() :
+            $this->factory->makeLiveDepartureBoard($key);
 
         $this->app->bind(
             Boards::class,
-            fn () => $concrete
+            fn (): Boards => $concrete
         );
     }
 
     private function bindNationalRailEnquiriesService(): void
     {
+        /** @var int $numRows */
+        $numRows = Config::get('services.board.numRows');
+
         $this->app->bind(
             NationalRailEnquiriesService::class,
-            fn () => new NationalRailEnquiriesService(
+            fn (): NationalRailEnquiriesService => new NationalRailEnquiriesService(
                 $this->app->make(Boards::class),
                 new NREBoardMapper(),
-                config('services.board.numRows')
+                $numRows
             )
         );
     }

@@ -8,11 +8,12 @@ use Thomas\Shared\Domain\CRS;
 use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 use Thomas\Stations\Domain\StationService;
 
 final class ArrayStationService implements StationService
 {
-    public function search(string $search): array
+    public function search(string $search): Stations
     {
         $stations = CRS::list();
 
@@ -22,10 +23,10 @@ final class ArrayStationService implements StationService
             ARRAY_FILTER_USE_KEY
         );
 
-        return array_map(
+        return new Stations(array_map(
             fn (string $key, string $value) => new Station(new Code($key), new Name($value)),
             array_keys($filtered),
             array_values($filtered)
-        );
+        ));
     }
 }

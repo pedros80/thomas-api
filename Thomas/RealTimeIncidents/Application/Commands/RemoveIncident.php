@@ -11,26 +11,16 @@ use Thomas\Shared\Application\Command;
 final class RemoveIncident extends Command
 {
     public function __construct(
-        private IncidentID $id,
-        private IncidentMessageStatus $status
+        public readonly IncidentID $id,
+        public readonly IncidentMessageStatus $status
     ) {
-    }
-
-    public function id(): IncidentID
-    {
-        return $this->id;
-    }
-
-    public function status(): IncidentMessageStatus
-    {
-        return $this->status;
     }
 
     public function toArray(): array
     {
         return [
-            'id'     => (string) $this->id,
-            'status' => (string) $this->status,
+            'id'     => $this->id,
+            'status' => $this->status,
         ];
     }
 }

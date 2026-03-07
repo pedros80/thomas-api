@@ -23,6 +23,9 @@ final class MockServiceInformationService implements ServiceInformation
             default  => '{}',
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 }

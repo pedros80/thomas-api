@@ -16,6 +16,7 @@ use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 
 use function Safe\gzdecode;
 
@@ -40,10 +41,10 @@ final class StationMessageToCommand implements MessageToCommand
 
         return new RecordStationMessage(
             new MessageID((string) $xml->uR->OW['id']),
-            new MessageCategory((string) $xml->uR->OW['cat']),
+            MessageCategory::from((string) $xml->uR->OW['cat']),
             new MessageBody(trim((string) $xml->uR->OW->children('ns7', true)->Msg)),
-            new MessageSeverity((int) $xml->uR->OW['sev']),
-            $stations
+            MessageSeverity::from((int) $xml->uR->OW['sev']),
+            new Stations($stations),
         );
     }
 }

@@ -20,15 +20,16 @@ final class GetStationMessages extends Command
         $code = $this->getCode();
         $msgs = $query->get($code);
 
-        if (!$msgs) {
+        if (!count($msgs)) {
             $this->info("No messages found for {$code->name()}");
 
             return;
         }
 
-        $this->table([
-            'ID', 'Category', 'Severity', 'Body', 'Station',
-        ], array_map(fn (Message $message) => $this->parseMessage($message), $msgs));
+        $this->table(
+            ['ID', 'Category', 'Severity', 'Body', 'Station'],
+            $msgs->map(fn (Message $message) => $this->parseMessage($message))
+        );
     }
 
     private function getCode(): CRS
@@ -42,17 +43,12 @@ final class GetStationMessages extends Command
 
     private function parseMessage(Message $message): array
     {
-        $message = $message->toArray();
-
         return [
-            $message['id'],
-            $message['category'],
-            $message['severity'],
-            $message['body'],
-            array_map(
-                fn (Station $station) => $station->toArray()['name'],
-                $message['stations']
-            )[0],
+            $message->id,
+            $message->category->value,
+            $message->severity->label(),
+            $message->body,
+            $message->stations->map(fn (Station $station) => $station->name)[0],
         ];
     }
 }

@@ -4,26 +4,29 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Domain;
 
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use Thomas\Boards\Domain\BoardTitle;
 use Thomas\Boards\Domain\BoardType;
+use Thomas\Boards\Domain\Messages;
+use Thomas\Boards\Domain\Services;
 
-final class Board implements JsonSerializable
+final class Board implements Arrayable, JsonSerializable
 {
     public function __construct(
-        private BoardTitle $boardTitle,
-        private BoardType $boardType,
-        private array $services,
-        private array $messages,
-        private array $operators
+        public readonly BoardTitle $title,
+        public readonly BoardType $type,
+        public readonly Services $services,
+        public readonly Messages $messages,
+        public readonly OperatorCodes $operators
     ) {
     }
 
     public function toArray(): array
     {
         return [
-            'title'     => $this->boardTitle,
-            'type'      => $this->boardType,
+            'title'     => $this->title,
+            'type'      => $this->type,
             'services'  => $this->services,
             'messages'  => $this->messages,
             'operators' => $this->operators,

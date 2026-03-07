@@ -11,8 +11,6 @@ use Thomas\Shared\Application\Command;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Shared\Application\CommandHandler;
 
-use function Safe\json_encode;
-
 final class CommandBusServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -21,14 +19,14 @@ final class CommandBusServiceProvider extends ServiceProvider
             return new class(new SimpleCommandBus(), $this->app->make(Logger::class)) implements CommandBus {
                 public function __construct(
                     private SimpleCommandBus $bus,
-                    private Logger $logger
+                    private Logger $logger,
                 ) {
                 }
 
                 public function dispatch(Command $command): void
                 {
                     /** @var string $log */
-                    $log = json_encode($command);
+                    $log = json_encode($command, JSON_THROW_ON_ERROR);
                     $this->logger->info($log);
 
                     $this->bus->dispatch($command);

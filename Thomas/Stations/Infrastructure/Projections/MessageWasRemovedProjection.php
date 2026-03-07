@@ -22,7 +22,7 @@ final class MessageWasRemovedProjection extends InteractsWithDynamoDb
             'KeyConditionExpression'    => '#PK = :pk AND begins_with(#SKe, :SKe)',
             'ExpressionAttributeNames'  => ['#PK'  => 'PK', '#SKe' => 'SKe'],
             'ExpressionAttributeValues' => [
-                ':pk'  => ['S' => (string) $event->id()],
+                ':pk'  => ['S' => (string) $event->id],
                 ':SKe' => ['S' => 'SM:'],
             ],
         ]);

@@ -13,7 +13,7 @@ final class IncidentWasRemovedProjection extends InteractsWithDynamoDb
     {
         $this->db->deleteItem([
             'Key'    => $this->marshaler->marshalItem([
-                'PK'  => (string) $event->id(),
+                'PK'  => (string) $event->id,
                 'SKe' => 'RTI',
             ]),
             'TableName' => $this->tableName,

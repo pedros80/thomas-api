@@ -13,16 +13,16 @@ final class UserWasReinstatedProjection extends InteractsWithDynamoDb
     {
         $this->db->deleteItem([
             'Key'    => $this->marshaler->marshalItem([
-                'PK'  => (string) $event->email(),
-                'SKe' => "US:{$event->existingId()}",
+                'PK'  => (string) $event->email,
+                'SKe' => "US:{$event->existingId}",
             ]),
             'TableName' => $this->tableName,
         ]);
 
         $item = [
-            'PK'    => (string) $event->email(),
-            'SKe'   => "US:{$event->userId()}",
-            'uname' => (string) $event->name(),
+            'PK'    => (string) $event->email,
+            'SKe'   => "US:{$event->newId}",
+            'uname' => (string) $event->name,
         ];
 
         $this->db->putItem([

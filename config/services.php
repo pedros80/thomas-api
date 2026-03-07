@@ -63,6 +63,10 @@ return [
         'key' => env('LANDE_KEY'),
     ],
 
+    'tfl' => [
+        'key' => env('TFL_KEY'),
+    ],
+
     'rss' => [
         'bbc' => [
             'url' => 'http://feeds.bbci.co.uk/news/rss.xml',

@@ -27,8 +27,8 @@ use function Safe\json_encode;
 final class HttpLiftAndEscalatorClient implements LiftAndEscalatorClient
 {
     public function __construct(
-        private LiftsAndEscalators $service,
-        private TokenService $tokens
+        private readonly LiftsAndEscalators $service,
+        private readonly TokenService $tokens
     ) {
     }
 
@@ -50,10 +50,18 @@ final class HttpLiftAndEscalatorClient implements LiftAndEscalatorClient
 
         return new Assets(
             array_map(
-                fn (stdClass $asset) => Asset::fromArray(json_decode(json_encode($asset), true)),
+                fn (stdClass $asset) => Asset::fromArray($this->assetToArray($asset)),
                 $response->data->assets
             )
         );
+    }
+
+    private function assetToArray(stdClass $asset): array
+    {
+        /** @var array $decoded */
+        $decoded = json_decode(json_encode($asset, JSON_THROW_ON_ERROR), true);
+
+        return $decoded;
     }
 
     public function getAssetById(AssetId $assetId): Asset
@@ -76,7 +84,7 @@ final class HttpLiftAndEscalatorClient implements LiftAndEscalatorClient
             throw AssetNotFound::fromId($assetId);
         }
 
-        return Asset::fromArray(json_decode(json_encode($response->data->assets[0]), true));
+        return Asset::fromArray($this->assetToArray($response->data->assets[0]));
     }
 
     public function getSensors(int $num=50, int $offset=0): AssetStatuses
@@ -89,7 +97,10 @@ final class HttpLiftAndEscalatorClient implements LiftAndEscalatorClient
             );
 
         } catch (ClientException $e) {
-            $message = json_decode((string) $e->getResponse()->getBody())->error;
+
+            /** @var stdClass $decoded */
+            $decoded = json_decode((string) $e->getResponse()->getBody());
+            $message = $decoded->error;
 
             throw ExternalDataConnectionFailure::fromErrorAndService(
                 'Lifts And Escalators',
@@ -113,7 +124,7 @@ final class HttpLiftAndEscalatorClient implements LiftAndEscalatorClient
 
         return new AssetStatuses(
             array_map(
-                fn (stdClass $asset) => AssetStatus::fromArray(json_decode(json_encode($asset), true)),
+                fn (stdClass $asset) => AssetStatus::fromArray($this->assetToArray($asset)),
                 $response->status
             )
         );
@@ -129,7 +140,10 @@ final class HttpLiftAndEscalatorClient implements LiftAndEscalatorClient
 
         } catch (ClientException $e) {
 
-            $message = json_decode((string) $e->getResponse()->getBody())->error;
+            /** @var stdClass $decoded */
+            $decoded = json_decode((string) $e->getResponse()->getBody());
+
+            $message = $decoded->error;
 
             throw ExternalDataConnectionFailure::fromErrorAndService(
                 'Lifts And Escalators',

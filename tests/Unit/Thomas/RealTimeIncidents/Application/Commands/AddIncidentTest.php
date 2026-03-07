@@ -10,8 +10,6 @@ use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\IncidentID;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
-use function Safe\json_encode;
-
 final class AddIncidentTest extends TestCase
 {
     public function testInstantiates(): void
@@ -24,14 +22,14 @@ final class AddIncidentTest extends TestCase
 
         $command = new AddIncident(
             $incidentID,
-            IncidentMessageStatus::new(),
+            IncidentMessageStatus::NEW,
             new Body($content)
         );
 
         $this->assertInstanceOf(AddIncident::class, $command);
         $this->assertEquals([
             'id'     => (string) $incidentID,
-            'status' => 'NEW',
+            'status' => IncidentMessageStatus::NEW,
             'body'   => $content,
         ], $command->toArray());
 
@@ -40,6 +38,6 @@ final class AddIncidentTest extends TestCase
             'id'      => (string) $incidentID,
             'status'  => 'NEW',
             'body'    => $content,
-        ]), json_encode($command));
+        ], JSON_THROW_ON_ERROR), json_encode($command, JSON_THROW_ON_ERROR));
     }
 }

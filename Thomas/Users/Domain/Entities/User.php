@@ -38,9 +38,9 @@ final class User extends EventSourcedAggregateRoot implements Authenticatable
 
     public function applyUserWasAdded(UserWasAdded $event): void
     {
-        $this->email  = $event->email();
-        $this->name   = $event->name();
-        $this->userId = $event->userId();
+        $this->email  = $event->email;
+        $this->name   = $event->name;
+        $this->userId = $event->userId;
     }
 
     public function remove(RemovedAt $removedAt): void
@@ -52,7 +52,7 @@ final class User extends EventSourcedAggregateRoot implements Authenticatable
 
     public function applyUserWasRemoved(UserWasRemoved $event): void
     {
-        $this->removedAt = $event->removedAt();
+        $this->removedAt = $event->removedAt;
     }
 
     public function reinstate(
@@ -67,8 +67,8 @@ final class User extends EventSourcedAggregateRoot implements Authenticatable
     public function applyUserWasReinstated(UserWasReinstated $event): void
     {
         $this->removedAt = null;
-        $this->name      = $event->name();
-        $this->userId    = $event->userId();
+        $this->name      = $event->name;
+        $this->userId    = $event->newId;
     }
 
     public function getAggregateRootId(): string

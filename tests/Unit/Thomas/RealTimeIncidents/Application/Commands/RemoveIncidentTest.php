@@ -17,13 +17,13 @@ final class RemoveIncidentTest extends TestCase
 
         $command = new RemoveIncident(
             $incidentID,
-            IncidentMessageStatus::removed()
+            IncidentMessageStatus::REMOVED
         );
 
         $this->assertInstanceOf(RemoveIncident::class, $command);
         $this->assertEquals([
             'id'     => (string) $incidentID,
-            'status' => 'REMOVED',
+            'status' => IncidentMessageStatus::REMOVED,
         ], $command->toArray());
     }
 }

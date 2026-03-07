@@ -11,8 +11,8 @@ use Thomas\Shared\Domain\TokenService;
 final class HttpKBService implements KBService
 {
     public function __construct(
-        private TokenService $tokens,
-        private KnowledgeBase $knowledgeBase
+        private readonly TokenService $tokens,
+        private readonly KnowledgeBase $knowledgeBase,
     ) {
     }
 

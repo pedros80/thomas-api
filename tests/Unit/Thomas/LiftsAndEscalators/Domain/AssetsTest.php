@@ -32,7 +32,7 @@ final class AssetsTest extends TestCase
             $this->assertInstanceOf(Asset::class, $asset);
         }
 
-        $ids = $assets->map(fn (Asset $asset) => $asset->toArray()['id']);
+        $ids = $assets->map(fn (Asset $asset) => $asset->id);
         $this->assertCount(23, $ids);
 
         $array = $assets->toArray();

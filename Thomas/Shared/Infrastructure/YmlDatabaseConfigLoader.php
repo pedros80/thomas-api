@@ -7,14 +7,14 @@ namespace Thomas\Shared\Infrastructure;
 final class YmlDatabaseConfigLoader
 {
     public function __construct(
-        private array $definitions,
-        private array $tableNames,
+        private readonly array $definitions,
+        private readonly array $tableNames,
     ) {
     }
 
     public function getTableDefinitions(): array
     {
-        return array_reduce($this->definitions['Resources'], function ($defs, $def) {
+        return array_reduce($this->definitions['Resources'], function (array $defs, array $def) {
             $name = $this->cleanTableName($def['Properties']['TableName']);
 
             if ($this->definitionExists($name)) {

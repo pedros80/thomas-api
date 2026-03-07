@@ -4,22 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Domain;
 
-use JsonSerializable;
+use Thomas\Shared\Domain\StringValue;
 
-final class BoardTitle implements JsonSerializable
+final class BoardTitle extends StringValue
 {
-    public function __construct(
-        private string $boardTitle
-    ) {
-    }
-
-    public function __toString(): string
-    {
-        return $this->boardTitle;
-    }
-
-    public function jsonSerialize(): string
-    {
-        return (string) $this;
-    }
+    //
 }

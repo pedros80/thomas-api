@@ -13,6 +13,7 @@ use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 
 final class RecordStationMessageTest extends TestCase
 {
@@ -20,24 +21,24 @@ final class RecordStationMessageTest extends TestCase
     {
         $command = new RecordStationMessage(
             new MessageID('12345'),
-            new MessageCategory(MessageCategory::STATION),
+            MessageCategory::STATION,
             new MessageBody('body body body'),
-            new MessageSeverity(MessageSeverity::MAJOR),
-            [
+            MessageSeverity::MAJOR,
+            new Stations([
                 new Station(new Code('DAM'), new Name('Dalmeny')),
-            ]
+            ])
         );
 
         $this->assertInstanceOf(RecordStationMessage::class, $command);
         $this->assertEquals(
             [
                 'id'       => '12345',
-                'category' => 'Station',
+                'category' => MessageCategory::STATION,
                 'body'     => 'body body body',
                 'severity' => MessageSeverity::MAJOR,
-                'stations' => [
+                'stations' => new Stations([
                     new Station(new Code('DAM'), new Name('Dalmeny')),
-                ],
+                ]),
             ],
             $command->toArray()
         );

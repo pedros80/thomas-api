@@ -13,6 +13,7 @@ use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
 use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
+use Thomas\Stations\Domain\Stations;
 
 final class MessageTest extends AggregateRootScenarioTestCase
 {
@@ -25,17 +26,17 @@ final class MessageTest extends AggregateRootScenarioTestCase
     {
         $this->scenario->when(fn () => Message::add(
             new MessageID('12345'),
-            new MessageCategory(MessageCategory::TRAIN),
+            MessageCategory::TRAIN,
             new MessageBody('MESSAGE_BODY'),
-            new MessageSeverity(MessageSeverity::MAJOR),
-            []
+            MessageSeverity::MAJOR,
+            new Stations()
         ))->then([
             new MessageWasAdded(
                 new MessageID('12345'),
-                new MessageCategory(MessageCategory::TRAIN),
+                MessageCategory::TRAIN,
                 new MessageBody('MESSAGE_BODY'),
-                new MessageSeverity(MessageSeverity::MAJOR),
-                []
+                MessageSeverity::MAJOR,
+                new Stations()
             ),
         ]);
     }
@@ -47,10 +48,10 @@ final class MessageTest extends AggregateRootScenarioTestCase
             ->given([
                 new MessageWasAdded(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE_BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
+                    MessageSeverity::MAJOR,
+                    new Stations()
                 ),
             ])
             ->when(fn (Message $message) => $message->remove())
@@ -64,24 +65,24 @@ final class MessageTest extends AggregateRootScenarioTestCase
             ->given([
                 new MessageWasAdded(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE_BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
+                    MessageSeverity::MAJOR,
+                    new Stations()
                 ),
             ])->when(fn (Message $message) => $message->update(
                 new MessageID('12345'),
-                new MessageCategory(MessageCategory::TRAIN),
+                MessageCategory::TRAIN,
                 new MessageBody('MESSAGE_BODY'),
-                new MessageSeverity(MessageSeverity::MAJOR),
-                []
+                MessageSeverity::MAJOR,
+                new Stations()
             ))->then([
                 new MessageWasUpdated(
                     new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
+                    MessageCategory::TRAIN,
                     new MessageBody('MESSAGE_BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
+                    MessageSeverity::MAJOR,
+                    new Stations()
                 ),
             ]);
     }

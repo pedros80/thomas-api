@@ -15,12 +15,12 @@ final class SearchStationsTest extends TestCase
     {
         $query   = new SearchStations(new ArrayStationService());
         $result  = $query->get('DAM');
-        $station = $result[0];
+        $station = $result->toArray()[0];
 
         $this->assertCount(1, $result);
         $this->assertInstanceOf(Station::class, $station);
-        $this->assertEquals('DAM', $station->toArray()['code']);
-        $this->assertEquals('Dalmeny', $station->toArray()['name']);
+        $this->assertEquals('DAM', $station->code);
+        $this->assertEquals('Dalmeny', $station->name);
     }
 
     public function testSearchKnownSubstringReturnsArray(): void

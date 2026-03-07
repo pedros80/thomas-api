@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Thomas\LiftsAndEscalators\Domain;
 
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use Thomas\LiftsAndEscalators\Domain\SensorId;
 use Thomas\LiftsAndEscalators\Domain\Status;
 
-final class AssetStatus implements JsonSerializable
+final class AssetStatus implements Arrayable, JsonSerializable
 {
     public function __construct(
-        private Status $status,
-        private SensorId $sensorId,
-        private bool $isolated,
-        private bool $engineerOnSite,
-        private bool $independent
+        public readonly Status $status,
+        public readonly SensorId $sensorId,
+        public readonly bool $isolated,
+        public readonly bool $engineerOnSite,
+        public readonly bool $independent,
     ) {
 
     }
@@ -39,7 +40,7 @@ final class AssetStatus implements JsonSerializable
     public static function fromArray(array $status): AssetStatus
     {
         return new AssetStatus(
-            new Status($status['status']),
+            Status::from($status['status']),
             new SensorId((int) $status['sensorId']),
             $status['isolated'],
             $status['engineerOnSite'],

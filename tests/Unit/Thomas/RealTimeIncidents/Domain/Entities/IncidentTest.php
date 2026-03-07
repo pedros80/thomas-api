@@ -37,12 +37,12 @@ final class IncidentTest extends AggregateRootScenarioTestCase
     {
         $this->scenario->when(fn () => Incident::add(
             $this->incidentID,
-            new IncidentMessageStatus(IncidentMessageStatus::NEW),
+            IncidentMessageStatus::NEW,
             new Body($this->body)
         ))->then([
             new IncidentWasAdded(
                 $this->incidentID,
-                new IncidentMessageStatus(IncidentMessageStatus::NEW),
+                IncidentMessageStatus::NEW,
                 new Body($this->body)
             ),
         ]);
@@ -55,17 +55,17 @@ final class IncidentTest extends AggregateRootScenarioTestCase
             ->given([
                 new IncidentWasAdded(
                     $this->incidentID,
-                    new IncidentMessageStatus(IncidentMessageStatus::NEW),
+                    IncidentMessageStatus::NEW,
                     new Body($this->body)
                 ),
             ])->when(fn (Incident $incident) => $incident->update(
                 $this->incidentID,
-                new IncidentMessageStatus(IncidentMessageStatus::MODIFIED),
+                IncidentMessageStatus::MODIFIED,
                 new Body($this->body)
             ))->then([
                 new IncidentWasUpdated(
                     $this->incidentID,
-                    new IncidentMessageStatus(IncidentMessageStatus::MODIFIED),
+                    IncidentMessageStatus::MODIFIED,
                     new Body($this->body)
                 ),
             ]);
@@ -78,21 +78,21 @@ final class IncidentTest extends AggregateRootScenarioTestCase
             ->given([
                 new IncidentWasAdded(
                     $this->incidentID,
-                    new IncidentMessageStatus(IncidentMessageStatus::NEW),
+                    IncidentMessageStatus::NEW,
                     new Body($this->body)
                 ),
                 new IncidentWasUpdated(
                     $this->incidentID,
-                    new IncidentMessageStatus(IncidentMessageStatus::MODIFIED),
+                    IncidentMessageStatus::MODIFIED,
                     new Body($this->body)
                 ),
             ])->when(fn (Incident $incident) => $incident->remove(
                 $this->incidentID,
-                new IncidentMessageStatus(IncidentMessageStatus::REMOVED),
+                IncidentMessageStatus::REMOVED,
             ))->then([
                 new IncidentWasRemoved(
                     $this->incidentID,
-                    new IncidentMessageStatus(IncidentMessageStatus::REMOVED)
+                    IncidentMessageStatus::REMOVED
                 ),
             ]);
     }

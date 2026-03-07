@@ -6,12 +6,13 @@ namespace App\Providers;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\UsersRepository;
 
 final class CustomUserProvider implements UserProvider
 {
     public function __construct(
-        private UsersRepository $repo
+        private readonly UsersRepository $repo
     ) {
     }
 
@@ -38,5 +39,10 @@ final class CustomUserProvider implements UserProvider
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
         return true;
+    }
+
+    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false)
+    {
+        //
     }
 }

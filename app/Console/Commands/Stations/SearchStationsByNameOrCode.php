@@ -7,6 +7,7 @@ namespace App\Console\Commands\Stations;
 use Illuminate\Console\Command;
 use Thomas\Stations\Application\Queries\SearchStations;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 
 final class SearchStationsByNameOrCode extends Command
 {
@@ -25,17 +26,20 @@ final class SearchStationsByNameOrCode extends Command
         return is_array($search) ? $search[0] : $search;
     }
 
-    private function displayResults(array $results): void
+    private function displayResults(Stations $stations): void
     {
-        $numResults = count($results);
-        $s          = $numResults === 1 ? '' : 's';
+        $numStations = count($stations);
+        $s           = $numStations === 1 ? '' : 's';
 
-        $this->info("Found {$numResults} Station{$s}");
+        $this->info("Found {$numStations} Station{$s}");
 
-        if ($numResults === 0) {
+        if ($numStations === 0) {
             return;
         }
 
-        $this->table(['Code', 'Name'], array_map(fn (Station $station) => $station->toArray(), $results));
+        $this->table(
+            ['Code', 'Name'],
+            $stations->map(fn (Station $station) => $station->toArray())
+        );
     }
 }

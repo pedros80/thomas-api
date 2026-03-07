@@ -12,6 +12,7 @@ use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
 use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
+use Thomas\Stations\Domain\Stations;
 
 final class Message extends EventSourcedAggregateRoot
 {
@@ -19,14 +20,14 @@ final class Message extends EventSourcedAggregateRoot
     private MessageCategory $category;
     private MessageBody $body;
     private MessageSeverity $severity;
-    private array $stations;
+    private Stations $stations;
 
     public static function add(
         MessageID $id,
         MessageCategory $category,
         MessageBody $body,
         MessageSeverity $severity,
-        array $stations
+        Stations $stations
     ): Message {
         $message = new Message();
 
@@ -45,11 +46,11 @@ final class Message extends EventSourcedAggregateRoot
 
     public function applyMessageWasAdded(MessageWasAdded $event): void
     {
-        $this->id       = $event->id();
-        $this->category = $event->category();
-        $this->body     = $event->body();
-        $this->severity = $event->severity();
-        $this->stations = $event->stations();
+        $this->id       = $event->id;
+        $this->category = $event->category;
+        $this->body     = $event->body;
+        $this->severity = $event->severity;
+        $this->stations = $event->stations;
     }
 
     public function update(
@@ -57,7 +58,7 @@ final class Message extends EventSourcedAggregateRoot
         MessageCategory $category,
         MessageBody $body,
         MessageSeverity $severity,
-        array $stations
+        Stations $stations
     ): void {
         $this->apply(
             new MessageWasUpdated(
@@ -72,10 +73,10 @@ final class Message extends EventSourcedAggregateRoot
 
     public function applyMessageWasUpdated(MessageWasUpdated $event): void
     {
-        $this->category = $event->category();
-        $this->body     = $event->body();
-        $this->severity = $event->severity();
-        $this->stations = $event->stations();
+        $this->category = $event->category;
+        $this->body     = $event->body;
+        $this->severity = $event->severity;
+        $this->stations = $event->stations;
     }
 
     public function remove(): void

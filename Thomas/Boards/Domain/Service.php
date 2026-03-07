@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Domain;
 
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
-final class Service implements JsonSerializable
+final class Service implements Arrayable, JsonSerializable
 {
     public function __construct(
-        private string $scheduledTime,
-        private string $serviceId,
-        private string $destination,
-        private string $platform,
-        private string $estimatedTime,
-        private string $operator,
-        private string $callingAt,
-        private bool $isCancelled,
-        private ?string $cancelledReason=null
+        public readonly string $scheduledTime,
+        public readonly string $serviceId,
+        public readonly string $destination,
+        public readonly string $platform,
+        public readonly string $estimatedTime,
+        public readonly string $operator,
+        public readonly string $callingAt,
+        public readonly bool $isCancelled,
+        public readonly ?string $cancelledReason=null
     ) {
     }
 

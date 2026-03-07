@@ -26,6 +26,9 @@ final class MockLocationService implements Locations
             };
         }
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 }

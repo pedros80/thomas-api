@@ -23,7 +23,10 @@ final class MockLiftAndEscalatorService implements LiftsAndEscalators
             default => '{"data":{"assets":[]}}',
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 
     public function getAssetInfoById(int $id, string $token): stdClass
@@ -35,7 +38,10 @@ final class MockLiftAndEscalatorService implements LiftsAndEscalators
             default => '{"data":{"assets":[]}}',
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 
     public function getSensorInfoById(int $id, string $token): stdClass
@@ -47,7 +53,10 @@ final class MockLiftAndEscalatorService implements LiftsAndEscalators
             default => throw new ClientException('Error', new Request('POST', ''), new Response(401, [], '{"error":"Access denied due to invalid subscription key"}')),
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 
     public function getSensors(string $token, int $num = 50, int $offset = 0): stdClass
@@ -59,6 +68,9 @@ final class MockLiftAndEscalatorService implements LiftsAndEscalators
             default => throw new ClientException('Error', new Request('POST', ''), new Response(401, [], '{"error":"Access denied due to invalid subscription key"}')),
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 }

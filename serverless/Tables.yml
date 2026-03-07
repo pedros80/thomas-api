@@ -29,6 +29,36 @@ Resources:
         PointInTimeRecoveryEnabled: ${file(serverless/Infrastructure.json):${opt:stage}.${opt:region}.dynamo.pointInTimeRecovery}
       Tags: ${self:custom.Tags}
 
+  TfL:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SKe
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SKe
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: SKe
+          KeySchema:
+            - AttributeName: SKe
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+      BillingMode: PAY_PER_REQUEST
+      TableName: ${env:TFL_TABLE}
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: ${file(serverless/Infrastructure.json):${opt:stage}.${opt:region}.dynamo.pointInTimeRecovery}
+      Tags: ${self:custom.Tags}
+
   EventStore:
     Type: 'AWS::DynamoDB::Table'
     DeletionPolicy: Retain

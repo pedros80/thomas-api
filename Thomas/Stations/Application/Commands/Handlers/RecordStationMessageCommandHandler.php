@@ -14,30 +14,30 @@ use Thomas\Stations\Domain\MessagesRepository;
 final class RecordStationMessageCommandHandler extends SimpleCommandHandler implements CommandHandler
 {
     public function __construct(
-        private MessagesRepository $messages
+        private readonly MessagesRepository $messages,
     ) {
     }
 
     public function handleRecordStationMessage(RecordStationMessage $command): void
     {
         try {
-            $message = $this->messages->find($command->id());
+            $message = $this->messages->find($command->id);
             $message->update(
-                $command->id(),
-                $command->category(),
-                $command->body(),
-                $command->severity(),
-                $command->stations()
+                $command->id,
+                $command->category,
+                $command->body,
+                $command->severity,
+                $command->stations,
             );
 
             $this->messages->save($message);
         } catch (MessageNotFound) {
             $message = Message::add(
-                $command->id(),
-                $command->category(),
-                $command->body(),
-                $command->severity(),
-                $command->stations()
+                $command->id,
+                $command->category,
+                $command->body,
+                $command->severity,
+                $command->stations
             );
             $this->messages->save($message);
         }

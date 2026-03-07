@@ -12,10 +12,10 @@ final class IncidentWasAddedProjection extends InteractsWithDynamoDb
     public function applyIncidentWasAdded(IncidentWasAdded $event): void
     {
         $item = [
-            'PK'      => (string) $event->id(),
+            'PK'      => (string) $event->id,
             'SKe'     => 'RTI',
-            'istatus' => (string) $event->status(),
-            'body'    => (string) $event->body(),
+            'istatus' => $event->status->value,
+            'body'    => (string) $event->body,
         ];
 
         $this->db->putItem([

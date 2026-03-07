@@ -18,7 +18,7 @@ final class StationMessageToCommandTest extends TestCase
         $command = $converter->convert(MockDarwinMessageFactory::stationMessage(1));
 
         $this->assertInstanceOf(RecordStationMessage::class, $command);
-        $this->assertNotEmpty($command->stations());
+        $this->assertNotEmpty($command->stations);
     }
 
     public function testCanConvertMessageWithoutStationsToCommand(): void
@@ -28,6 +28,6 @@ final class StationMessageToCommandTest extends TestCase
         $command = $converter->convert(MockDarwinMessageFactory::stationMessage());
 
         $this->assertInstanceOf(RecordStationMessage::class, $command);
-        $this->assertEmpty($command->stations());
+        $this->assertEmpty($command->stations);
     }
 }

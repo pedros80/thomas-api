@@ -33,9 +33,9 @@ final class UpdateIncidentCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $this->scenario
             ->withAggregateId((string) $incidentID)
-            ->given([new IncidentWasAdded($incidentID, IncidentMessageStatus::new(), new Body($content))])
-            ->when(new UpdateIncident($incidentID, IncidentMessageStatus::modified(), new Body($content)))
-            ->then([new IncidentWasUpdated($incidentID, IncidentMessageStatus::modified(), new Body($content))]);
+            ->given([new IncidentWasAdded($incidentID, IncidentMessageStatus::NEW, new Body($content))])
+            ->when(new UpdateIncident($incidentID, IncidentMessageStatus::MODIFIED, new Body($content)))
+            ->then([new IncidentWasUpdated($incidentID, IncidentMessageStatus::MODIFIED, new Body($content))]);
     }
 
     public function testOutOfSyncModifyCreatesIncidentFirst(): void
@@ -47,10 +47,10 @@ final class UpdateIncidentCommandHandlerTest extends CommandHandlerScenarioTestC
 
         $this->scenario
             ->given([])
-            ->when(new UpdateIncident($incidentID, IncidentMessageStatus::modified(), new Body($content)))
+            ->when(new UpdateIncident($incidentID, IncidentMessageStatus::MODIFIED, new Body($content)))
             ->then([
-                new IncidentWasAdded($incidentID, IncidentMessageStatus::new(), new Body($content)),
-                new IncidentWasUpdated($incidentID, IncidentMessageStatus::modified(), new Body($content)),
+                new IncidentWasAdded($incidentID, IncidentMessageStatus::NEW, new Body($content)),
+                new IncidentWasUpdated($incidentID, IncidentMessageStatus::MODIFIED, new Body($content)),
             ]);
     }
 }

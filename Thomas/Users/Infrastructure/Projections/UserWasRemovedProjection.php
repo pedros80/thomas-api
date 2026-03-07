@@ -13,8 +13,8 @@ final class UserWasRemovedProjection extends InteractsWithDynamoDb
     {
         $this->db->deleteItem([
             'Key'    => $this->marshaler->marshalItem([
-                'PK'  => (string) $event->email(),
-                'SKe' => "US:{$event->userId()}",
+                'PK'  => (string) $event->email,
+                'SKe' => "US:{$event->userId}",
             ]),
             'TableName' => $this->tableName,
         ]);

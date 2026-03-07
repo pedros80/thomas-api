@@ -1,44 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         colors="true"
->
-    <testsuites>
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
-        </testsuite>
-    </testsuites>
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./app</directory>
-            <directory suffix=".php">./Thomas</directory>
-        </include>
-        <exclude>
-            <directory suffix=".php">./app/Providers/</directory>
-            <directory suffix=".php">./app/Console/Commands/Dynamo/</directory>
-            <!-- <directory suffix=".php">./app/Http/Middleware/</directory> -->
-            <directory suffix=".php">./Thomas/*/Framework/</directory>
-            <directory suffix=".php">./Thomas/Boards/Providers/*/Framework/</directory>
-            <file>./app/Console/Kernel.php</file>
-            <file>./app/Http/Middleware/Authenticate.php</file>
-            <file>./app/Http/Middleware/TrustHosts.php</file>
-        </exclude>
-    </coverage>
-    <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="BCRYPT_ROUNDS" value="4"/>
-        <env name="CACHE_DRIVER" value="array"/>
-        <env name="DB_DATABASE" value="testing"/>
-        <env name="MAIL_MAILER" value="array"/>
-        <env name="QUEUE_CONNECTION" value="sync"/>
-        <env name="SESSION_DRIVER" value="array"/>
-        <env name="TELESCOPE_ENABLED" value="false"/>
-        <env name="EVENT_STORE_TABLE" value="TestEventStore"/>
-        <env name="THOMAS_TABLE" value="TestThomas"/>
-        <env name="JWT_SECRET" value="secret"/>
-    </php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.1/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true" cacheDirectory=".phpunit.cache">
+  <testsuites>
+    <testsuite name="Unit">
+      <directory suffix="Test.php">./tests/Unit</directory>
+    </testsuite>
+    <testsuite name="Feature">
+      <directory suffix="Test.php">./tests/Feature</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <env name="APP_ENV" value="testing"/>
+    <env name="BCRYPT_ROUNDS" value="4"/>
+    <env name="CACHE_DRIVER" value="array"/>
+    <env name="DB_DATABASE" value="testing"/>
+    <env name="MAIL_MAILER" value="array"/>
+    <env name="QUEUE_CONNECTION" value="sync"/>
+    <env name="SESSION_DRIVER" value="array"/>
+    <env name="TELESCOPE_ENABLED" value="false"/>
+    <env name="EVENT_STORE_TABLE" value="TestEventStore"/>
+    <env name="THOMAS_TABLE" value="TestThomas"/>
+    <env name="TFL_TABLE" value="TestTfL"/>
+    <env name="JWT_SECRET" value="secret"/>
+  </php>
+  <source>
+    <include>
+      <directory suffix=".php">./app</directory>
+      <directory suffix=".php">./Thomas</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">./app/Providers/</directory>
+      <directory suffix=".php">./app/Console/Commands/Dynamo/</directory>
+      <!-- <directory suffix=".php">./app/Http/Middleware/</directory> -->
+      <directory suffix=".php">./Thomas/*/Framework/</directory>
+      <directory suffix=".php">./Thomas/*/Providers/*/Framework/</directory>
+      <file>./app/Console/Kernel.php</file>
+      <file>./app/Http/Middleware/Authenticate.php</file>
+      <file>./app/Http/Middleware/TrustHosts.php</file>
+    </exclude>
+  </source>
 </phpunit>

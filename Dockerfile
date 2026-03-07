@@ -1,12 +1,13 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.3-fpm-alpine
 
 RUN apk update && apk upgrade
-RUN apk add nginx curl bash libxml2-dev php-soap
+RUN apk add nginx curl bash libxml2-dev php-soap openssl-dev
 RUN apk add --no-cache --virtual .build-deps pcre-dev $PHPIZE_DEPS
 RUN apk add --update linux-headers
-RUN pecl install redis xdebug
-RUN docker-php-ext-install soap
-RUN docker-php-ext-enable soap redis.so xdebug
+RUN pecl install redis xdebug ftp
+RUN docker-php-ext-install soap pcntl ftp
+RUN docker-php-ext-enable soap redis.so xdebug ftp
+RUN docker-php-ext-configure ftp --with-openssl-dir=/usr
 RUN apk del -f .build-deps
 
 # Nginx config

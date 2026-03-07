@@ -19,18 +19,16 @@ final class GetBoard extends Command
         $station = $this->getStation();
 
         $data   = [];
-        $data[] = $boards->departures($station)->toArray();
-        $data[] = $boards->arrivals($station)->toArray();
-        $data[] = $boards->departuresPlatform($station, '1')->toArray();
+        $data[] = $boards->departures($station);
+        $data[] = $boards->arrivals($station);
+        $data[] = $boards->departuresPlatform($station, '1');
 
         foreach ($data as $board) {
-            $this->info("{$board['type']} Board for {$board['title']}");
+
+            $this->info("{$board->type->value} Board for {$board->title}");
             $this->table(
-                ['Time', $board['type'], 'Platform', 'Expected'],
-                array_map(
-                    fn (Service $service) => $service->display(),
-                    $board['services']
-                )
+                ['Time', $board->type->value, 'Platform', 'Expected'],
+                $board->services->map(fn (Service $service) => $service->display())
             );
         }
     }

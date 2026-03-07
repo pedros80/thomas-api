@@ -5,19 +5,15 @@ declare(strict_types=1);
 namespace Thomas\RealTimeIncidents\Domain;
 
 use Thomas\RealTimeIncidents\Domain\Exceptions\InvalidIncidentID;
+use Thomas\Shared\Domain\StringValue;
 
-final class IncidentID
+final class IncidentID extends StringValue
 {
     public function __construct(
-        private string $id
+        protected readonly string $value
     ) {
-        if (strlen($id) !== 32) {
-            throw InvalidIncidentID::fromString($id);
+        if (strlen($value) !== 32) {
+            throw InvalidIncidentID::fromString($value);
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->id;
     }
 }

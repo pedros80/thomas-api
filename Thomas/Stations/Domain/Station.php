@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Domain;
 
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
-final class Station implements JsonSerializable
+final class Station implements Arrayable, JsonSerializable
 {
     public function __construct(
-        private Code $code,
-        private Name $name
+        public readonly Code $code,
+        public readonly Name $name
     ) {
     }
 
     public function toArray(): array
     {
         return [
-            'code' => (string) $this->code,
-            'name' => (string) $this->name,
+            'code' => $this->code,
+            'name' => $this->name,
         ];
     }
 

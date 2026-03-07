@@ -10,7 +10,7 @@ use Thomas\Shared\Domain\TokenService;
 final class HttpTokenService implements TokenService
 {
     public function __construct(
-        private TokenGenerator $tokens
+        private readonly TokenGenerator $tokens,
     ) {
     }
 
