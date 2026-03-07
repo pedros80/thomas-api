@@ -6,13 +6,10 @@ namespace Tests\Unit\Thomas\Stations\Application\Commands;
 
 use PHPUnit\Framework\TestCase;
 use Thomas\Stations\Application\Commands\RecordStationMessage;
-use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 use Thomas\Stations\Domain\MessageSeverity;
-use Thomas\Stations\Domain\Name;
-use Thomas\Stations\Domain\Station;
 use Thomas\Stations\Domain\Stations;
 
 final class RecordStationMessageTest extends TestCase
@@ -20,13 +17,11 @@ final class RecordStationMessageTest extends TestCase
     public function testInstantiates(): void
     {
         $command = new RecordStationMessage(
-            new MessageID('12345'),
+            new MessageId('12345'),
             MessageCategory::STATION,
             new MessageBody('body body body'),
             MessageSeverity::MAJOR,
-            new Stations([
-                new Station(new Code('DAM'), new Name('Dalmeny')),
-            ])
+            Stations::fromArray([['code' => 'DAM', 'name' => 'Dalmeny']]),
         );
 
         $this->assertInstanceOf(RecordStationMessage::class, $command);
@@ -36,9 +31,7 @@ final class RecordStationMessageTest extends TestCase
                 'category' => MessageCategory::STATION,
                 'body'     => 'body body body',
                 'severity' => MessageSeverity::MAJOR,
-                'stations' => new Stations([
-                    new Station(new Code('DAM'), new Name('Dalmeny')),
-                ]),
+                'stations' => Stations::fromArray([['code' => 'DAM', 'name' => 'Dalmeny']]),
             ],
             $command->toArray()
         );

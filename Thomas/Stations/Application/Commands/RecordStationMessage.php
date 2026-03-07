@@ -7,14 +7,14 @@ namespace Thomas\Stations\Application\Commands;
 use Thomas\Shared\Application\Command;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Stations;
 
 final class RecordStationMessage extends Command
 {
     public function __construct(
-        public readonly MessageID $id,
+        public readonly MessageId $id,
         public readonly MessageCategory $category,
         public readonly MessageBody $body,
         public readonly MessageSeverity $severity,

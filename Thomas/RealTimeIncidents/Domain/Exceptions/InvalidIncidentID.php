@@ -6,15 +6,15 @@ namespace Thomas\RealTimeIncidents\Domain\Exceptions;
 
 use Exception;
 
-final class InvalidIncidentID extends Exception
+final class InvalidIncidentId extends Exception
 {
     private function __construct(string $message)
     {
         parent::__construct($message, 400);
     }
 
-    public static function fromString(string $string): InvalidIncidentID
+    public static function fromString(string $string): InvalidIncidentId
     {
-        return new InvalidIncidentID("'{$string}' is not a valid Incident ID");
+        return new InvalidIncidentId("'{$string}' is not a valid Incident ID");
     }
 }

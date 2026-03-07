@@ -6,7 +6,7 @@ namespace Thomas\Stations\Domain;
 
 use Thomas\Shared\Domain\StringValue;
 
-final class MessageID extends StringValue
+final class MessageId extends StringValue
 {
     //
 }

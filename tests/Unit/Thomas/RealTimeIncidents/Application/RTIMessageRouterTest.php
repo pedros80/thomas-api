@@ -46,7 +46,7 @@ final class RTIMessageRouterTest extends TestCase
 
         $router = new RTIMessageRouter(
             $commandBus->reveal(),
-            $factory
+            $factory,
         );
 
         $router->route($message);

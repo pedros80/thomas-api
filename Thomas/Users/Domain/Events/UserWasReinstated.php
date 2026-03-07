@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomas\Users\Domain\Events;
 
-use stdClass;
 use Thomas\Shared\Domain\Event;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Name;
@@ -34,14 +33,14 @@ final class UserWasReinstated extends Event
 
     public static function deserialize(string $json): static
     {
-        /** @var stdClass $payload */
-        $payload = json_decode($json);
+        /** @var array $payload */
+        $payload = json_decode($json, true);
 
         return new UserWasReinstated(
-            new Email($payload->email),
-            new UserId($payload->existingId),
-            new Name($payload->name),
-            new UserId($payload->newId)
+            new Email($payload['email']),
+            new UserId($payload['existingId']),
+            new Name($payload['name']),
+            new UserId($payload['newId']),
         );
     }
 }

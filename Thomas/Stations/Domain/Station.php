@@ -6,6 +6,8 @@ namespace Thomas\Stations\Domain;
 
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
+use Thomas\Stations\Domain\Code;
+use Thomas\Stations\Domain\Name;
 
 final class Station implements Arrayable, JsonSerializable
 {
@@ -26,5 +28,13 @@ final class Station implements Arrayable, JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    public static function fromArray(array $station): Station
+    {
+        return new Station(
+            new Code($station['code']),
+            new Name($station['name']),
+        );
     }
 }

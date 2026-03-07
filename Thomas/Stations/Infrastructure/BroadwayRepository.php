@@ -13,7 +13,7 @@ use Broadway\Repository\AggregateNotFoundException;
 use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Stations\Domain\Entities\Message;
 use Thomas\Stations\Domain\Exceptions\MessageNotFound;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 use Thomas\Stations\Domain\MessagesRepository;
 
 class BroadwayRepository extends EventSourcingRepository implements MessagesRepository
@@ -24,11 +24,11 @@ class BroadwayRepository extends EventSourcingRepository implements MessagesRepo
             $eventStore,
             $eventBus,
             Message::class,
-            new PublicConstructorAggregateFactory()
+            new PublicConstructorAggregateFactory(),
         );
     }
 
-    public function find(MessageID $id): Message
+    public function find(MessageId $id): Message
     {
         try {
             /** @var Message $message */

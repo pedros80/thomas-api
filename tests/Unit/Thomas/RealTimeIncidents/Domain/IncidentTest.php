@@ -7,7 +7,7 @@ namespace Tests\Unit\Thomas\RealTimeIncidents\Domain;
 use PHPUnit\Framework\TestCase;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\Incident;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
 final class IncidentTest extends TestCase
@@ -20,13 +20,13 @@ final class IncidentTest extends TestCase
 
         $body     = new Body($content);
         $incident = new Incident(
-            new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'),
+            new IncidentId('D85AA5FB1954428C84A2F636014C2A4A'),
             IncidentMessageStatus::NEW,
             $body
         );
 
         $this->assertInstanceOf(Incident::class, $incident);
-        $this->assertEquals(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), $incident->id);
+        $this->assertEquals(new IncidentId('D85AA5FB1954428C84A2F636014C2A4A'), $incident->id);
         $this->assertEquals(IncidentMessageStatus::NEW, $incident->status);
         $this->assertEquals(new Body($content), $incident->body);
         $this->assertEquals([
@@ -44,7 +44,7 @@ final class IncidentTest extends TestCase
     public function testRemovedIncidentHasNoBody(): void
     {
         $incident = new Incident(
-            new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'),
+            new IncidentId('D85AA5FB1954428C84A2F636014C2A4A'),
             IncidentMessageStatus::REMOVED,
             null
         );

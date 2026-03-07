@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomas\Users\Domain\Events;
 
-use stdClass;
 use Thomas\Shared\Domain\Event;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\RemovedAt;
@@ -32,13 +31,13 @@ final class UserWasRemoved extends Event
 
     public static function deserialize(string $json): static
     {
-        /** @var stdClass $payload */
-        $payload = json_decode($json);
+        /** @var array $payload */
+        $payload = json_decode($json, true);
 
         return new UserWasRemoved(
-            new Email($payload->email),
-            new UserId($payload->userId),
-            RemovedAt::fromString($payload->removedAt)
+            new Email($payload['email']),
+            new UserId($payload['userId']),
+            RemovedAt::fromString($payload['removedAt']),
         );
     }
 }

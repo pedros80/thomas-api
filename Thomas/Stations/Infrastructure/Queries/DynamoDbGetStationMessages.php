@@ -11,7 +11,7 @@ use Thomas\Stations\Domain\Code;
 use Thomas\Stations\Domain\Message;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 use Thomas\Stations\Domain\Messages;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Name;
@@ -42,7 +42,7 @@ final class DynamoDbGetStationMessages extends InteractsWithDynamoDb implements 
         $data = $this->marshaler->unmarshalItem($item);
 
         return new Message(
-            new MessageID($data['PK']),
+            new MessageId($data['PK']),
             MessageCategory::from($data['category']),
             new MessageBody($data['body']),
             MessageSeverity::from($data['severity']),

@@ -7,15 +7,15 @@ namespace Thomas\RealTimeIncidents\Domain;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use Thomas\RealTimeIncidents\Domain\Body;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
 final class Incident implements Arrayable, JsonSerializable
 {
     public function __construct(
-        public readonly IncidentID $id,
+        public readonly IncidentId $id,
         public readonly IncidentMessageStatus $status,
-        public readonly ?Body $body
+        public readonly ?Body $body,
     ) {
     }
 

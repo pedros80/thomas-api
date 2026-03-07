@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Stations\Domain;
 
 use PHPUnit\Framework\TestCase;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 
-final class MessageIDTest extends TestCase
+final class MessageIdTest extends TestCase
 {
     public function testInstantiates(): void
     {
-        $id = new MessageID('12345');
+        $id = new MessageId('12345');
 
-        $this->assertInstanceOf(MessageID::class, $id);
+        $this->assertInstanceOf(MessageId::class, $id);
         $this->assertEquals('12345', (string) $id);
     }
 }

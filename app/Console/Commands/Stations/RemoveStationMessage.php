@@ -7,7 +7,7 @@ namespace App\Console\Commands\Stations;
 use Illuminate\Console\Command;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Stations\Application\Commands\RemoveStationMessage as CommandsRemoveStationMessage;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 
 final class RemoveStationMessage extends Command
 {
@@ -18,7 +18,7 @@ final class RemoveStationMessage extends Command
     {
         $id = $this->getId();
 
-        $command = new CommandsRemoveStationMessage(new MessageID($id));
+        $command = new CommandsRemoveStationMessage(new MessageId($id));
 
         $commandBus->dispatch($command);
 

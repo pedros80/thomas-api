@@ -7,7 +7,7 @@ namespace Thomas\RealTimeIncidents\Infrastructure\Queries;
 use Thomas\RealTimeIncidents\Application\Queries\GetIncidents;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\Incident;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 use Thomas\RealTimeIncidents\Domain\Incidents;
 use Thomas\Shared\Infrastructure\InteractsWithDynamoDb;
@@ -46,9 +46,9 @@ final class DynamoDbGetIncidents extends InteractsWithDynamoDb implements GetInc
         $data = $this->marshaler->unmarshalItem($item);
 
         return new Incident(
-            new IncidentID($data['PK']),
+            new IncidentId($data['PK']),
             IncidentMessageStatus::from($data['istatus']),
-            new Body($data['body'])
+            new Body($data['body']),
         );
     }
 }

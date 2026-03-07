@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Thomas\Stations\Application\Commands;
 
 use Thomas\Shared\Application\Command;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 
 final class RemoveStationMessage extends Command
 {
     public function __construct(
-        public readonly MessageID $id,
+        public readonly MessageId $id,
     ) {
     }
 

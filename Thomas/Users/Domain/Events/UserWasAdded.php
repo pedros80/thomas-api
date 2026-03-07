@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Thomas\Users\Domain\Events;
 
-use stdClass;
 use Thomas\Shared\Domain\Event;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Name;
@@ -32,13 +31,13 @@ final class UserWasAdded extends Event
 
     public static function deserialize(string $json): static
     {
-        /** @var stdClass $payload */
-        $payload = json_decode($json);
+        /** @var array $payload */
+        $payload = json_decode($json, true);
 
         return new UserWasAdded(
-            new Email($payload->email),
-            new Name($payload->name),
-            new UserId($payload->userId)
+            new Email($payload['email']),
+            new Name($payload['name']),
+            new UserId($payload['userId']),
         );
     }
 }

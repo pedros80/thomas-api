@@ -5,24 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Stations\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Thomas\Stations\Application\Commands\Handlers\RemoveStationMessageCommandHandler;
 use Thomas\Stations\Application\Commands\RemoveStationMessage;
-use Thomas\Stations\Domain\Code;
-use Thomas\Stations\Domain\Events\MessageWasAdded;
 use Thomas\Stations\Domain\Events\MessageWasRemoved;
-use Thomas\Stations\Domain\MessageBody;
-use Thomas\Stations\Domain\MessageCategory;
-use Thomas\Stations\Domain\MessageID;
-use Thomas\Stations\Domain\MessageSeverity;
-use Thomas\Stations\Domain\Name;
-use Thomas\Stations\Domain\Station;
-use Thomas\Stations\Domain\Stations;
 use Thomas\Stations\Infrastructure\BroadwayRepository;
+use Tests\Unit\Thomas\Stations\Application\Commands\Handlers\BaseStationMessageCommandHandler;
 
-final class RemoveStationMessageCommandHandlerTest extends CommandHandlerScenarioTestCase
+final class RemoveStationMessageCommandHandlerTest extends BaseStationMessageCommandHandler
 {
     public function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
@@ -32,27 +23,31 @@ final class RemoveStationMessageCommandHandlerTest extends CommandHandlerScenari
     public function testExistingStationMessageCanBeRemoved(): void
     {
         $this->scenario
-            ->withAggregateId((string) new MessageID('12345'))
+            ->withAggregateId((string) $this->messageId)
             ->given([
-                new MessageWasAdded(
-                    new MessageID('12345'),
-                    MessageCategory::TRAIN,
-                    new MessageBody('MESSAGE BODY'),
-                    MessageSeverity::MAJOR,
-                    new Stations([
-                        new Station(new Code('DAM'), new Name('Dalmeny')),
-                    ])
-                ),
-            ])
-            ->when(new RemoveStationMessage(new MessageID('12345')))
-            ->then([new MessageWasRemoved(new MessageID('12345'))]);
+                $this->makeMessageWasAdded(),
+            ])->when(
+                $this->makeRemoveStationMessage()
+            )->then([
+                $this->makeMessageWasRemoved(),
+            ]);
     }
 
     public function testAttemptingRemovingNoMessageDoesNothing(): void
     {
         $this->scenario
             ->given([])
-            ->when(new RemoveStationMessage(new MessageID('12345')))
+            ->when($this->makeRemoveStationMessage())
             ->then([]);
+    }
+
+    private function makeMessageWasRemoved(): MessageWasRemoved
+    {
+        return new MessageWasRemoved($this->messageId);
+    }
+
+    private function makeRemoveStationMessage(): RemoveStationMessage
+    {
+        return new RemoveStationMessage($this->messageId);
     }
 }

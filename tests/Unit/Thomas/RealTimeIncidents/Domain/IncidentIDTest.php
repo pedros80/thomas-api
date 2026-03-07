@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\RealTimeIncidents\Domain;
 
 use PHPUnit\Framework\TestCase;
-use Thomas\RealTimeIncidents\Domain\Exceptions\InvalidIncidentID;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\Exceptions\InvalidIncidentId;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 
-final class IncidentIDTest extends TestCase
+final class IncidentIdTest extends TestCase
 {
     public function testInstantiates(): void
     {
-        $id = new IncidentID('D85AA5FB1954428C84A2F636014C2A4A');
+        $id = new IncidentId('D85AA5FB1954428C84A2F636014C2A4A');
 
-        $this->assertInstanceOf(IncidentID::class, $id);
+        $this->assertInstanceOf(IncidentId::class, $id);
         $this->assertEquals('D85AA5FB1954428C84A2F636014C2A4A', (string) $id);
     }
 
     public function testInvalidIDThrowsException(): void
     {
-        $this->expectException(InvalidIncidentID::class);
+        $this->expectException(InvalidIncidentId::class);
         $this->expectExceptionMessage("D85AA5FB19544' is not a valid Incident ID");
 
-        new IncidentID('D85AA5FB19544');
+        new IncidentId('D85AA5FB19544');
     }
 }

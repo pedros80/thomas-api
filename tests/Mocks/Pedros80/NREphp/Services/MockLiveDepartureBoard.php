@@ -148,7 +148,7 @@ final class MockLiveDepartureBoard implements Boards
         return (object) [];
     }
 
-    public function getServiceDetails(string $serviceID): stdClass
+    public function getServiceDetails(string $serviceId): stdClass
     {
         return (object) [];
     }

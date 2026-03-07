@@ -7,7 +7,7 @@ namespace Tests\Unit\Thomas\RealTimeIncidents\Domain\Events;
 use PHPUnit\Framework\TestCase;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasUpdated;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
 final class IncidentWasUpdatedTest extends TestCase
@@ -21,7 +21,7 @@ final class IncidentWasUpdatedTest extends TestCase
         );
 
         $event = new IncidentWasUpdated(
-            new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'),
+            new IncidentId('D85AA5FB1954428C84A2F636014C2A4A'),
             IncidentMessageStatus::NEW,
             $body
         );
@@ -31,7 +31,7 @@ final class IncidentWasUpdatedTest extends TestCase
         $newEvent = IncidentWasUpdated::deserialize($json);
 
         $this->assertInstanceOf(IncidentWasUpdated::class, $newEvent);
-        $this->assertEquals(new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'), $event->id);
+        $this->assertEquals(new IncidentId('D85AA5FB1954428C84A2F636014C2A4A'), $event->id);
         $this->assertEquals($event, $newEvent);
     }
 }

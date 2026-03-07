@@ -12,7 +12,7 @@ use Broadway\EventStore\EventStore;
 use Broadway\Repository\AggregateNotFoundException;
 use Thomas\RealTimeIncidents\Domain\Entities\Incident;
 use Thomas\RealTimeIncidents\Domain\Exceptions\IncidentNotFound;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 use Thomas\RealTimeIncidents\Domain\IncidentsRepository;
 use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 
@@ -28,7 +28,7 @@ class BroadwayRepository extends EventSourcingRepository implements IncidentsRep
         );
     }
 
-    public function find(IncidentID $id): Incident
+    public function find(IncidentId $id): Incident
     {
         try {
             /** @var Incident $incident */
