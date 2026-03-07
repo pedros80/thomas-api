@@ -15,10 +15,9 @@ final class IncidentWasRemovedTest extends TestCase
     {
         $event = new IncidentWasRemoved(
             new IncidentId('D85AA5FB1954428C84A2F636014C2A4A'),
-            IncidentMessageStatus::REMOVED
+            IncidentMessageStatus::REMOVED,
         );
 
-        /** @var string $json */
         $json     = json_encode($event, JSON_THROW_ON_ERROR);
         $newEvent = IncidentWasRemoved::deserialize($json);
 

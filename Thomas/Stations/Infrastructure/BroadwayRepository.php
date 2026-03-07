@@ -10,7 +10,6 @@ use Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\AggregateNotFoundException;
-use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Stations\Domain\Entities\Message;
 use Thomas\Stations\Domain\Exceptions\MessageNotFound;
 use Thomas\Stations\Domain\MessageId;
@@ -35,7 +34,7 @@ class BroadwayRepository extends EventSourcingRepository implements MessagesRepo
             $message = parent::load((string) $id);
 
             return $message;
-        } catch (AggregateNotFoundException | EventStreamNotFound) {
+        } catch (AggregateNotFoundException) {
             throw MessageNotFound::fromId($id);
         }
     }

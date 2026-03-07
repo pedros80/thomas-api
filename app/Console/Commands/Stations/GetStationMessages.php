@@ -17,10 +17,10 @@ final class GetStationMessages extends Command
 
     public function handle(QueriesGetStationMessages $query): void
     {
-        $code = $this->getCode();
+        $code = $this->getStationCode();
         $msgs = $query->get($code);
 
-        if (!count($msgs)) {
+        if (! count($msgs)) {
             $this->info("No messages found for {$code->name()}");
 
             return;
@@ -32,11 +32,21 @@ final class GetStationMessages extends Command
         );
     }
 
-    private function getCode(): CRS
+    private function getStationCode(): CRS
     {
-        $code = $this->argument('station') ?: $this->ask('Which Station Code?');
+        $code = $this->argument('station');
 
-        $code = is_array($code) ? $code[0] : $code;
+        if ($code === null || $code === '') {
+            $code = $this->ask('Which Station Code?');
+        }
+
+        if (is_array($code)) {
+            $code = $code[0] ?? null;
+        }
+
+        if (! is_string($code) || $code === '') {
+            throw new \RuntimeException('Station code must be a non-empty string.');
+        }
 
         return CRS::fromString($code);
     }

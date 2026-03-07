@@ -62,7 +62,6 @@ final class BodyTest extends TestCase
         $this->assertEquals('Delays between London St Pancras International and St Albans expected until 11:30', $body->summary());
         $this->assertEquals('<p>Due to a problem currently under investigation&#160;between London St Pancras International and St Albans trains have to run at reduced speed on all lines. As a result, trains may be delayed.</p>', $body->description());
         $this->assertEquals('2023-02-06 09:56:00', $body->creationTime()?->format('Y-m-d H:i:s'));
-        $this->assertIsArray($body->toArray());
         $this->assertEquals($body->toArray(), $body->jsonSerialize());
         $this->assertNull($body->endTime());
         $this->assertFalse($body->cleared());

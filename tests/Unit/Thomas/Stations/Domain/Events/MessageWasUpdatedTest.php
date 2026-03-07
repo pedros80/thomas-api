@@ -24,7 +24,6 @@ final class MessageWasUpdatedTest extends TestCase
             Stations::fromArray([['code' => 'DAM', 'name' => 'Dalmeny']]),
         );
 
-        /** @var string $json */
         $json     = json_encode($event, JSON_THROW_ON_ERROR);
         $newEvent = MessageWasUpdated::deserialize($json);
 

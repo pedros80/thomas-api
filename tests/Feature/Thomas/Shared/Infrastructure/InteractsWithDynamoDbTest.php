@@ -12,12 +12,12 @@ final class InteractsWithDynamoDbTest extends TestCase
 {
     public function testGetItemsRecursively(): void
     {
+        $this->expectNotToPerformAssertions();
+
         /** @var DarwinMessageRouter $router */
         $router  = app(DarwinMessageRouter::class);
         $message = MockDarwinMessageFactory::stationMessage(120, 3);
         $router->route($message);
         $router->route($message);
-
-        $this->assertTrue(true);
     }
 }

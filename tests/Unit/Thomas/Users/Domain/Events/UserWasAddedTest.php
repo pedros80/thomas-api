@@ -20,7 +20,6 @@ final class UserWasAddedTest extends TestCase
             UserId::generate(),
         );
 
-        /** @var string $serialised */
         $serialised = json_encode($event, JSON_THROW_ON_ERROR);
 
         $this->assertEquals($event, UserWasAdded::deserialize($serialised));

@@ -18,10 +18,9 @@ final class UserWasReinstatedTest extends TestCase
             new Email('peterwsomerville@gmail.com'),
             UserId::generate(),
             new Name('Peter Somerville'),
-            UserId::generate()
+            UserId::generate(),
         );
 
-        /** @var string $serialised */
         $serialised = json_encode($event, JSON_THROW_ON_ERROR);
 
         $this->assertEquals($event, UserWasReinstated::deserialize($serialised));

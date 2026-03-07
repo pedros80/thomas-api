@@ -21,7 +21,6 @@ final class AssetTest extends TestCase
         $asset = Asset::fromArray($array);
 
         $this->assertInstanceOf(Asset::class, $asset);
-        $this->assertIsArray($asset->toArray());
         $this->assertEquals($json, json_encode($asset, JSON_THROW_ON_ERROR));
     }
 }

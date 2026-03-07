@@ -24,7 +24,7 @@ final class RTTBoardMapper
             BoardType::DEPARTURES,
             $this->parseServices($data->services, BoardType::DEPARTURES),
             new Messages([]),
-            $this->getOperators($data->services)
+            $this->getOperators($data->services),
         );
     }
 
@@ -67,12 +67,12 @@ final class RTTBoardMapper
             $this->getScheduledTime($service->locationDetail, $type),
             $service->serviceUid,
             $this->getDestinationOrOrigin($service->locationDetail, $type),
-            $service->locationDetail?->platform ?? '...',
+            $service->locationDetail->platform ?? '...',
             $this->getExpectedTime($service->locationDetail, $type),
             $service->atocName,
             isset($service->callingPoints) ? $this->getCallingPoints($service->callingPoints) : '',
             isset($service->locationDetail->cancelReasonShortText),
-            isset($service->locationDetail->cancelReasonShortText) ? $service->locationDetail->cancelReasonShortText : null
+            isset($service->locationDetail->cancelReasonShortText) ? $service->locationDetail->cancelReasonShortText : null,
         );
     }
 

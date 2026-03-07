@@ -21,7 +21,7 @@ final class GetRealTimeIncidents extends Command
                 $incident->id,
                 $incident->status->value,
                 $incident->body?->summary(),
-                implode(', ', $incident->body?->operators()),
+                implode(', ', $incident->body?->operators() ?? []),
             ])
         );
     }

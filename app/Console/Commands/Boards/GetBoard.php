@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands\Boards;
 
 use Illuminate\Console\Command;
+use RuntimeException;
 use Thomas\Boards\Domain\BoardDataService;
 use Thomas\Boards\Domain\Service;
 use Thomas\Shared\Domain\CRS;
@@ -35,9 +36,19 @@ final class GetBoard extends Command
 
     private function getStation(): CRS
     {
-        $station = $this->argument('station') ?: $this->ask('Which Station?');
+        $station = $this->argument('station');
 
-        $station = is_array($station) ? $station[0] : $station;
+        if ($station === null || $station === '') {
+            $station = $this->ask('Which Station?');
+        }
+
+        if (is_array($station)) {
+            $station = $station[0] ?? null;
+        }
+
+        if (!is_string($station) || $station === '') {
+            throw new RuntimeException('Station must be a non-empty string.');
+        }
 
         return CRS::fromString($station);
     }

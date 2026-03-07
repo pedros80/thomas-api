@@ -20,7 +20,7 @@ final class AssetsTest extends TestCase
     {
         $service = new HttpLiftAndEscalatorClient(
             new MockLiftAndEscalatorService(),
-            new HttpTokenService(new MockTokenGenerator())
+            new HttpTokenService(new MockTokenGenerator()),
         );
 
         $assets = $service->getAssetsByStationCode(CRS::fromString('edb'));
@@ -34,9 +34,6 @@ final class AssetsTest extends TestCase
 
         $ids = $assets->map(fn (Asset $asset) => $asset->id);
         $this->assertCount(23, $ids);
-
-        $array = $assets->toArray();
-        $this->assertIsArray($array);
     }
 
     public function testNonAssetThrowsException(): void

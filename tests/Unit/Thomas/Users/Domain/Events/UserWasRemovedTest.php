@@ -17,10 +17,9 @@ final class UserWasRemovedTest extends TestCase
         $event = new UserWasRemoved(
             new Email('peterwsomerville@gmail.com'),
             UserId::generate(),
-            RemovedAt::now()
+            RemovedAt::now(),
         );
 
-        /** @var string $serialised */
         $serialised = json_encode($event, JSON_THROW_ON_ERROR);
 
         $this->assertEquals($event, UserWasRemoved::deserialize($serialised));

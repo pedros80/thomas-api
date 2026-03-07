@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands\Stations;
 
 use Illuminate\Console\Command;
+use RuntimeException;
 use Thomas\Stations\Application\Queries\SearchStations;
 use Thomas\Stations\Domain\Station;
 use Thomas\Stations\Domain\Stations;
@@ -21,9 +22,21 @@ final class SearchStationsByNameOrCode extends Command
 
     private function getSearchTerm(): string
     {
-        $search = $this->argument('search') ?: $this->ask('Enter Search Term?');
+        $search = $this->argument('search');
 
-        return is_array($search) ? $search[0] : $search;
+        if ($search === null || $search === '') {
+            $search = $this->ask('Enter Search Term?');
+        }
+
+        if (is_array($search)) {
+            $search = $search[0] ?? null;
+        }
+
+        if (! is_string($search) || $search === '') {
+            throw new RuntimeException('Search term must be a non-empty string.');
+        }
+
+        return $search;
     }
 
     private function displayResults(Stations $stations): void

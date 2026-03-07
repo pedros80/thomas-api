@@ -42,9 +42,9 @@ final class NREBoardMapper
         return new Board(
             new BoardTitle(CRS::fromString($board->crs)->name()),
             $type,
-            $this->parseServices($board->trainServices?->service ?? [], $type),
-            $this->parseMessages($board->nrcMessages?->message ?? []),
-            $this->getOperators($board->trainServices?->service ?? [])
+            $this->parseServices($board->trainServices->service ?? [], $type),
+            $this->parseMessages($board->nrcMessages->message ?? []),
+            $this->getOperators($board->trainServices->service ?? [])
         );
     }
 

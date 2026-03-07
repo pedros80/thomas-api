@@ -26,7 +26,14 @@ final class FatControllerTest extends TestCase
         $request->headers->set('X-Timestamp', (string) $time);
         $request->headers->set('X-Signature', $signature);
 
-        $middleware->handle($request, fn () => $this->assertTrue(true));
+        $called = false;
+
+        $middleware->handle($request, function () use (&$called) {
+            $called = true;
+            return response('ok');
+        });
+
+        $this->assertTrue($called);
     }
 
     public function testMiddlewareRejectsUnsignedRequests(): void
@@ -44,6 +51,6 @@ final class FatControllerTest extends TestCase
         $request->headers->set('X-Timestamp', (string) $time);
         $request->headers->set('X-Signature', $signature);
 
-        $middleware->handle($request, fn () => $this->assertFalse(true));
+        $middleware->handle($request, fn() => response('ok'));
     }
 }

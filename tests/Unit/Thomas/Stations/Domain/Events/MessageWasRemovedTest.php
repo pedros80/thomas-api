@@ -14,7 +14,6 @@ final class MessageWasRemovedTest extends TestCase
     {
         $event = new MessageWasRemoved(new MessageId('12345'));
 
-        /** @var string $json */
         $json     = json_encode($event, JSON_THROW_ON_ERROR);
         $newEvent = MessageWasRemoved::deserialize($json);
 

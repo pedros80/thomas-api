@@ -14,11 +14,12 @@ final class FatController
 {
     public function handle(Request $request, Closure $next): mixed
     {
+        /** @var string $secret */
         $secret    = Config::get('services.admin.secret');
         $timestamp = $request->header('X-Timestamp');
         $header    = (string) $request->header('X-Signature');
 
-        if (!Hash::check($secret . $timestamp, $header)) {
+        if (!Hash::check("{$secret}{$timestamp}", $header)) {
             throw InvalidFatControllerRequest::default();
         }
 

@@ -18,14 +18,13 @@ final class CommandBusServiceProvider extends ServiceProvider
         $this->app->singleton(CommandBus::class, function (): CommandBus {
             return new class(new SimpleCommandBus(), $this->app->make(Logger::class)) implements CommandBus {
                 public function __construct(
-                    private SimpleCommandBus $bus,
-                    private Logger $logger,
+                    private readonly SimpleCommandBus $bus,
+                    private readonly Logger $logger,
                 ) {
                 }
 
                 public function dispatch(Command $command): void
                 {
-                    /** @var string $log */
                     $log = json_encode($command, JSON_THROW_ON_ERROR);
                     $this->logger->info($log);
 

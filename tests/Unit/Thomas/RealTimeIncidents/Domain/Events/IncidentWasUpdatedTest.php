@@ -23,10 +23,9 @@ final class IncidentWasUpdatedTest extends TestCase
         $event = new IncidentWasUpdated(
             new IncidentId('D85AA5FB1954428C84A2F636014C2A4A'),
             IncidentMessageStatus::NEW,
-            $body
+            $body,
         );
 
-        /** @var string $json */
         $json     = json_encode($event, JSON_THROW_ON_ERROR);
         $newEvent = IncidentWasUpdated::deserialize($json);
 

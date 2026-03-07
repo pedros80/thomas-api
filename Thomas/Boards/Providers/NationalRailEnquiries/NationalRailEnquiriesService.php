@@ -16,7 +16,7 @@ final class NationalRailEnquiriesService implements BoardDataService
     public function __construct(
         private readonly Boards $boards,
         private readonly NREBoardMapper $mapper,
-        private readonly int $numRows
+        private readonly int $numRows,
     ) {
     }
 
@@ -40,7 +40,7 @@ final class NationalRailEnquiriesService implements BoardDataService
     {
         $data = $this->getBoard($station, 'getDepBoardWithDetails');
 
-        $services = $data->GetStationBoardResult->trainServices?->service ?? [];
+        $services = $data->GetStationBoardResult->trainServices->service ?? [];
 
         $platformServices = array_filter(
             $services,

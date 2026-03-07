@@ -13,6 +13,9 @@ abstract class TestCase extends BaseTestCase
 
     protected function getAuthHeaders(): array
     {
-        return ['Authorization' => 'Bearer ' . Config::get('jwt.test')];
+        /** @var string $jwt */
+        $jwt = Config::get('jwt.test');
+
+        return ['Authorization' => "Bearer {$jwt}"];
     }
 }
