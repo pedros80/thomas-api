@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51aa8f55acf66189fcc5ef776bb189ba",
+    "content-hash": "877695f73baa08112545530089b3be9a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3230,16 +3230,16 @@
         },
         {
             "name": "pedros80/nrephp",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pedros80/nrephp.git",
-                "reference": "75cd5805d36d63ab66e7b7dd8892e029cee36aff"
+                "reference": "99f324e15d675c2fe5dbd5dc50a15bc36d24aadf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pedros80/nrephp/zipball/75cd5805d36d63ab66e7b7dd8892e029cee36aff",
-                "reference": "75cd5805d36d63ab66e7b7dd8892e029cee36aff",
+                "url": "https://api.github.com/repos/pedros80/nrephp/zipball/99f324e15d675c2fe5dbd5dc50a15bc36d24aadf",
+                "reference": "99f324e15d675c2fe5dbd5dc50a15bc36d24aadf",
                 "shasum": ""
             },
             "require": {
@@ -3278,9 +3278,9 @@
             "description": "php wrapper for National Railway Enquiries APIs; Darwin, Historical Service Performance, KnowledgeBase etc...",
             "support": {
                 "issues": "https://github.com/pedros80/nrephp/issues",
-                "source": "https://github.com/pedros80/nrephp/tree/v2.0.0"
+                "source": "https://github.com/pedros80/nrephp/tree/v2.1.0"
             },
-            "time": "2026-03-08T09:06:01+00:00"
+            "time": "2026-03-08T20:36:36+00:00"
         },
         {
             "name": "pedros80/rttphp",

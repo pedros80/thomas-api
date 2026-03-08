@@ -26,7 +26,7 @@ final class Test extends Command
 
         $naptan = new NaptanId(array_keys($naptans)[0]);
 
-        var_dump($naptans);
+        // var_dump($naptans);
 
         // var_dump($arrivals->get($naptan));
 
