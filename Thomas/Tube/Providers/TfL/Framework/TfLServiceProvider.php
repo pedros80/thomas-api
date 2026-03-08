@@ -27,6 +27,10 @@ final class TfLServiceProvider extends ServiceProvider
     {
         $key = Config::get('services.tfl.key');
 
+        if ($key == null) {
+            return;
+        }
+
         if (!is_string($key) || $key === '') {
             throw new RuntimeException('Missing TfL API key.');
         }
