@@ -13,9 +13,9 @@ final class AddIncidentCommandHandler extends IncidentCommandHandler
     public function handleAddIncident(AddIncident $command): void
     {
         $incident = Incident::add(
-            $command->id(),
-            $command->status(),
-            $command->body()
+            $command->id,
+            $command->status,
+            $command->body,
         );
 
         $this->incidents->save($incident);

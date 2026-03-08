@@ -11,7 +11,7 @@ use Thomas\LiftsAndEscalators\Domain\TokenService;
 final class HttpTokenService implements TokenService
 {
     public function __construct(
-        private Tokens $tokenGenerator
+        private readonly Tokens $tokenGenerator
     ) {
     }
 

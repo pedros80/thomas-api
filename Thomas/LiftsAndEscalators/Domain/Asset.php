@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomas\LiftsAndEscalators\Domain;
 
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use Thomas\LiftsAndEscalators\Domain\AssetId;
 use Thomas\LiftsAndEscalators\Domain\AssetStatus;
@@ -15,35 +16,35 @@ use Thomas\LiftsAndEscalators\Domain\PRN;
 use Thomas\LiftsAndEscalators\Domain\SensorId;
 use Thomas\Shared\Domain\CRS;
 
-final class Asset implements JsonSerializable
+final class Asset implements Arrayable, JsonSerializable
 {
     public function __construct(
-        private AssetId $assetId,
-        private AssetType $assetType,
-        private CRS $crs,
-        private Description $description,
-        private DisplayName $displayName,
-        private PRN $prn,
-        private ?SensorId $sensorId,
-        private ?AssetStatus $status,
-        private ?Location $location
+        public readonly AssetId $id,
+        public readonly AssetType $assetType,
+        public readonly CRS $crs,
+        public readonly Description $description,
+        public readonly DisplayName $displayName,
+        public readonly PRN $prn,
+        public readonly ?SensorId $sensorId,
+        public readonly ?AssetStatus $status,
+        public readonly ?Location $location,
     ) {
     }
 
     public function isLift(): bool
     {
-        return (string) $this->assetType === AssetType::LIFT;
+        return $this->assetType === AssetType::LIFT;
     }
 
     public function isEscalator(): bool
     {
-        return (string) $this->assetType === AssetType::ESCALATOR;
+        return $this->assetType === AssetType::ESCALATOR;
     }
 
     public function toArray(): array
     {
         return [
-            'id'          => $this->assetId,
+            'id'          => $this->id,
             'type'        => $this->assetType,
             'crs'         => $this->crs,
             'description' => $this->description,
@@ -64,7 +65,7 @@ final class Asset implements JsonSerializable
     {
         return new Asset(
             new AssetId((int) $asset['id']),
-            new AssetType($asset['type']),
+            AssetType::from($asset['type']),
             CRS::fromString($asset['crs']),
             new Description($asset['description']),
             new DisplayName($asset['displayName']),

@@ -5,6 +5,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RealTimeIncidentsController;
 use App\Http\Controllers\ServiceIndicatorController;
 use App\Http\Controllers\StationController;
+use App\Http\Controllers\TubeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,12 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/departures/{station?}', 'departures');
         Route::get('/departures/{station}/platform/{platform}', 'departuresPlatform');
         Route::get('/arrivals/{station?}', 'arrivals');
+    });
+
+    Route::controller(TubeController::class)->prefix('tube')->group(function () {
+        Route::get('/lines', 'lines');
+        Route::get('/naptans/{line}', 'naptans');
+        Route::get('/arrivals/{naptan}', 'arrivals');
     });
 
     Route::controller(StationController::class)->prefix('stations')->group(function () {

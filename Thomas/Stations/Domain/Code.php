@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Domain;
 
-final class Code
-{
-    public function __construct(
-        private string $code
-    ) {
-    }
+use Thomas\Shared\Domain\StringValue;
 
-    public function __toString(): string
-    {
-        return $this->code;
-    }
+final class Code extends StringValue
+{
+    //
 }

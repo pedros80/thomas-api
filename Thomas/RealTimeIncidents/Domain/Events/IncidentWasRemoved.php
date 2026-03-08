@@ -4,44 +4,36 @@ declare(strict_types=1);
 
 namespace Thomas\RealTimeIncidents\Domain\Events;
 
-use function Safe\json_decode;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 use Thomas\Shared\Domain\Event;
+
+use function Safe\json_decode;
 
 final class IncidentWasRemoved extends Event
 {
     public function __construct(
-        private IncidentID $id,
-        private IncidentMessageStatus $status,
+        public readonly IncidentId $id,
+        public readonly IncidentMessageStatus $status,
     ) {
-    }
-
-    public function id(): IncidentID
-    {
-        return $this->id;
-    }
-
-    public function status(): IncidentMessageStatus
-    {
-        return $this->status;
     }
 
     public function toArray(): array
     {
         return [
-            'id'     => (string) $this->id,
-            'status' => (string) $this->status,
+            'id'     => $this->id,
+            'status' => $this->status,
         ];
     }
 
     public static function deserialize(string $json): static
     {
-        $payload = json_decode($json);
+        /** @var array $payload */
+        $payload = json_decode($json, true);
 
         return new IncidentWasRemoved(
-            new IncidentID($payload->id),
-            new IncidentMessageStatus($payload->status)
+            new IncidentId($payload['id']),
+            IncidentMessageStatus::from($payload['status']),
         );
     }
 }

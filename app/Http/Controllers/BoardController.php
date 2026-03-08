@@ -4,78 +4,29 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Application\Services\CombinedBoardService;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
-use Thomas\Boards\Application\Queries\GetPlatformBoardDepartures;
-use Thomas\Boards\Application\Queries\GetStationBoardArrivals;
-use Thomas\Boards\Application\Queries\GetStationBoardDepartures;
-use Thomas\RealTimeIncidents\Application\Queries\GetIncidents;
-use Thomas\Shared\Domain\CRS;
-use Thomas\Stations\Application\Queries\GetStationMessages;
+use Thomas\Shared\Framework\SuccessResponse;
 
 final class BoardController extends Controller
 {
-    public function departures(
-        GetStationBoardDepartures $departures,
-        GetStationMessages $messages,
-        GetIncidents $incidents,
-        string $station
-    ): JsonResponse {
-
-        $station = CRS::fromString($station);
-
-        $board = $departures->get($station);
-
-        return new JsonResponse([
-            'success' => true,
-            'data'    => [
-                'board'     => $board,
-                'messages'  => $messages->get($station),
-                'incidents' => $incidents->get($board->toArray()['operators']),
-            ],
-        ]);
+    public function __construct(
+        private readonly CombinedBoardService $service,
+    ) {
     }
 
-    public function departuresPlatform(
-        GetPlatformBoardDepartures $departures,
-        GetStationMessages $messages,
-        GetIncidents $incidents,
-        string $station,
-        string $platform
-    ): JsonResponse {
-
-        $station = CRS::fromString($station);
-
-        $board = $departures->get($station, $platform);
-
-        return new JsonResponse([
-            'success' => true,
-            'data'    => [
-                'board'     => $board,
-                'messages'  => $messages->get($station),
-                'incidents' => $incidents->get($board->toArray()['operators']),
-            ],
-        ]);
+    public function departures(string $station): SuccessResponse
+    {
+        return new SuccessResponse($this->service->getDeparturesBoard($station));
     }
 
-    public function arrivals(
-        GetStationBoardArrivals $arrivals,
-        GetStationMessages $messages,
-        GetIncidents $incidents,
-        string $station
-    ): JsonResponse {
+    public function departuresPlatform(string $station, string $platform): SuccessResponse
+    {
+        return new SuccessResponse($this->service->getPlatformDeparturesBoard($station, $platform));
+    }
 
-        $station = CRS::fromString($station);
-
-        $board = $arrivals->get($station);
-
-        return new JsonResponse([
-            'success' => true,
-            'data'    => [
-                'board'     => $board,
-                'message'   => $messages->get($station),
-                'incidents' => $incidents->get($board->toArray()['operators']),
-            ],
-        ]);
+    public function arrivals(string $station): SuccessResponse
+    {
+        return new SuccessResponse($this->service->getArrivalsBoard($station));
     }
 }

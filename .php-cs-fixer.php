@@ -16,7 +16,7 @@ $config = new Config();
 return $config->setRules([
     '@PSR2'                       => true,
     'array_syntax'                => ['syntax' => 'short'],
-    'ordered_imports'             => ['sort_algorithm' => 'alpha'],
+    'ordered_imports'             => ['sort_algorithm' => 'alpha', 'imports_order' => ['const', 'class', 'function']],
     'single_line_after_imports'   => true,
     'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['arrays', 'match']],
     'phpdoc_scalar'               => true,

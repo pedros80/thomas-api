@@ -1,29 +1,29 @@
-version: "3.5"
-
 services:
-    php:
-        build: .
-        depends_on:
-            - composer
-        working_dir: /var/task
-        volumes:
-            - .:/var/task
-            - ./storage:/tmp/storage
-        ports:
-            - "89:80"
-    redis:
-        image: redis
-        ports:
-            - "6382:6379"
-    dynamo:
-        image: amazon/dynamodb-local
-        command: "-jar DynamoDBLocal.jar -sharedDb"
-        ports:
-            - "8009:8000"
-    composer:
-        image: composer:latest
-        working_dir: /var/task
-        volumes:
-            - .:/var/task
-            - ./tmp:/tmp
-        command: install
+  php:
+    build: .
+    image: thomas-php
+    working_dir: /var/task
+    volumes:
+      - .:/var/task
+      - ./storage:/tmp/storage
+    ports:
+      - "89:80"
+
+  composer:
+    image: thomas-php
+    working_dir: /var/task
+    volumes:
+      - .:/var/task
+      - ./tmp:/tmp
+    entrypoint: ["composer"]
+
+  redis:
+    image: redis
+    ports:
+      - "6382:6379"
+
+  dynamo:
+    image: amazon/dynamodb-local
+    command: "-jar DynamoDBLocal.jar -sharedDb"
+    ports:
+      - "8009:8000"

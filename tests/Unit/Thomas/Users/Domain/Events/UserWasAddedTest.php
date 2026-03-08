@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Users\Domain\Events;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Events\UserWasAdded;
 use Thomas\Users\Domain\Name;
@@ -21,8 +20,7 @@ final class UserWasAddedTest extends TestCase
             UserId::generate(),
         );
 
-        /** @var string $serialised */
-        $serialised = json_encode($event);
+        $serialised = json_encode($event, JSON_THROW_ON_ERROR);
 
         $this->assertEquals($event, UserWasAdded::deserialize($serialised));
     }

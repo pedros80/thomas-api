@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Thomas\Shared\Domain;
 
-use function Safe\date;
+use JsonSerializable;
 use Safe\DateTimeImmutable;
 
-abstract class Date
+use function Safe\date;
+
+abstract class Date implements JsonSerializable
 {
     final private function __construct(
-        private DateTimeImmutable $date
+        private DateTimeImmutable $date,
     ) {
     }
 
@@ -19,9 +21,14 @@ abstract class Date
         return $this->date->format($format);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->format('Y-m-d H:i:s');
+    }
+
+    public function jsonSerialize(): string
+    {
+        return (string) $this;
     }
 
     public static function fromString(string $date): static

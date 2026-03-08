@@ -9,13 +9,16 @@ use Aws\DynamoDb\DynamoDbClient;
 final class DynamoMigrations
 {
     public function __construct(
-        private DynamoDbClient $dynamo
+        private readonly DynamoDbClient $dynamo,
     ) {
     }
 
     public function dropAllTables(): string
     {
-        $tableNames = $this->dynamo->listTables([])['TableNames'];
+        /** @var array $allTables */
+        $allTables = $this->dynamo->listTables([]);
+
+        $tableNames = $allTables['TableNames'];
 
         if (!$tableNames) {
             return 'no';
@@ -26,8 +29,11 @@ final class DynamoMigrations
 
     public function dropTestTables(): string
     {
+        /** @var array $allTables */
+        $allTables = $this->dynamo->listTables([]);
+
         $tableNames = array_filter(
-            $this->dynamo->listTables([])['TableNames'],
+            $allTables['TableNames'],
             fn (string $name) => str_starts_with($name, 'Test')
         );
 
@@ -61,6 +67,7 @@ final class DynamoMigrations
 
     private function checkIfTableExists(string $tableName): bool
     {
+        /** @var array $result */
         $result = $this->dynamo->listTables([]);
 
         return in_array($tableName, $result['TableNames']);

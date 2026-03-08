@@ -4,30 +4,32 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Domain;
 
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 use Thomas\Stations\Domain\MessageSeverity;
+use Thomas\Stations\Domain\Stations;
 
-final class Message implements JsonSerializable
+final class Message implements Arrayable, JsonSerializable
 {
     public function __construct(
-        private MessageID $id,
-        private MessageCategory $category,
-        private MessageBody $body,
-        private MessageSeverity $severity,
-        private array $stations
+        public readonly MessageId $id,
+        public readonly MessageCategory $category,
+        public readonly MessageBody $body,
+        public readonly MessageSeverity $severity,
+        public readonly Stations $stations,
     ) {
     }
 
     public function toArray(): array
     {
         return [
-            'id'       => (string) $this->id,
-            'category' => (string) $this->category,
+            'id'       => $this->id,
+            'category' => $this->category,
             'body'     => (string) $this->body,
-            'severity' => (string) $this->severity,
+            'severity' => $this->severity,
             'stations' => $this->stations,
         ];
     }

@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Thomas\Stations\Infrastructure;
 
 use Thomas\Shared\Domain\CRS;
-use Thomas\Stations\Domain\Code;
-use Thomas\Stations\Domain\Name;
-use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 use Thomas\Stations\Domain\StationService;
 
 final class ArrayStationService implements StationService
 {
-    public function search(string $search): array
+    public function search(string $search): Stations
     {
         $stations = CRS::list();
 
@@ -22,10 +20,13 @@ final class ArrayStationService implements StationService
             ARRAY_FILTER_USE_KEY
         );
 
-        return array_map(
-            fn (string $key, string $value) => new Station(new Code($key), new Name($value)),
+        return Stations::fromArray(array_map(
+            static fn (string $key, string $value): array => [
+                'code' => $key,
+                'name' => $value,
+            ],
             array_keys($filtered),
             array_values($filtered)
-        );
+        ));
     }
 }

@@ -11,11 +11,21 @@ use Thomas\Stations\Domain\Events\MessageWasRemoved;
 use Thomas\Stations\Domain\Events\MessageWasUpdated;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 use Thomas\Stations\Domain\MessageSeverity;
+use Thomas\Stations\Domain\Stations;
 
 final class MessageTest extends AggregateRootScenarioTestCase
 {
+    private MessageId $messageId;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->messageId = new MessageId('12345');
+    }
+
     protected function getAggregateRootClass(): string
     {
         return Message::class;
@@ -24,65 +34,70 @@ final class MessageTest extends AggregateRootScenarioTestCase
     public function testCanAddMessage(): void
     {
         $this->scenario->when(fn () => Message::add(
-            new MessageID('12345'),
-            new MessageCategory(MessageCategory::TRAIN),
+            $this->messageId,
+            MessageCategory::TRAIN,
             new MessageBody('MESSAGE_BODY'),
-            new MessageSeverity(MessageSeverity::MAJOR),
-            []
+            MessageSeverity::MAJOR,
+            Stations::fromArray([])
         ))->then([
-            new MessageWasAdded(
-                new MessageID('12345'),
-                new MessageCategory(MessageCategory::TRAIN),
-                new MessageBody('MESSAGE_BODY'),
-                new MessageSeverity(MessageSeverity::MAJOR),
-                []
-            ),
+            $this->makeMessageWasAdded(),
         ]);
     }
 
     public function testCanRemoveExistingMessage(): void
     {
         $this->scenario
-            ->withAggregateId((string) new MessageID('12345'))
+            ->withAggregateId((string) $this->messageId)
             ->given([
-                new MessageWasAdded(
-                    new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
-                    new MessageBody('MESSAGE_BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
-                ),
-            ])
-            ->when(fn (Message $message) => $message->remove())
-            ->then([new MessageWasRemoved(new MessageID('12345'))]);
+                $this->makeMessageWasAdded(),
+            ])->when(
+                fn (Message $message) => $message->remove()
+            )->then([
+                $this->makeMessageWasRemoved(),
+            ]);
     }
 
     public function testCanUpdateMessage(): void
     {
         $this->scenario
-            ->withAggregateId((string) new MessageID('12345'))
+            ->withAggregateId((string) $this->messageId)
             ->given([
-                new MessageWasAdded(
-                    new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
-                    new MessageBody('MESSAGE_BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
-                ),
+                $this->makeMessageWasAdded(),
             ])->when(fn (Message $message) => $message->update(
-                new MessageID('12345'),
-                new MessageCategory(MessageCategory::TRAIN),
+                $this->messageId,
+                MessageCategory::TRAIN,
                 new MessageBody('MESSAGE_BODY'),
-                new MessageSeverity(MessageSeverity::MAJOR),
-                []
+                MessageSeverity::MAJOR,
+                Stations::fromArray([])
             ))->then([
-                new MessageWasUpdated(
-                    new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
-                    new MessageBody('MESSAGE_BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
-                ),
+                $this->makeMessageWasUpdated(),
             ]);
+    }
+
+    private function makeMessageWasAdded(): MessageWasAdded
+    {
+        return new MessageWasAdded(
+            $this->messageId,
+            MessageCategory::TRAIN,
+            new MessageBody('MESSAGE_BODY'),
+            MessageSeverity::MAJOR,
+            Stations::fromArray([]),
+        );
+    }
+
+    private function makeMessageWasUpdated(): MessageWasUpdated
+    {
+        return new MessageWasUpdated(
+            $this->messageId,
+            MessageCategory::TRAIN,
+            new MessageBody('MESSAGE_BODY'),
+            MessageSeverity::MAJOR,
+            Stations::fromArray([]),
+        );
+    }
+
+    private function makeMessageWasRemoved(): MessageWasRemoved
+    {
+        return new MessageWasRemoved($this->messageId);
     }
 }

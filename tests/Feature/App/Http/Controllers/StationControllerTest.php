@@ -22,11 +22,37 @@ final class StationControllerTest extends TestCase
         $response->assertStatus(200)->assertJson(['success' => true]);
     }
 
+    public function testSearchRequiresString(): void
+    {
+        $response = $this->post('api/stations/search', ['search' => 123456], $this->getAuthHeaders());
+        $response->assertStatus(400)
+            ->assertJson(['success' => false])
+            ->assertJson([
+                'errors' => [
+                    [
+                        'code'   => 400,
+                        'title'  => 'Validation Exception',
+                        'detail' => 'Search term must be a string.',
+                    ],
+                ],
+            ]);
+    }
+
     public function testMissingSearchParameterThrowsException(): void
     {
         $response = $this->post('api/stations/search', ['searchy' => 'dalmeny'], $this->getAuthHeaders());
 
-        $response->assertStatus(400)->assertJson(['success' => false])->assertJson(['errors' => 'The search field is required.']);
+        $response->assertStatus(400)
+            ->assertJson(['success' => false])
+            ->assertJson([
+                'errors' => [
+                    [
+                        'code'   => 400,
+                        'title'  => 'Validation Exception',
+                        'detail' => 'Search term is required.',
+                    ],
+                ],
+            ]);
     }
 
     public function testGetStationAssetsReturnsSuccesfully(): void

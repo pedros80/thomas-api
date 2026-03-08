@@ -12,9 +12,9 @@ final class UserWasAddedProjection extends InteractsWithDynamoDb
     public function applyUserWasAdded(UserWasAdded $event): void
     {
         $item = [
-            'PK'    => (string) $event->email(),
-            'SKe'   => "US:{$event->userId()}",
-            'uname' => (string) $event->name(),
+            'PK'    => (string) $event->email,
+            'SKe'   => "US:{$event->userId}",
+            'uname' => (string) $event->name,
         ];
 
         $this->db->putItem([

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Thomas\LiftsAndEscalators\Infrastructure;
 
+use PHPUnit\Framework\TestCase;
 use Tests\Mocks\Pedros80\LANDEphp\Services\MockLiftAndEscalatorService;
 use Tests\Mocks\Pedros80\LANDEphp\Services\MockTokenGenerator;
-use Tests\TestCase;
 use Thomas\LiftsAndEscalators\Domain\Asset;
 use Thomas\LiftsAndEscalators\Domain\AssetId;
 use Thomas\LiftsAndEscalators\Domain\Assets;

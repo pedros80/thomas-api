@@ -13,13 +13,14 @@ use Thomas\Shared\Domain\CRS;
 final class GetStationAssets
 {
     public function __construct(
-        private LiftAndEscalatorClient $client,
-        private Repository $cache
+        private readonly LiftAndEscalatorClient $client,
+        private readonly Repository $cache,
     ) {
     }
 
-    public function get(CRS $station, ?string $type=null): Assets
+    public function get(CRS $station, ?AssetType $type=null): Assets
     {
+        /** @var Assets $assets */
         $assets = $this->cache->get("assets|{$station}");
 
         if (!$assets) {

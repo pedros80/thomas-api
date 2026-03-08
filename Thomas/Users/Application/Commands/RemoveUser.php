@@ -11,26 +11,16 @@ use Thomas\Users\Domain\RemovedAt;
 final class RemoveUser extends Command
 {
     public function __construct(
-        private Email $email,
-        private RemovedAt $removedAt
+        public readonly Email $email,
+        public readonly RemovedAt $removedAt,
     ) {
-    }
-
-    public function email(): Email
-    {
-        return $this->email;
-    }
-
-    public function removedAt(): RemovedAt
-    {
-        return $this->removedAt;
     }
 
     public function toArray(): array
     {
         return [
-            'email'     => (string) $this->email,
-            'removedAt' => (string) $this->removedAt,
+            'email'     => $this->email,
+            'removedAt' => $this->removedAt,
         ];
     }
 }

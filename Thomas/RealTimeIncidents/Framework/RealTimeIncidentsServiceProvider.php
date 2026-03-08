@@ -8,6 +8,7 @@ use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Marshaler;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\NREphp\Services\RealTimeIncidentsBroker;
 use Thomas\RealTimeIncidents\Application\Commands\Converters\ModifiedMessageToCommand;
@@ -44,9 +45,9 @@ final class RealTimeIncidentsServiceProvider extends ServiceProvider
         $this->app->bind(
             RTICommandFactory::class,
             fn () => new RTICommandFactory([
-                IncidentMessageStatus::NEW      => new NewMessageToCommand(),
-                IncidentMessageStatus::MODIFIED => new ModifiedMessageToCommand(),
-                IncidentMessageStatus::REMOVED  => new RemovedMessageToCommand(),
+                IncidentMessageStatus::NEW->value      => new NewMessageToCommand(),
+                IncidentMessageStatus::MODIFIED->value => new ModifiedMessageToCommand(),
+                IncidentMessageStatus::REMOVED->value  => new RemovedMessageToCommand(),
             ])
         );
     }
@@ -57,13 +58,16 @@ final class RealTimeIncidentsServiceProvider extends ServiceProvider
             GetIncidents::class => DynamoDbGetIncidents::class,
         ];
 
+        /** @var string $table */
+        $table = Config::get('nosql.tables.thomas_table');
+
         foreach ($queries as $interface => $concrete) {
             $this->app->bind(
                 $interface,
                 fn () => new $concrete(
                     $this->app->make(DynamoDbClient::class),
                     $this->app->make(Marshaler::class),
-                    config('nosql.tables.thomas_table')
+                    $table
                 )
             );
         }
@@ -71,12 +75,16 @@ final class RealTimeIncidentsServiceProvider extends ServiceProvider
 
     private function bindRealTimeIncidentsBroker(): void
     {
+        /** @var string $user */
+        $user = Config::get('services.nre.kbrti.user');
+
+        /** @var string $pass */
+        $pass = Config::get('services.nre.kbrti.pass');
+
+
         $this->app->bind(
             RealTimeIncidentsBroker::class,
-            fn () => RealTimeIncidentsBroker::fromCredentials(
-                config('services.nre.kbrti.user'),
-                config('services.nre.kbrti.pass')
-            )
+            fn () => RealTimeIncidentsBroker::fromCredentials($user, $pass)
         );
     }
 
@@ -99,14 +107,18 @@ final class RealTimeIncidentsServiceProvider extends ServiceProvider
             IncidentWasRemovedProjection::class,
         ];
 
+        /** @var string $table */
+        $table = Config::get('nosql.tables.thomas_table');
+
+        /** @var EventBus $eventBus */
         $eventBus = $this->app->get(EventBus::class);
-        array_map(function (string $listener) use ($eventBus) {
+        array_map(function (string $listener) use ($eventBus, $table) {
             $this->app->bind(
                 $listener,
                 fn () => new $listener(
                     $this->app->make(DynamoDbClient::class),
                     $this->app->make(Marshaler::class),
-                    config('nosql.tables.thomas_table')
+                    $table
                 )
             );
             $eventBus->subscribe($this->app->make($listener));

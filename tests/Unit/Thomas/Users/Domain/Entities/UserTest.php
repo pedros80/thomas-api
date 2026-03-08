@@ -16,6 +16,21 @@ use Thomas\Users\Domain\UserId;
 
 final class UserTest extends AggregateRootScenarioTestCase
 {
+    private Email $email;
+    private Name $name;
+    private RemovedAt $removedAt;
+    private UserId $userId;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->email     = new Email('peterwsomerville@gmail.com');
+        $this->name      = new Name('Peter Somerville');
+        $this->removedAt = RemovedAt::now();
+        $this->userId    = UserId::generate();
+    }
+
     protected function getAggregateRootClass(): string
     {
         return User::class;
@@ -23,40 +38,65 @@ final class UserTest extends AggregateRootScenarioTestCase
 
     public function testUserCanBeAdded(): void
     {
-        $userId = UserId::generate();
-        $email  = new Email('peterwsomerville@gmail.com');
-        $name   = new Name('Peter Somerville');
-
         $this->scenario
-            ->when(fn () => User::add($email, $name, $userId))
-            ->then([new UserWasAdded($email, $name, $userId)]);
+            ->when(fn () => User::add($this->email, $this->name, $this->userId))
+            ->then([
+                $this->makeUserWasAdded(),
+            ]);
     }
 
     public function testUserCanBeRemoved(): void
     {
-        $userId    = UserId::generate();
-        $email     = new Email('peterwsomerville@gmail.com');
-        $name      = new Name('Peter Somerville');
-        $removedAt = RemovedAt::now();
-
         $this->scenario
-            ->withAggregateId((string) $email)
-            ->given([new UserWasAdded($email, $name, $userId)])
-            ->when(fn (User $user) => $user->remove($removedAt))
-            ->then([new UserWasRemoved($email, $userId, $removedAt)]);
+            ->withAggregateId((string) $this->email)
+            ->given([
+                $this->makeUserWasAdded(),
+            ])->when(
+                fn (User $user) => $user->remove($this->removedAt)
+            ) ->then([
+                $this->makeUserWasRemoved(),
+            ]);
     }
 
     public function testUserCanBeReinstated(): void
     {
-        $userId    = UserId::generate();
-        $email     = new Email('peterwsomerville@gmail.com');
-        $name      = new Name('Peter Somerville');
-        $removedAt = RemovedAt::now();
-
         $this->scenario
-            ->withAggregateId((string) $email)
-            ->given([new UserWasAdded($email, $name, $userId), new UserWasRemoved($email, $userId, $removedAt)])
-            ->when(fn (User $user) => $user->reinstate($name, $userId))
-            ->then([new UserWasReinstated($email, $userId, $name, $userId)]);
+            ->withAggregateId((string) $this->email)
+            ->given([
+                $this->makeUserWasAdded(),
+                $this->makeUserWasRemoved(),
+            ])->when(
+                fn (User $user) => $user->reinstate($this->name, $this->userId)
+            )->then([
+                $this->makeUserWasReinstated(),
+            ]);
+    }
+
+    private function makeUserWasAdded(): UserWasAdded
+    {
+        return new UserWasAdded(
+            $this->email,
+            $this->name,
+            $this->userId,
+        );
+    }
+
+    private function makeUserWasRemoved(): UserWasRemoved
+    {
+        return new UserWasRemoved(
+            $this->email,
+            $this->userId,
+            $this->removedAt,
+        );
+    }
+
+    private function makeUserWasReinstated(): UserWasReinstated
+    {
+        return new UserWasReinstated(
+            $this->email,
+            $this->userId,
+            $this->name,
+            $this->userId,
+        );
     }
 }

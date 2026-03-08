@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\RealTimeIncidents\Domain\Events;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasAdded;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
 final class IncidentWasAddedTest extends TestCase
@@ -20,13 +19,12 @@ final class IncidentWasAddedTest extends TestCase
         </ns3:Description><ns3:InfoLinks><ns3:InfoLink><ns3:Uri>https://www.nationalrail.co.uk/service_disruptions/317211.aspx</ns3:Uri><ns3:Label>nationalrail.co.uk</ns3:Label></ns3:InfoLink></ns3:InfoLinks><ns3:Affects><ns3:Operators><ns3:AffectedOperator><ns3:OperatorRef>TL</ns3:OperatorRef><ns3:OperatorName>Thameslink</ns3:OperatorName></ns3:AffectedOperator></ns3:Operators><ns3:RoutesAffected>&lt;p&gt;between London St Pancras International and St Albans&lt;/p&gt;</ns3:RoutesAffected></ns3:Affects><ns3:ClearedIncident>false</ns3:ClearedIncident><ns3:IncidentPriority>2</ns3:IncidentPriority></uk.co.nationalrail.xml.incident.PtIncidentStructure>');
 
         $event = new IncidentWasAdded(
-            new IncidentID('D85AA5FB1954428C84A2F636014C2A4A'),
-            IncidentMessageStatus::new(),
-            $body
+            new IncidentId('D85AA5FB1954428C84A2F636014C2A4A'),
+            IncidentMessageStatus::NEW,
+            $body,
         );
 
-        /** @var string $json */
-        $json     = json_encode($event);
+        $json     = json_encode($event, JSON_THROW_ON_ERROR);
         $newEvent = IncidentWasAdded::deserialize($json);
 
         $this->assertInstanceOf(IncidentWasAdded::class, $newEvent);

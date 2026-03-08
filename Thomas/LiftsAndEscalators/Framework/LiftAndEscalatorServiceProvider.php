@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Thomas\LiftsAndEscalators\Framework;
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\LANDEphp\Contracts\LiftsAndEscalators;
 use Pedros80\LANDEphp\Contracts\Tokens;
@@ -30,31 +32,37 @@ final class LiftAndEscalatorServiceProvider extends ServiceProvider
 
     private function bindLiftsAndEscalators(): void
     {
-        $concrete = config('app.env') === 'testing' ? new MockLiftAndEscalatorService() :
-            $this->factory->makeLiftAndEscalatorService(config('services.lande.key'));
+        if (App::environment('testing')) {
+            $concrete = new MockLiftAndEscalatorService();
+        } else {
+            /** @var string $key */
+            $key = Config::get('services.lande.key');
 
-        $this->app->bind(
-            LiftsAndEscalators::class,
-            fn () => $concrete
-        );
+            $concrete = $this->factory->makeLiftAndEscalatorService($key);
+        }
+
+        $this->app->bind(LiftsAndEscalators::class, fn (): LiftsAndEscalators => $concrete);
     }
 
     private function bindTokenGenerator(): void
     {
-        $concrete = config('app.env') === 'testing' ? new MockTokenGenerator() :
-            $this->factory->makeTokenGenerator(config('services.lande.key'));
+        if (App::environment('testing')) {
+            $concrete = new MockTokenGenerator();
+        } else {
+            /** @var string $key */
+            $key = Config::get('services.lande.key');
 
-        $this->app->bind(
-            Tokens::class,
-            fn () => $concrete
-        );
+            $concrete = $this->factory->makeTokenGenerator($key);
+        }
+
+        $this->app->bind(Tokens::class, fn (): Tokens => $concrete);
     }
 
     private function bindTokenService(): void
     {
         $this->app->bind(
             TokenService::class,
-            fn () => new HttpTokenService($this->app->make(Tokens::class))
+            fn (): TokenService => $this->app->make(HttpTokenService::class)
         );
     }
 
@@ -62,10 +70,7 @@ final class LiftAndEscalatorServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             LiftAndEscalatorClient::class,
-            fn () => new HttpLiftAndEscalatorClient(
-                $this->app->make(LiftsAndEscalators::class),
-                $this->app->make(TokenService::class)
-            )
+            fn (): LiftAndEscalatorClient => $this->app->make(HttpLiftAndEscalatorClient::class)
         );
     }
 }

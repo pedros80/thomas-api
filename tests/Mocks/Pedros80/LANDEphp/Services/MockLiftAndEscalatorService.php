@@ -8,8 +8,9 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Pedros80\LANDEphp\Contracts\LiftsAndEscalators;
-use function Safe\json_decode;
 use stdClass;
+
+use function Safe\json_decode;
 
 final class MockLiftAndEscalatorService implements LiftsAndEscalators
 {
@@ -22,7 +23,10 @@ final class MockLiftAndEscalatorService implements LiftsAndEscalators
             default => '{"data":{"assets":[]}}',
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 
     public function getAssetInfoById(int $id, string $token): stdClass
@@ -34,7 +38,10 @@ final class MockLiftAndEscalatorService implements LiftsAndEscalators
             default => '{"data":{"assets":[]}}',
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 
     public function getSensorInfoById(int $id, string $token): stdClass
@@ -46,7 +53,10 @@ final class MockLiftAndEscalatorService implements LiftsAndEscalators
             default => throw new ClientException('Error', new Request('POST', ''), new Response(401, [], '{"error":"Access denied due to invalid subscription key"}')),
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 
     public function getSensors(string $token, int $num = 50, int $offset = 0): stdClass
@@ -58,6 +68,9 @@ final class MockLiftAndEscalatorService implements LiftsAndEscalators
             default => throw new ClientException('Error', new Request('POST', ''), new Response(401, [], '{"error":"Access denied due to invalid subscription key"}')),
         };
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 }

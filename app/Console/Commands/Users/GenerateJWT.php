@@ -6,6 +6,7 @@ namespace App\Console\Commands\Users;
 
 use Firebase\JWT\JWT;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 
 final class GenerateJWT extends Command
 {
@@ -16,11 +17,16 @@ final class GenerateJWT extends Command
     {
         $email = 'peterwsomerville@gmail.com';
 
+        /** @var string $secret */
+        $secret = Config::get('jwt.secret');
+        /** @var string $algo */
+        $algo = Config::get('jwt.algo');
+
         $token = JWT::encode([
             'email' => $email,
             'test'  => rand(),
             // 'exp'   => strtotime('+7 days'),
-        ], config('jwt.secret'), config('jwt.algo'));
+        ], $secret, $algo);
 
         $this->info($token);
     }

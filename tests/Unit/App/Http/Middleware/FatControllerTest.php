@@ -6,6 +6,7 @@ namespace Tests\Unit\App\Http\Middleware;
 
 use App\Http\Middleware\FatController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Thomas\Shared\Domain\Exceptions\InvalidFatControllerRequest;
@@ -16,15 +17,24 @@ final class FatControllerTest extends TestCase
     {
         $middleware = new FatController();
 
-        $time      = time();
-        $secret    = config('services.admin.secret');
+        $time = time();
+        /** @var string $secret */
+        $secret    = Config::get('services.admin.secret');
         $signature = Hash::make("{$secret}{$time}");
 
         $request = Request::create('/', 'POST');
         $request->headers->set('X-Timestamp', (string) $time);
         $request->headers->set('X-Signature', $signature);
 
-        $middleware->handle($request, fn () => $this->assertTrue(true));
+        $called = false;
+
+        $middleware->handle($request, function () use (&$called) {
+            $called = true;
+
+            return response('ok');
+        });
+
+        $this->assertTrue($called);
     }
 
     public function testMiddlewareRejectsUnsignedRequests(): void
@@ -42,6 +52,6 @@ final class FatControllerTest extends TestCase
         $request->headers->set('X-Timestamp', (string) $time);
         $request->headers->set('X-Signature', $signature);
 
-        $middleware->handle($request, fn () => $this->assertFalse(true));
+        $middleware->handle($request, fn () => response('ok'));
     }
 }

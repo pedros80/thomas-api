@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands\Users;
 
 use Illuminate\Console\Command;
+use RuntimeException;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Users\Application\Commands\RemoveUser;
 use Thomas\Users\Domain\Email;
@@ -25,8 +26,20 @@ final class RemoveUserByEmail extends Command
 
     private function getEmail(): string
     {
-        $email = $this->argument('email') ?: $this->ask("Please enter user's email address:");
+        $email = $this->argument('email');
 
-        return is_array($email) ? $email[0] : $email;
+        if ($email === null || $email === '') {
+            $email = $this->ask("Please enter user's email address:");
+        }
+
+        if (is_array($email)) {
+            $email = $email[0] ?? null;
+        }
+
+        if (!is_string($email) || $email === '') {
+            throw new RuntimeException('Email must be a non-empty string.');
+        }
+
+        return $email;
     }
 }

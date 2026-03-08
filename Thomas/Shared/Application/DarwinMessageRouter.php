@@ -11,8 +11,8 @@ use Thomas\Shared\Application\DarwinCommandFactory;
 final class DarwinMessageRouter implements MessageRouter
 {
     public function __construct(
-        private CommandBus $commandBus,
-        private DarwinCommandFactory $commandFactory,
+        private readonly CommandBus $commandBus,
+        private readonly DarwinCommandFactory $commandFactory,
     ) {
     }
 

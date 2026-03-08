@@ -9,75 +9,67 @@ use Thomas\RealTimeIncidents\Domain\Body;
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasAdded;
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasRemoved;
 use Thomas\RealTimeIncidents\Domain\Events\IncidentWasUpdated;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
 final class Incident extends EventSourcedAggregateRoot
 {
-    private IncidentID $id;
+    private IncidentId $id;
     private IncidentMessageStatus $status;
     private Body $body;
 
-    public static function add(
-        IncidentID $id,
-        IncidentMessageStatus $status,
-        Body $body
-    ): Incident {
+    public static function add(IncidentId $id, IncidentMessageStatus $status, Body $body): Incident
+    {
         $incident = new Incident();
 
-        $incident->apply(
-            new IncidentWasAdded(
-                $id,
-                $status,
-                $body
-            )
+        $incidentWasAdded = new IncidentWasAdded(
+            $id,
+            $status,
+            $body,
         );
+
+        $incident->apply($incidentWasAdded);
 
         return $incident;
     }
 
-    public function update(
-        IncidentID $id,
-        IncidentMessageStatus $status,
-        Body $body
-    ): void {
-        $this->apply(
-            new IncidentWasUpdated(
-                $id,
-                $status,
-                $body
-            )
+    public function update(IncidentId $id, IncidentMessageStatus $status, Body $body): void
+    {
+        $incidentWasUpdated = new IncidentWasUpdated(
+            $id,
+            $status,
+            $body,
         );
+
+        $this->apply($incidentWasUpdated);
     }
 
-    public function remove(
-        IncidentID $id,
-        IncidentMessageStatus $status
-    ): void {
-        $this->apply(
-            new IncidentWasRemoved(
-                $id,
-                $status
-            )
+    public function remove(IncidentId $id, IncidentMessageStatus $status): void
+    {
+        $incidentWasRemoved = new IncidentWasRemoved(
+            $id,
+            $status,
         );
+
+        $this->apply($incidentWasRemoved);
     }
 
     public function applyIncidentWasAdded(IncidentWasAdded $event): void
     {
-        $this->id     = $event->id();
-        $this->status = $event->status();
-        $this->body   = $event->body();
+        $this->id     = $event->id;
+        $this->status = $event->status;
+        $this->body   = $event->body;
     }
 
     public function applyIncidentWasUpdated(IncidentWasUpdated $event): void
     {
-        $this->status = $event->status();
-        $this->body   = $event->body();
+        $this->status = $event->status;
+        $this->body   = $event->body;
     }
 
     public function applyIncidentWasRemoved(IncidentWasRemoved $event): void
     {
-        $this->status = $event->status();
+        $this->status = $event->status;
     }
 
     public function getAggregateRootId(): string

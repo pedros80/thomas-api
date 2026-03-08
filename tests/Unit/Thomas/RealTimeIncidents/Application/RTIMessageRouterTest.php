@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Thomas\RealTimeIncidents\Application;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Thomas\RealTimeIncidents\Application\Commands\Converters\ModifiedMessageToCommand;
@@ -19,24 +20,22 @@ final class RTIMessageRouterTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function provideMessageMethods(): array
+    public static function provideMessageMethods(): array
     {
         return [
-            [IncidentMessageStatus::NEW],
-            [IncidentMessageStatus::MODIFIED],
-            [IncidentMessageStatus::REMOVED],
+            [IncidentMessageStatus::NEW->value],
+            [IncidentMessageStatus::MODIFIED->value],
+            [IncidentMessageStatus::REMOVED->value],
         ];
     }
 
-    /**
-     * @dataProvider provideMessageMethods
-     */
+    #[DataProvider('provideMessageMethods')]
     public function testNewMessageDispatchesCommand(string $method): void
     {
         $factory = new RTICommandFactory([
-            IncidentMessageStatus::NEW      => new NewMessageToCommand(),
-            IncidentMessageStatus::MODIFIED => new ModifiedMessageToCommand(),
-            IncidentMessageStatus::REMOVED  => new RemovedMessageToCommand(),
+            IncidentMessageStatus::NEW->value      => new NewMessageToCommand(),
+            IncidentMessageStatus::MODIFIED->value => new ModifiedMessageToCommand(),
+            IncidentMessageStatus::REMOVED->value  => new RemovedMessageToCommand(),
         ]);
         $commandBus = $this->prophesize(CommandBus::class);
 
@@ -47,7 +46,7 @@ final class RTIMessageRouterTest extends TestCase
 
         $router = new RTIMessageRouter(
             $commandBus->reveal(),
-            $factory
+            $factory,
         );
 
         $router->route($message);

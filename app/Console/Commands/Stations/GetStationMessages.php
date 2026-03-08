@@ -17,42 +17,48 @@ final class GetStationMessages extends Command
 
     public function handle(QueriesGetStationMessages $query): void
     {
-        $code = $this->getCode();
+        $code = $this->getStationCode();
         $msgs = $query->get($code);
 
-        if (!$msgs) {
+        if (!count($msgs)) {
             $this->info("No messages found for {$code->name()}");
 
             return;
         }
 
-        $this->table([
-            'ID', 'Category', 'Severity', 'Body', 'Station',
-        ], array_map(fn (Message $message) => $this->parseMessage($message), $msgs));
+        $this->table(
+            ['ID', 'Category', 'Severity', 'Body', 'Station'],
+            $msgs->map(fn (Message $message) => $this->parseMessage($message))
+        );
     }
 
-    private function getCode(): CRS
+    private function getStationCode(): CRS
     {
-        $code = $this->argument('station') ?: $this->ask('Which Station Code?');
+        $code = $this->argument('station');
 
-        $code = is_array($code) ? $code[0] : $code;
+        if ($code === null || $code === '') {
+            $code = $this->ask('Which Station Code?');
+        }
+
+        if (is_array($code)) {
+            $code = $code[0] ?? null;
+        }
+
+        if (!is_string($code) || $code === '') {
+            throw new \RuntimeException('Station code must be a non-empty string.');
+        }
 
         return CRS::fromString($code);
     }
 
     private function parseMessage(Message $message): array
     {
-        $message = $message->toArray();
-
         return [
-            $message['id'],
-            $message['category'],
-            $message['severity'],
-            $message['body'],
-            array_map(
-                fn (Station $station) => $station->toArray()['name'],
-                $message['stations']
-            )[0],
+            $message->id,
+            $message->category->value,
+            $message->severity->label(),
+            $message->body,
+            $message->stations->map(fn (Station $station) => $station->name)[0],
         ];
     }
 }

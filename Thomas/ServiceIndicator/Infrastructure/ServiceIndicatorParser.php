@@ -23,7 +23,7 @@ final class ServiceIndicatorParser
                 new TocCode((string) $toc->TocCode),
                 new TocName((string) $toc->TocName),
                 $this->getStatus($toc),
-                new Icon((string) $toc->StatusImage)
+                new Icon((string) $toc->StatusImage),
             );
         }
 

@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\LiftsAndEscalators\Domain;
 
-final class Token
-{
-    public function __construct(
-        private string $token
-    ) {
-    }
+use Thomas\Shared\Domain\StringValue;
 
-    public function __toString(): string
-    {
-        return $this->token;
-    }
+final class Token extends StringValue
+{
+    //
 }

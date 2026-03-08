@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Thomas\Shared\Framework;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Pedros80\NREphp\Factories\ServicesFactory;
 use Pedros80\NREphp\Services\KnowledgeBase;
@@ -35,20 +36,22 @@ final class SharedServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             DarwinCommandFactory::class,
-            fn () => new DarwinCommandFactory([
+            fn (): DarwinCommandFactory => new DarwinCommandFactory([
                 'OW' => new StationMessageToCommand(),
-            ])
+            ]),
         );
     }
 
     private function bindPushPortBroker(): void
     {
+        /** @var string $user */
+        $user = Config::get('services.nre.darwin.user');
+        /** @var string $pass */
+        $pass = Config::get('services.nre.darwin.pass');
+
         $this->app->bind(
             PushPortBroker::class,
-            fn () => PushPortBroker::fromCredentials(
-                config('services.nre.darwin.user'),
-                config('services.nre.darwin.pass')
-            )
+            fn (): PushPortBroker => PushPortBroker::fromCredentials($user, $pass)
         );
     }
 
@@ -56,7 +59,7 @@ final class SharedServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             KBService::class,
-            fn () => new HttpKBService(
+            fn (): KBService => new HttpKBService(
                 $this->app->make(TokenService::class),
                 $this->app->make(KnowledgeBase::class)
             )
@@ -67,7 +70,7 @@ final class SharedServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             KnowledgeBase::class,
-            fn () => $this->factory->makeKnowledgeBase()
+            fn (): KnowledgeBase => $this->factory->makeKnowledgeBase()
         );
     }
 
@@ -75,18 +78,20 @@ final class SharedServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             TokenService::class,
-            fn () => new HttpTokenService($this->app->make(TokenGenerator::class))
+            fn (): TokenService => new HttpTokenService($this->app->make(TokenGenerator::class))
         );
     }
 
     private function bindTokenGenerator(): void
     {
+        /** @var string $user */
+        $user = Config::get('services.nre.kb.user');
+        /** @var string $pass */
+        $pass = Config::get('services.nre.kb.pass');
+
         $this->app->bind(
             TokenGenerator::class,
-            fn () => $this->factory->makeTokenGenerator(
-                config('services.nre.kb.user'),
-                config('services.nre.kb.pass')
-            )
+            fn (): TokenGenerator => $this->factory->makeTokenGenerator($user, $pass)
         );
     }
 }

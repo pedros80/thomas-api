@@ -16,7 +16,7 @@ use Thomas\Users\Domain\Entities\User;
 use Thomas\Users\Domain\Exceptions\UserNotFound;
 use Thomas\Users\Domain\UsersRepository;
 
-class BroadwayRepository extends EventSourcingRepository implements UsersRepository
+final class BroadwayRepository extends EventSourcingRepository implements UsersRepository
 {
     public function __construct(EventStore $eventStore, EventBus $eventBus)
     {
@@ -35,7 +35,10 @@ class BroadwayRepository extends EventSourcingRepository implements UsersReposit
             $user = parent::load((string) $id);
 
             return $user;
-        } catch (AggregateNotFoundException | EventStreamNotFound) {
+        } catch (AggregateNotFoundException) {
+            throw UserNotFound::fromEmail($id);
+            // @phpstan-ignore catch.neverThrown
+        } catch (EventStreamNotFound) {
             throw UserNotFound::fromEmail($id);
         }
     }

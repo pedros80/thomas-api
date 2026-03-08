@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands\Stations;
 
 use Illuminate\Console\Command;
+use RuntimeException;
 use Thomas\Shared\Application\DarwinMessageRouter;
 use Thomas\Shared\Infrastructure\MockDarwinMessageFactory;
 
@@ -24,9 +25,23 @@ final class RecordStationMessage extends Command
 
     private function getNumberOfStations(): int
     {
-        $stations = $this->argument('numStations') ?: $this->ask('How many Stations to include in message?', '0');
+        $stations = $this->argument('numStations');
 
-        $stations = is_array($stations) ? $stations[0] : $stations;
+        if ($stations === null || $stations === '') {
+            $stations = $this->ask('How many Stations to include in message?', '0');
+        }
+
+        if (is_array($stations)) {
+            $stations = $stations[0] ?? null;
+        }
+
+        if (!is_string($stations) && !is_int($stations)) {
+            throw new RuntimeException('Number of stations must be numeric.');
+        }
+
+        if (!is_numeric((string) $stations)) {
+            throw new RuntimeException('Number of stations must be numeric.');
+        }
 
         return (int) $stations;
     }

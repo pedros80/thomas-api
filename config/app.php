@@ -201,8 +201,10 @@ return [
         Thomas\Shared\Framework\EventSourcingServiceProvider::class,
         Thomas\Shared\Framework\SharedServiceProvider::class,
         Thomas\Shared\Framework\CommandBusServiceProvider::class,
-        Thomas\Boards\Providers\RealTimeTrains\Framework\RealTimeTrainsServiceProvider::class,
+        Thomas\Tube\Providers\TfL\Framework\TfLServiceProvider::class,
+        Thomas\Tube\Framework\TubeServiceProvider::class,
         Thomas\Boards\Providers\NationalRailEnquiries\Framework\NationalRailEnquiriesServiceProvider::class,
+        Thomas\Boards\Providers\RealTimeTrains\Framework\RealTimeTrainsServiceProvider::class,
         Thomas\LiftsAndEscalators\Framework\LiftAndEscalatorServiceProvider::class,
         Thomas\Boards\Framework\BoardsServiceProvider::class,
         Thomas\News\Framework\NewsServiceProvider::class,
@@ -220,6 +222,7 @@ return [
     | This array of class aliases will be registered when this application
     | is started. However, feel free to register as many as you wish as
     | the aliases are "lazy" loaded so they don't hinder performance.
+
     |
     */
 

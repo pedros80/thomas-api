@@ -13,14 +13,14 @@ use Thomas\Stations\Domain\MessagesRepository;
 final class RemoveStationMessageCommandHandler extends SimpleCommandHandler implements CommandHandler
 {
     public function __construct(
-        private MessagesRepository $messages
+        private readonly MessagesRepository $messages,
     ) {
     }
 
     public function handleRemoveStationMessage(RemoveStationMessage $command): void
     {
         try {
-            $message = $this->messages->find($command->id());
+            $message = $this->messages->find($command->id);
         } catch (MessageNotFound) {
             return;
         }

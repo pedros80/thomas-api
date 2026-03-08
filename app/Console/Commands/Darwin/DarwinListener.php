@@ -27,7 +27,7 @@ final class DarwinListener extends Command implements SignalableCommandInterface
     private Broker $broker;
 
     public function __construct(
-        private DarwinMessageRouter $router
+        private readonly DarwinMessageRouter $router,
     ) {
         parent::__construct();
     }
@@ -37,7 +37,7 @@ final class DarwinListener extends Command implements SignalableCommandInterface
         return [SIGINT, SIGTERM];
     }
 
-    public function handleSignal(int $signal): int
+    public function handleSignal(int $signal, int|false $previousExitCode=0): int
     {
         switch ($signal) {
             case SIGINT:

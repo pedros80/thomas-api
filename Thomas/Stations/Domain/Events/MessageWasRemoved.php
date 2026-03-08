@@ -4,31 +4,30 @@ declare(strict_types=1);
 
 namespace Thomas\Stations\Domain\Events;
 
-use function Safe\json_decode;
 use Thomas\Shared\Domain\Event;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
+
+use function Safe\json_decode;
 
 final class MessageWasRemoved extends Event
 {
     public function __construct(
-        private MessageID $id
+        public readonly MessageId $id,
     ) {
-    }
-
-    public function id(): MessageID
-    {
-        return $this->id;
     }
 
     public function toArray(): array
     {
-        return ['id' => (string) $this->id];
+        return ['id' => $this->id];
     }
 
     public static function deserialize(string $json): static
     {
-        $payload = json_decode($json);
+        /** @var array $payload */
+        $payload = json_decode($json, true);
 
-        return new MessageWasRemoved(new MessageID($payload->id));
+        return new MessageWasRemoved(
+            new MessageId($payload['id']),
+        );
     }
 }

@@ -15,26 +15,26 @@ use Thomas\Users\Domain\UsersRepository;
 final class AddUserCommandHandler extends SimpleCommandHandler implements CommandHandler
 {
     public function __construct(
-        private UsersRepository $users
+        private readonly UsersRepository $users,
     ) {
     }
 
     public function handleAddUser(AddUser $command): void
     {
         try {
-            $user = $this->users->find($command->email());
+            $user = $this->users->find($command->email);
 
             if (!$user->removedAt()) {
-                throw EmailAlreadyAdded::fromEmail($command->email());
+                throw EmailAlreadyAdded::fromEmail($command->email);
             }
 
-            $user->reinstate($command->name(), $command->userId());
+            $user->reinstate($command->name, $command->userId);
             $this->users->save($user);
         } catch (UserNotFound) {
             $user = User::add(
-                $command->email(),
-                $command->name(),
-                $command->userId(),
+                $command->email,
+                $command->name,
+                $command->userId,
             );
 
             $this->users->save($user);

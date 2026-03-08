@@ -15,23 +15,23 @@ final class UpdateIncidentCommandHandler extends IncidentCommandHandler
     public function handleUpdateIncident(UpdateIncident $command): void
     {
         try {
-            $incident = $this->incidents->find($command->id());
+            $incident = $this->incidents->find($command->id);
         } catch (IncidentNotFound) {
             // maybe we're picking up a modify event for an incident we've missed...
 
             $incident = Incident::add(
-                $command->id(),
-                IncidentMessageStatus::new(),
-                $command->body()
+                $command->id,
+                IncidentMessageStatus::NEW,
+                $command->body,
             );
 
             $this->incidents->save($incident);
         }
 
         $incident->update(
-            $command->id(),
-            $command->status(),
-            $command->body()
+            $command->id,
+            $command->status,
+            $command->body,
         );
 
         $this->incidents->save($incident);

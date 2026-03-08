@@ -5,26 +5,18 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Users\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use Thomas\Users\Application\Commands\AddUser;
+use Tests\Unit\Thomas\Users\Application\Commands\Handlers\BaseUserCommandHandler;
 use Thomas\Users\Application\Commands\Handlers\AddUserCommandHandler;
-use Thomas\Users\Domain\Email;
-use Thomas\Users\Domain\Events\UserWasAdded;
-use Thomas\Users\Domain\Events\UserWasReinstated;
-use Thomas\Users\Domain\Events\UserWasRemoved;
 use Thomas\Users\Domain\Exceptions\EmailAlreadyAdded;
-use Thomas\Users\Domain\Name;
-use Thomas\Users\Domain\RemovedAt;
-use Thomas\Users\Domain\UserId;
-use Thomas\Users\Infrastructure\BroadwayRepository as InfrastructureBroadwayRepository;
+use Thomas\Users\Infrastructure\BroadwayRepository;
 
-final class AddUserCommandHandlerTest extends CommandHandlerScenarioTestCase
+final class AddUserCommandHandlerTest extends BaseUserCommandHandler
 {
     public function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        return new AddUserCommandHandler(new InfrastructureBroadwayRepository($eventStore, $eventBus));
+        return new AddUserCommandHandler(new BroadwayRepository($eventStore, $eventBus));
     }
 
     public function testExistingEmailThrowsException(): void
@@ -32,45 +24,34 @@ final class AddUserCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->expectException(EmailAlreadyAdded::class);
         $this->expectExceptionMessage("Email already added: 'peterwsomerville@gmail.com'.");
 
-        $email   = new Email('peterwsomerville@gmail.com');
-        $userId  = UserId::generate();
-        $name    = new Name('Peter Somerville');
-        $command = new AddUser($email, $name, $userId);
-
         $this->scenario
-            ->withAggregateId((string) $email)
-            ->given([new UserWasAdded($email, $name, $userId)])
-            ->when($command);
+            ->withAggregateId((string) $this->email)
+            ->given([
+                $this->makeUserWasAdded(),
+            ])->when($this->makeAddUser());
     }
 
     public function testNewUniqueEmailCanBeAdded(): void
     {
-        $email   = new Email('peterwsomerville@gmail.com');
-        $userId  = UserId::generate();
-        $name    = new Name('Peter Somerville');
-        $command = new AddUser($email, $name, $userId);
-
         $this->scenario
             ->given([])
-            ->when($command)
-            ->then([new UserWasAdded($email, $name, $userId)]);
+            ->when($this->makeAddUser())
+            ->then([
+                $this->makeUserWasAdded(),
+            ]);
     }
 
     public function testDeletedUserCanBeReinstated(): void
     {
-        $email     = new Email('peterwsomerville@gmail.com');
-        $userId    = UserId::generate();
-        $name      = new Name('Peter Somerville');
-        $command   = new AddUser($email, $name, $userId);
-        $removedAt = RemovedAt::now();
-
         $this->scenario
-            ->withAggregateId((string) $email)
+            ->withAggregateId((string) $this->email)
             ->given([
-                new UserWasAdded($email, $name, $userId),
-                new UserWasRemoved($email, $userId, $removedAt),
+                $this->makeUserWasAdded(),
+                $this->makeUserWasRemoved(),
             ])
-            ->when($command)
-            ->then([new UserWasReinstated($email, $userId, $name, $userId)]);
+            ->when($this->makeAddUser())
+            ->then([
+                $this->makeUserWasReinstated(),
+            ]);
     }
 }

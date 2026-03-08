@@ -5,24 +5,19 @@ declare(strict_types=1);
 namespace Thomas\Stations\Application\Commands;
 
 use Thomas\Shared\Application\Command;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 
 final class RemoveStationMessage extends Command
 {
     public function __construct(
-        private MessageID $id
+        public readonly MessageId $id,
     ) {
-    }
-
-    public function id(): MessageID
-    {
-        return $this->id;
     }
 
     public function toArray(): array
     {
         return [
-            'id' => (string) $this->id,
+            'id' => $this->id,
         ];
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Boards\Providers\RealTimeTrains;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\Boards\Providers\RealTimeTrains\Exceptions\InvalidServiceUid;
 use Thomas\Boards\Providers\RealTimeTrains\ServiceUid;
 
@@ -17,7 +16,7 @@ final class ServiceUidTest extends TestCase
 
         $this->assertInstanceOf(ServiceUid::class, $id);
         $this->assertEquals('Y29984', (string) $id);
-        $this->assertEquals('"Y29984"', json_encode($id));
+        $this->assertEquals('"Y29984"', json_encode($id, JSON_THROW_ON_ERROR));
     }
 
     public function testInvalidServiceUidThrowsException(): void

@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\ServiceIndicator\Domain;
 
-final class Status
-{
-    public function __construct(
-        private string $status
-    ) {
-        // @todo - validation
-    }
+use Thomas\Shared\Domain\StringValue;
 
-    public function __toString(): string
-    {
-        return $this->status;
-    }
+final class Status extends StringValue
+{
+    //
 }

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Thomas\Shared\Infrastructure;
 
 use Pedros80\NREphp\Params\StationCode;
+use Stomp\Transport\Frame;
+
 use function Safe\gzencode;
 use function Safe\json_decode;
-use Stomp\Transport\Frame;
 
 final class MockDarwinMessageFactory
 {
@@ -54,6 +55,9 @@ final class MockDarwinMessageFactory
 
         $body = gzencode($content);
 
-        return new Frame('MESSAGE', json_decode(self::STATION_HEADERS, true), $body);
+        /** @var array $headers */
+        $headers = json_decode(self::STATION_HEADERS, true);
+
+        return new Frame('MESSAGE', $headers, $body);
     }
 }

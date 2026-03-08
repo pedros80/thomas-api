@@ -4,38 +4,26 @@ declare(strict_types=1);
 
 namespace Thomas\RealTimeIncidents\Domain;
 
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\Body;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
+use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 
-final class Incident implements JsonSerializable
+final class Incident implements Arrayable, JsonSerializable
 {
     public function __construct(
-        private IncidentID $id,
-        private IncidentMessageStatus $status,
-        private ?Body $body
+        public readonly IncidentId $id,
+        public readonly IncidentMessageStatus $status,
+        public readonly ?Body $body,
     ) {
-    }
-
-    public function id(): IncidentID
-    {
-        return $this->id;
-    }
-
-    public function status(): IncidentMessageStatus
-    {
-        return $this->status;
-    }
-
-    public function body(): ?Body
-    {
-        return $this->body;
     }
 
     public function toArray(): array
     {
         $out = [
-            'id'     => (string) $this->id,
-            'status' => (string) $this->status,
+            'id'     => $this->id,
+            'status' => $this->status,
         ];
 
         if ($this->body) {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Users\Domain\Events;
 
 use PHPUnit\Framework\TestCase;
-use function Safe\json_encode;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Events\UserWasRemoved;
 use Thomas\Users\Domain\RemovedAt;
@@ -18,11 +17,10 @@ final class UserWasRemovedTest extends TestCase
         $event = new UserWasRemoved(
             new Email('peterwsomerville@gmail.com'),
             UserId::generate(),
-            RemovedAt::now()
+            RemovedAt::now(),
         );
 
-        /** @var string $serialised */
-        $serialised = json_encode($event);
+        $serialised = json_encode($event, JSON_THROW_ON_ERROR);
 
         $this->assertEquals($event, UserWasRemoved::deserialize($serialised));
     }

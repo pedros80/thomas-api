@@ -12,8 +12,8 @@ use Thomas\Shared\Application\MessageRouter;
 final class RTIMessageRouter implements MessageRouter
 {
     public function __construct(
-        private CommandBus $commandBus,
-        private RTICommandFactory $commandFactory
+        private readonly CommandBus $commandBus,
+        private readonly RTICommandFactory $commandFactory
     ) {
     }
 

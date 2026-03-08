@@ -4,27 +4,18 @@ declare(strict_types=1);
 
 namespace Thomas\Boards\Providers\RealTimeTrains;
 
-use JsonSerializable;
-use function Safe\preg_match;
 use Thomas\Boards\Providers\RealTimeTrains\Exceptions\InvalidServiceUid;
+use Thomas\Shared\Domain\StringValue;
 
-final class ServiceUid implements JsonSerializable
+use function Safe\preg_match;
+
+final class ServiceUid extends StringValue
 {
     public function __construct(
-        private string $id
+        protected readonly string $value
     ) {
-        if (!preg_match('/^[A-Z][0-9]{5}$/', $id)) {
-            throw InvalidServiceUid::fromString($id);
+        if (!preg_match('/^[A-Z][0-9]{5}$/', $value)) {
+            throw InvalidServiceUid::fromString($value);
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->id;
-    }
-
-    public function jsonSerialize(): string
-    {
-        return (string) $this;
     }
 }

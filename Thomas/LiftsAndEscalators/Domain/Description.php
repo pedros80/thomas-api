@@ -4,22 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\LiftsAndEscalators\Domain;
 
-use JsonSerializable;
+use Thomas\Shared\Domain\StringValue;
 
-final class Description implements JsonSerializable
+final class Description extends StringValue
 {
-    public function __construct(
-        private string $description
-    ) {
-    }
-
-    public function __toString(): string
-    {
-        return $this->description;
-    }
-
-    public function jsonSerialize(): string
-    {
-        return (string) $this;
-    }
+    //
 }

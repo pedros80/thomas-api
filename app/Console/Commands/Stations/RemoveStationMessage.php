@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Commands\Stations;
 
 use Illuminate\Console\Command;
+use RuntimeException;
 use Thomas\Shared\Application\CommandBus;
 use Thomas\Stations\Application\Commands\RemoveStationMessage as CommandsRemoveStationMessage;
-use Thomas\Stations\Domain\MessageID;
+use Thomas\Stations\Domain\MessageId;
 
 final class RemoveStationMessage extends Command
 {
@@ -18,7 +19,7 @@ final class RemoveStationMessage extends Command
     {
         $id = $this->getId();
 
-        $command = new CommandsRemoveStationMessage(new MessageID($id));
+        $command = new CommandsRemoveStationMessage(new MessageId($id));
 
         $commandBus->dispatch($command);
 
@@ -27,8 +28,20 @@ final class RemoveStationMessage extends Command
 
     private function getId(): string
     {
-        $id = $this->argument('id') ?: $this->ask('Which Station Message ID?');
+        $id = $this->argument('id');
 
-        return is_array($id) ? $id[0] : $id;
+        if ($id === null || $id === '') {
+            $id = $this->ask('Which Station Message ID?');
+        }
+
+        if (is_array($id)) {
+            $id = $id[0] ?? null;
+        }
+
+        if (!is_string($id) || $id === '') {
+            throw new RuntimeException('Message ID must be a non-empty string.');
+        }
+
+        return $id;
     }
 }

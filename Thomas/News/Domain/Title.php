@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Thomas\News\Domain;
 
-final class Title
-{
-    public function __construct(
-        private string $title
-    ) {
-    }
+use Thomas\Shared\Domain\StringValue;
 
-    public function __toString()
-    {
-        return $this->title;
-    }
+final class Title extends StringValue
+{
+    //
 }

@@ -12,15 +12,15 @@ use Thomas\Users\Domain\UsersRepository;
 final class RemoveUserCommandHandler extends SimpleCommandHandler implements CommandHandler
 {
     public function __construct(
-        private UsersRepository $users
+        private readonly UsersRepository $users,
     ) {
     }
 
     public function handleRemoveUser(RemoveUser $command): void
     {
-        $user = $this->users->find($command->email());
+        $user = $this->users->find($command->email);
 
-        $user->remove($command->removedAt());
+        $user->remove($command->removedAt);
 
         $this->users->save($user);
     }

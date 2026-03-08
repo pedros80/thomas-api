@@ -7,45 +7,38 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddUserRequest;
 use App\Http\Requests\RemoveUserRequest;
-use Illuminate\Http\JsonResponse;
 use Thomas\Shared\Application\CommandBus;
+use Thomas\Shared\Framework\SuccessResponse;
 use Thomas\Users\Application\Commands\AddUser;
 use Thomas\Users\Application\Commands\RemoveUser;
 use Thomas\Users\Domain\Email;
-use Thomas\Users\Domain\Name;
 use Thomas\Users\Domain\RemovedAt;
-use Thomas\Users\Domain\UserId;
 
 final class UserController extends Controller
 {
-    public function add(AddUserRequest $request, CommandBus $commandBus): JsonResponse
+    public function add(AddUserRequest $request, CommandBus $commandBus): SuccessResponse
     {
-        $command = new AddUser(
-            new Email($request->email),
-            new Name($request->name),
-            new UserId($request->userId),
+        $commandBus->dispatch(
+            AddUser::fromArray($request->validated())
         );
 
-        $commandBus->dispatch($command);
-
-        return new JsonResponse([
-            'success' => true,
-            'data'    => 'Added.',
-        ]);
+        return new SuccessResponse(['added' => true]);
     }
 
-    public function remove(RemoveUserRequest $request, CommandBus $commandBus): JsonResponse
+    public function remove(RemoveUserRequest $request, CommandBus $commandBus): SuccessResponse
     {
+        $data = $request->validated();
+
+        /** @var string $email */
+        $email = $data['email'];
+
         $command = new RemoveUser(
-            new Email($request->email),
+            new Email($email),
             RemovedAt::now()
         );
 
         $commandBus->dispatch($command);
 
-        return new JsonResponse([
-            'success' => true,
-            'data'    => 'Removed.',
-        ]);
+        return new SuccessResponse(['removed' => true]);
     }
 }

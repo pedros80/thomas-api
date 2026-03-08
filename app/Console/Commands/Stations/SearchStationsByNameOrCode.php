@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Commands\Stations;
 
 use Illuminate\Console\Command;
+use RuntimeException;
 use Thomas\Stations\Application\Queries\SearchStations;
 use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 
 final class SearchStationsByNameOrCode extends Command
 {
@@ -20,22 +22,37 @@ final class SearchStationsByNameOrCode extends Command
 
     private function getSearchTerm(): string
     {
-        $search = $this->argument('search') ?: $this->ask('Enter Search Term?');
+        $search = $this->argument('search');
 
-        return is_array($search) ? $search[0] : $search;
+        if ($search === null || $search === '') {
+            $search = $this->ask('Enter Search Term?');
+        }
+
+        if (is_array($search)) {
+            $search = $search[0] ?? null;
+        }
+
+        if (!is_string($search) || $search === '') {
+            throw new RuntimeException('Search term must be a non-empty string.');
+        }
+
+        return $search;
     }
 
-    private function displayResults(array $results): void
+    private function displayResults(Stations $stations): void
     {
-        $numResults = count($results);
-        $s          = $numResults === 1 ? '' : 's';
+        $numStations = count($stations);
+        $s           = $numStations === 1 ? '' : 's';
 
-        $this->info("Found {$numResults} Station{$s}");
+        $this->info("Found {$numStations} Station{$s}");
 
-        if ($numResults === 0) {
+        if ($numStations === 0) {
             return;
         }
 
-        $this->table(['Code', 'Name'], array_map(fn (Station $station) => $station->toArray(), $results));
+        $this->table(
+            ['Code', 'Name'],
+            $stations->map(fn (Station $station) => $station->toArray())
+        );
     }
 }

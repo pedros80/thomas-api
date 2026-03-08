@@ -7,11 +7,12 @@ namespace Thomas\Shared\Domain;
 use ArrayIterator;
 use Closure;
 use Countable;
+use Illuminate\Contracts\Support\Arrayable;
 use IteratorAggregate;
 use JsonSerializable;
 use Thomas\Shared\Domain\Exceptions\InvalidTypeForCollection;
 
-abstract class TypedCollection implements Countable, IteratorAggregate, JsonSerializable
+abstract class TypedCollection implements Arrayable, Countable, IteratorAggregate, JsonSerializable
 {
     protected string $type;
 
@@ -27,7 +28,7 @@ abstract class TypedCollection implements Countable, IteratorAggregate, JsonSeri
 
     public function jsonSerialize(): array
     {
-        return $this->items;
+        return $this->toArray();
     }
 
     public function getIterator(): ArrayIterator

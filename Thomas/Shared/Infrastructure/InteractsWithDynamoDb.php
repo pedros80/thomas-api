@@ -11,15 +11,15 @@ use Broadway\ReadModel\Projector;
 abstract class InteractsWithDynamoDb extends Projector
 {
     public function __construct(
-        protected DynamoDbClient $db,
-        protected Marshaler $marshaler,
-        protected string $tableName
+        protected readonly DynamoDbClient $db,
+        protected readonly Marshaler $marshaler,
+        protected readonly string $tableName,
     ) {
     }
 
     protected function getItemsRecursively(array $params, array $items = []): array
     {
-        $result = $this->db->query($params);
+        $result = $this->db->query($params)->toArray();
         $items  = array_merge($items, $result['Items']);
 
         if (isset($result['LastEvaluatedKey'])) {

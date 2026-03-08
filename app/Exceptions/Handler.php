@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\JsonResponse;
-use Thomas\RealTimeIncidents\Domain\Exceptions\IncidentNotFound;
-use Thomas\Stations\Domain\Exceptions\MessageNotFound;
-use Thomas\Users\Domain\Exceptions\InvalidJWT;
+use Thomas\Shared\Domain\Exceptions\InvalidCRS;
+use Thomas\Shared\Domain\Exceptions\InvalidFatControllerRequest;
+use Thomas\Shared\Domain\Exceptions\InvalidOrderBy;
+use Thomas\Shared\Domain\Exceptions\InvalidPageNumber;
+use Thomas\Shared\Domain\Exceptions\InvalidPerPage;
+use Thomas\Shared\Domain\Exceptions\InvalidSort;
+use Thomas\Shared\Framework\ErrorResponse;
 use Thomas\Users\Domain\Exceptions\UserNotFound;
 use Throwable;
 
@@ -29,7 +32,13 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        InvalidCRS::class,
+        InvalidFatControllerRequest::class,
+        InvalidOrderBy::class,
+        InvalidPageNumber::class,
+        InvalidPerPage::class,
+        InvalidSort::class,
+        UserNotFound::class,
     ];
 
     /**
@@ -55,22 +64,8 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $e): JsonResponse
+    public function render($request, Throwable $e): ErrorResponse
     {
-        $code = match (get_class($e)) {
-            InvalidJWT::class       => 401,
-            UserNotFound::class     => 404,
-            IncidentNotFound::class => 404,
-            MessageNotFound::class  => 404,
-            default                 => 400,
-        };
-
-        return new JsonResponse(
-            [
-                'success' => false,
-                'errors'  => $e->getMessage(),
-            ],
-            $code
-        );
+        return ErrorResponse::fromException($e);
     }
 }

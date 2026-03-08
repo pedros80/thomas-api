@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Tests\Mocks\Pedros80\RTTphp\Services;
 
 use Pedros80\RTTphp\Contracts\Locations;
-use function Safe\json_decode;
 use stdClass;
+
+use function Safe\json_decode;
 
 final class MockLocationService implements Locations
 {
@@ -25,6 +26,9 @@ final class MockLocationService implements Locations
             };
         }
 
-        return json_decode($data);
+        /** @var stdClass $decoded */
+        $decoded = json_decode($data);
+
+        return $decoded;
     }
 }

@@ -5,23 +5,19 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Stations\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use Tests\Unit\Thomas\Stations\Application\Commands\Handlers\BaseStationMessageCommandHandler;
 use Thomas\Stations\Application\Commands\Handlers\RecordStationMessageCommandHandler;
 use Thomas\Stations\Application\Commands\RecordStationMessage;
-use Thomas\Stations\Domain\Code;
-use Thomas\Stations\Domain\Events\MessageWasAdded;
 use Thomas\Stations\Domain\Events\MessageWasUpdated;
 use Thomas\Stations\Domain\MessageBody;
 use Thomas\Stations\Domain\MessageCategory;
-use Thomas\Stations\Domain\MessageID;
 use Thomas\Stations\Domain\MessageSeverity;
-use Thomas\Stations\Domain\Name;
-use Thomas\Stations\Domain\Station;
+use Thomas\Stations\Domain\Stations;
 use Thomas\Stations\Infrastructure\BroadwayRepository;
 
-final class RecordStationMessageCommandHandlerTest extends CommandHandlerScenarioTestCase
+final class RecordStationMessageCommandHandlerTest extends BaseStationMessageCommandHandler
 {
     public function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
@@ -31,34 +27,13 @@ final class RecordStationMessageCommandHandlerTest extends CommandHandlerScenari
     public function testExistingStationMessageCanBeUpdated(): void
     {
         $this->scenario
-            ->withAggregateId((string) new MessageID('12345'))
+            ->withAggregateId((string) $this->messageId)
             ->given([
-                new MessageWasAdded(
-                    new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
-                    new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    [
-                        new Station(new Code('DAM'), new Name('Dalmeny')),
-                    ]
-                ),
-            ])
-            ->when(
-                new RecordStationMessage(
-                    new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
-                    new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
-                )
+                $this->makeMessageWasAdded(),
+            ])->when(
+                $this->makeRecordStationMessage(),
             )->then([
-                new MessageWasUpdated(
-                    new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
-                    new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
-                ),
+                $this->makeMessageWasUpdated(),
             ]);
     }
 
@@ -67,21 +42,31 @@ final class RecordStationMessageCommandHandlerTest extends CommandHandlerScenari
         $this->scenario
             ->given([])
             ->when(
-                new RecordStationMessage(
-                    new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
-                    new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
-                )
+                $this->makeRecordStationMessage(),
             )->then([
-                new MessageWasAdded(
-                    new MessageID('12345'),
-                    new MessageCategory(MessageCategory::TRAIN),
-                    new MessageBody('MESSAGE BODY'),
-                    new MessageSeverity(MessageSeverity::MAJOR),
-                    []
-                ),
+                $this->makeMessageWasAdded(),
             ]);
+    }
+
+    private function makeRecordStationMessage(): RecordStationMessage
+    {
+        return new RecordStationMessage(
+            $this->messageId,
+            MessageCategory::TRAIN,
+            new MessageBody('MESSAGE BODY'),
+            MessageSeverity::MAJOR,
+            Stations::fromArray([]),
+        );
+    }
+
+    private function makeMessageWasUpdated(): MessageWasUpdated
+    {
+        return new MessageWasUpdated(
+            $this->messageId,
+            MessageCategory::TRAIN,
+            new MessageBody('MESSAGE BODY'),
+            MessageSeverity::MAJOR,
+            Stations::fromArray([]),
+        );
     }
 }

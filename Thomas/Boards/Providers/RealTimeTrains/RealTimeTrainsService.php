@@ -9,16 +9,17 @@ use Pedros80\RTTphp\Contracts\ServiceInformation;
 use stdClass;
 use Thomas\Boards\Domain\Board;
 use Thomas\Boards\Domain\BoardDataService;
+use Thomas\Boards\Providers\RealTimeTrains\RTTBoardMapper;
 use Thomas\Boards\Providers\RealTimeTrains\RunDate;
 use Thomas\Shared\Domain\CRS;
 
 final class RealTimeTrainsService implements BoardDataService
 {
     public function __construct(
-        private Locations $locations,
-        private ServiceInformation $services,
-        private RTTBoardMapper $mapper,
-        private int $numRows
+        private readonly Locations $locations,
+        private readonly ServiceInformation $services,
+        private readonly RTTBoardMapper $mapper,
+        private readonly int $numRows
     ) {
     }
 

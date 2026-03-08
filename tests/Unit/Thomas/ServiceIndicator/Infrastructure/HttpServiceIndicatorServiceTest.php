@@ -25,6 +25,6 @@ final class HttpServiceIndicatorServiceTest extends TestCase
 
         $result = $service->get();
 
-        $this->assertInstanceOf(ServiceIndicator::class, $result[0]);
+        $this->assertInstanceOf(ServiceIndicator::class, $result->toArray()[0]);
     }
 }

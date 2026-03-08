@@ -5,25 +5,17 @@ declare(strict_types=1);
 namespace Tests\Unit\Thomas\Users\Application\Commands\Handlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Thomas\Users\Application\Commands\Handlers\RemoveUserCommandHandler;
-use Thomas\Users\Application\Commands\RemoveUser;
-use Thomas\Users\Domain\Email;
-use Thomas\Users\Domain\Events\UserWasAdded;
-use Thomas\Users\Domain\Events\UserWasRemoved;
 use Thomas\Users\Domain\Exceptions\UserNotFound;
-use Thomas\Users\Domain\Name;
-use Thomas\Users\Domain\RemovedAt;
-use Thomas\Users\Domain\UserId;
-use Thomas\Users\Infrastructure\BroadwayRepository as InfrastructureBroadwayRepository;
+use Thomas\Users\Infrastructure\BroadwayRepository;
 
-final class RemoveUserCommandHandlerTest extends CommandHandlerScenarioTestCase
+final class RemoveUserCommandHandlerTest extends BaseUserCommandHandler
 {
     public function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        return new RemoveUserCommandHandler(new InfrastructureBroadwayRepository($eventStore, $eventBus));
+        return new RemoveUserCommandHandler(new BroadwayRepository($eventStore, $eventBus));
     }
 
     public function testRemovingUnknownUserThrowsException(): void
@@ -31,27 +23,20 @@ final class RemoveUserCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->expectException(UserNotFound::class);
         $this->expectExceptionMessage("User Not Found: 'peterwsomerville@gmail.com'");
 
-        $removedAt = RemovedAt::now();
-        $email     = new Email('peterwsomerville@gmail.com');
-        $command   = new RemoveUser($email, $removedAt);
-
         $this->scenario
             ->given([])
-            ->when($command);
+            ->when($this->makeRemoveUser());
     }
 
     public function testExistingUserCanBeRemoved(): void
     {
-        $email     = new Email('peterwsomerville@gmail.com');
-        $userId    = UserId::generate();
-        $name      = new Name('Peter Somerville');
-        $removedAt = RemovedAt::now();
-        $command   = new RemoveUser($email, $removedAt);
-
         $this->scenario
-            ->withAggregateId((string) $email)
-            ->given([new UserWasAdded($email, $name, $userId)])
-            ->when($command)
-            ->then([new UserWasRemoved($email, $userId, $removedAt)]);
+            ->withAggregateId((string) $this->email)
+            ->given([
+                $this->makeUserWasAdded(),
+            ])->when($this->makeRemoveUser())
+            ->then([
+                $this->makeUserWasRemoved(),
+            ]);
     }
 }

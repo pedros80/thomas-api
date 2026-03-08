@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Thomas\Shared\Domain\Exceptions\InvalidFatControllerRequest;
 
@@ -13,11 +14,12 @@ final class FatController
 {
     public function handle(Request $request, Closure $next): mixed
     {
-        $secret    = config('services.admin.secret');
+        /** @var string $secret */
+        $secret    = Config::get('services.admin.secret');
         $timestamp = $request->header('X-Timestamp');
         $header    = (string) $request->header('X-Signature');
 
-        if (!Hash::check($secret . $timestamp, $header)) {
+        if (!Hash::check("{$secret}{$timestamp}", $header)) {
             throw InvalidFatControllerRequest::default();
         }
 

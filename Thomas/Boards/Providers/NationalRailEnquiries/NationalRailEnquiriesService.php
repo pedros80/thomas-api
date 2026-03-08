@@ -8,14 +8,15 @@ use Pedros80\NREphp\Contracts\Boards;
 use stdClass;
 use Thomas\Boards\Domain\Board;
 use Thomas\Boards\Domain\BoardDataService;
+use Thomas\Boards\Providers\NationalRailEnquiries\NREBoardMapper;
 use Thomas\Shared\Domain\CRS;
 
 final class NationalRailEnquiriesService implements BoardDataService
 {
     public function __construct(
-        private Boards $boards,
-        private NREBoardMapper $mapper,
-        private int $numRows
+        private readonly Boards $boards,
+        private readonly NREBoardMapper $mapper,
+        private readonly int $numRows,
     ) {
     }
 
@@ -39,7 +40,7 @@ final class NationalRailEnquiriesService implements BoardDataService
     {
         $data = $this->getBoard($station, 'getDepBoardWithDetails');
 
-        $services = $data->GetStationBoardResult->trainServices?->service ?? [];
+        $services = $data->GetStationBoardResult->trainServices->service ?? [];
 
         $platformServices = array_filter(
             $services,

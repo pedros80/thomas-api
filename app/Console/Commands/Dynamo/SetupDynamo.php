@@ -14,8 +14,8 @@ final class SetupDynamo extends Command
     protected $description = 'Setup the Dynamo tables';
 
     public function __construct(
-        private DynamoMigrations $migrations,
-        private YmlDatabaseConfigLoader $dbConfig,
+        private readonly DynamoMigrations $migrations,
+        private readonly YmlDatabaseConfigLoader $dbConfig,
     ) {
         parent::__construct();
 

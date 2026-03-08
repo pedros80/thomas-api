@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Thomas\RealTimeIncidents\Domain\Exceptions;
 
 use Exception;
-use Thomas\RealTimeIncidents\Domain\IncidentID;
+use Thomas\RealTimeIncidents\Domain\IncidentId;
 
 final class IncidentNotFound extends Exception
 {
@@ -14,7 +14,7 @@ final class IncidentNotFound extends Exception
         parent::__construct($message, 404);
     }
 
-    public static function fromId(IncidentID $id): IncidentNotFound
+    public static function fromId(IncidentId $id): IncidentNotFound
     {
         return new IncidentNotFound("Incident '{$id}' not found.");
     }
