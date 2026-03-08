@@ -31,7 +31,7 @@ final class TfLServiceProvider extends ServiceProvider
             return;
         }
 
-        if (!is_string($key) || $key === '') {
+        if (!is_string($key)) {
             throw new RuntimeException('Missing TfL API key.');
         }
 
