@@ -37,7 +37,7 @@ final class BroadwayRepository extends EventSourcingRepository implements UsersR
             return $user;
         } catch (AggregateNotFoundException) {
             throw UserNotFound::fromEmail($id);
-        // @phpstan-ignore catch.neverThrown
+            // @phpstan-ignore catch.neverThrown
         } catch (EventStreamNotFound) {
             throw UserNotFound::fromEmail($id);
         }

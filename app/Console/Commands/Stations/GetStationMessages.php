@@ -20,7 +20,7 @@ final class GetStationMessages extends Command
         $code = $this->getStationCode();
         $msgs = $query->get($code);
 
-        if (! count($msgs)) {
+        if (!count($msgs)) {
             $this->info("No messages found for {$code->name()}");
 
             return;
@@ -44,7 +44,7 @@ final class GetStationMessages extends Command
             $code = $code[0] ?? null;
         }
 
-        if (! is_string($code) || $code === '') {
+        if (!is_string($code) || $code === '') {
             throw new \RuntimeException('Station code must be a non-empty string.');
         }
 

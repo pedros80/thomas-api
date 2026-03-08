@@ -32,7 +32,7 @@ final class SearchStationsByNameOrCode extends Command
             $search = $search[0] ?? null;
         }
 
-        if (! is_string($search) || $search === '') {
+        if (!is_string($search) || $search === '') {
             throw new RuntimeException('Search term must be a non-empty string.');
         }
 

@@ -16,7 +16,7 @@ abstract class BaseStationMessageCommandHandler extends CommandHandlerScenarioTe
 {
     protected MessageId $messageId;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -22,13 +22,13 @@ abstract class BaseUserCommandHandler extends CommandHandlerScenarioTestCase
     protected Name $name;
     protected RemovedAt $removedAt;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->userId = UserId::generate();
-        $this->email  = new Email('peterwsomerville@gmail.com');
-        $this->name   = new Name('Peter Somerville');
+        $this->userId    = UserId::generate();
+        $this->email     = new Email('peterwsomerville@gmail.com');
+        $this->name      = new Name('Peter Somerville');
         $this->removedAt = RemovedAt::now();
     }
 

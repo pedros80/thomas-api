@@ -40,7 +40,7 @@ final class TfLServiceProvider extends ServiceProvider
 
     private function lineService(Service $service): LineService
     {
-        if (! $service instanceof LineService) {
+        if (!$service instanceof LineService) {
             throw new RuntimeException('Expected line service.');
         }
 

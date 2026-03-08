@@ -37,7 +37,7 @@ final class BroadwayRepository extends EventSourcingRepository implements Messag
             return $message;
         } catch (AggregateNotFoundException) {
             throw MessageNotFound::fromId($id);
-        // @phpstan-ignore catch.neverThrown
+            // @phpstan-ignore catch.neverThrown
         } catch (EventStreamNotFound) {
             throw MessageNotFound::fromId($id);
         }
