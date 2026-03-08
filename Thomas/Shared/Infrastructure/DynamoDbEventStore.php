@@ -18,11 +18,17 @@ use function Safe\json_decode;
 
 final class DynamoDbEventStore extends InteractsWithDynamoDb implements EventStore
 {
+    /**
+     * @throws EventStreamNotFound
+     */
     public function load($id): DomainEventStream
     {
         return $this->loadFromPlayhead($id, 0);
     }
 
+    /**
+     * @throws EventStreamNotFound
+     */
     public function loadFromPlayhead($id, int $playhead): DomainEventStream
     {
         $params = [

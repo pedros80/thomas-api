@@ -10,12 +10,13 @@ use Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\AggregateNotFoundException;
+use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Stations\Domain\Entities\Message;
 use Thomas\Stations\Domain\Exceptions\MessageNotFound;
 use Thomas\Stations\Domain\MessageId;
 use Thomas\Stations\Domain\MessagesRepository;
 
-class BroadwayRepository extends EventSourcingRepository implements MessagesRepository
+final class BroadwayRepository extends EventSourcingRepository implements MessagesRepository
 {
     public function __construct(EventStore $eventStore, EventBus $eventBus)
     {
@@ -35,6 +36,9 @@ class BroadwayRepository extends EventSourcingRepository implements MessagesRepo
 
             return $message;
         } catch (AggregateNotFoundException) {
+            throw MessageNotFound::fromId($id);
+        // @phpstan-ignore catch.neverThrown
+        } catch (EventStreamNotFound) {
             throw MessageNotFound::fromId($id);
         }
     }

@@ -54,7 +54,7 @@ final class CombinedBoardService
         return new CombinedBoard(
             $board,
             $this->messages->get($station),
-            $this->incidents->get($board->operators->toStrings())
+            $this->incidents->get($board->operators->toStrings()),
         );
     }
 }

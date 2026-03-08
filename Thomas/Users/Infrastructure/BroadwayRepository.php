@@ -10,12 +10,13 @@ use Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\AggregateNotFoundException;
+use Thomas\Shared\Infrastructure\Exceptions\EventStreamNotFound;
 use Thomas\Users\Domain\Email;
 use Thomas\Users\Domain\Entities\User;
 use Thomas\Users\Domain\Exceptions\UserNotFound;
 use Thomas\Users\Domain\UsersRepository;
 
-class BroadwayRepository extends EventSourcingRepository implements UsersRepository
+final class BroadwayRepository extends EventSourcingRepository implements UsersRepository
 {
     public function __construct(EventStore $eventStore, EventBus $eventBus)
     {
@@ -35,6 +36,9 @@ class BroadwayRepository extends EventSourcingRepository implements UsersReposit
 
             return $user;
         } catch (AggregateNotFoundException) {
+            throw UserNotFound::fromEmail($id);
+        // @phpstan-ignore catch.neverThrown
+        } catch (EventStreamNotFound) {
             throw UserNotFound::fromEmail($id);
         }
     }
