@@ -7,6 +7,7 @@ namespace Tests\Unit\Thomas\Stations\Application\Commands\Handlers;
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use Tests\Unit\Thomas\Stations\Application\Commands\Handlers\BaseStationMessageCommandHandler;
 use Thomas\Stations\Application\Commands\Handlers\RecordStationMessageCommandHandler;
 use Thomas\Stations\Application\Commands\RecordStationMessage;
 use Thomas\Stations\Domain\Events\MessageWasUpdated;
@@ -15,7 +16,6 @@ use Thomas\Stations\Domain\MessageCategory;
 use Thomas\Stations\Domain\MessageSeverity;
 use Thomas\Stations\Domain\Stations;
 use Thomas\Stations\Infrastructure\BroadwayRepository;
-use Tests\Unit\Thomas\Stations\Application\Commands\Handlers\BaseStationMessageCommandHandler;
 
 final class RecordStationMessageCommandHandlerTest extends BaseStationMessageCommandHandler
 {

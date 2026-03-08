@@ -30,6 +30,7 @@ final class FatControllerTest extends TestCase
 
         $middleware->handle($request, function () use (&$called) {
             $called = true;
+
             return response('ok');
         });
 
@@ -51,6 +52,6 @@ final class FatControllerTest extends TestCase
         $request->headers->set('X-Timestamp', (string) $time);
         $request->headers->set('X-Signature', $signature);
 
-        $middleware->handle($request, fn() => response('ok'));
+        $middleware->handle($request, fn () => response('ok'));
     }
 }

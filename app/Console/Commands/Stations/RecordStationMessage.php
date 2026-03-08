@@ -39,7 +39,7 @@ final class RecordStationMessage extends Command
             throw new RuntimeException('Number of stations must be numeric.');
         }
 
-        if (! is_numeric((string) $stations)) {
+        if (!is_numeric((string) $stations)) {
             throw new RuntimeException('Number of stations must be numeric.');
         }
 

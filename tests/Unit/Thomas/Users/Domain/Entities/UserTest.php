@@ -21,7 +21,7 @@ final class UserTest extends AggregateRootScenarioTestCase
     private RemovedAt $removedAt;
     private UserId $userId;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -50,7 +50,7 @@ final class UserTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->withAggregateId((string) $this->email)
             ->given([
-                $this->makeUserWasAdded()
+                $this->makeUserWasAdded(),
             ])->when(
                 fn (User $user) => $user->remove($this->removedAt)
             ) ->then([

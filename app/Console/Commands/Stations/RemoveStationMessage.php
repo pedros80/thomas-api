@@ -38,7 +38,7 @@ final class RemoveStationMessage extends Command
             $id = $id[0] ?? null;
         }
 
-        if (! is_string($id) || $id === '') {
+        if (!is_string($id) || $id === '') {
             throw new RuntimeException('Message ID must be a non-empty string.');
         }
 

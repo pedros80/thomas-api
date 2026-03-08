@@ -7,10 +7,10 @@ namespace Tests\Unit\Thomas\Users\Application\Commands\Handlers;
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use Tests\Unit\Thomas\Users\Application\Commands\Handlers\BaseUserCommandHandler;
 use Thomas\Users\Application\Commands\Handlers\AddUserCommandHandler;
 use Thomas\Users\Domain\Exceptions\EmailAlreadyAdded;
 use Thomas\Users\Infrastructure\BroadwayRepository;
-use Tests\Unit\Thomas\Users\Application\Commands\Handlers\BaseUserCommandHandler;
 
 final class AddUserCommandHandlerTest extends BaseUserCommandHandler
 {

@@ -7,11 +7,11 @@ namespace Tests\Unit\Thomas\Stations\Application\Commands\Handlers;
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use Tests\Unit\Thomas\Stations\Application\Commands\Handlers\BaseStationMessageCommandHandler;
 use Thomas\Stations\Application\Commands\Handlers\RemoveStationMessageCommandHandler;
 use Thomas\Stations\Application\Commands\RemoveStationMessage;
 use Thomas\Stations\Domain\Events\MessageWasRemoved;
 use Thomas\Stations\Infrastructure\BroadwayRepository;
-use Tests\Unit\Thomas\Stations\Application\Commands\Handlers\BaseStationMessageCommandHandler;
 
 final class RemoveStationMessageCommandHandlerTest extends BaseStationMessageCommandHandler
 {

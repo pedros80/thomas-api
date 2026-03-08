@@ -37,7 +37,7 @@ final class BroadwayRepository extends EventSourcingRepository implements Incide
             return $incident;
         } catch (AggregateNotFoundException) {
             throw IncidentNotFound::fromId($id);
-        // @phpstan-ignore catch.neverThrown
+            // @phpstan-ignore catch.neverThrown
         } catch (EventStreamNotFound) {
             throw IncidentNotFound::fromId($id);
         }

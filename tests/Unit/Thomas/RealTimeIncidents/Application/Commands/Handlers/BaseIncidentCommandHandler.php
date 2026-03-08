@@ -16,7 +16,7 @@ abstract class BaseIncidentCommandHandler extends CommandHandlerScenarioTestCase
     protected Body $body;
     protected IncidentId $incidentId;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

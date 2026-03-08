@@ -7,11 +7,11 @@ namespace Tests\Unit\Thomas\RealTimeIncidents\Application\Commands\Handlers;
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use Tests\Unit\Thomas\RealTimeIncidents\Application\Commands\Handlers\BaseIncidentCommandHandler;
 use Thomas\RealTimeIncidents\Application\Commands\AddIncident;
 use Thomas\RealTimeIncidents\Application\Commands\Handlers\AddIncidentCommandHandler;
 use Thomas\RealTimeIncidents\Domain\IncidentMessageStatus;
 use Thomas\RealTimeIncidents\Infrastructure\BroadwayRepository;
-use Tests\Unit\Thomas\RealTimeIncidents\Application\Commands\Handlers\BaseIncidentCommandHandler;
 
 final class AddIncidentCommandHandlerTest extends BaseIncidentCommandHandler
 {
