@@ -11,6 +11,7 @@ parameters:
     - Thomas/Shared/Infrastructure/DynamoDbEventStore.php
     - app/Providers/CustomUserProvider.php
     - app/Models/User.php
+    - app/Http/Middleware/Authenticate.php
   level: 9
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
